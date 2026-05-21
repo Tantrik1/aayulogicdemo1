@@ -1,0 +1,25 @@
+node_modules
+.next
+out
+dist
+.env.local
+.env.*.local
+.DS_Store
+*.pem
+.vercel
+.turbo
+.turbopack
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.cache
+
+# Tooling state — local only
+.claude/
+.playwright-mcp/
+
+# Build outputs
+.open-next/
+.wrangler/
+*.tsbuildinfo
