@@ -134,7 +134,7 @@ export function ServicesGrid() {
           <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-brand-navy leading-[1.1] tracking-tight">
             Engineering across{' '}
             <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-              seven capability domains
+              six capability domains
             </span>
           </h2>
           <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed">
