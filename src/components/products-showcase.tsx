@@ -19,7 +19,12 @@ import {
 import FlowArt, { FlowSection } from '@/components/ui/story-scroll';
 import { easingCurve } from '@/lib/utils';
 
+// =============================================================================
+//  Types & Data
+// =============================================================================
+
 type DashboardKey = 'hrsoft' | 'chat' | 'learn';
+type Tone = 'video' | 'white';
 
 type Product = {
   index: string;
@@ -30,6 +35,7 @@ type Product = {
   logoAlt: string;
   href: string;
   dashboard: DashboardKey;
+  tone: Tone;
 };
 
 const PRODUCTS: Product[] = [
@@ -43,6 +49,7 @@ const PRODUCTS: Product[] = [
     logoAlt: 'RealHRsoft',
     href: '#',
     dashboard: 'hrsoft',
+    tone: 'video',
   },
   {
     index: '02',
@@ -54,6 +61,7 @@ const PRODUCTS: Product[] = [
     logoAlt: 'Real Chat',
     href: '#',
     dashboard: 'chat',
+    tone: 'white',
   },
   {
     index: '03',
@@ -65,66 +73,34 @@ const PRODUCTS: Product[] = [
     logoAlt: 'Real Learn',
     href: '#',
     dashboard: 'learn',
+    tone: 'video',
   },
 ];
+
+// Tiny inline classnames joiner — avoids pulling clsx into a "use client" tree
+function cx(...parts: Array<string | undefined | false | null>): string {
+  return parts.filter(Boolean).join(' ');
+}
 
 // =============================================================================
 //  Main
 // =============================================================================
 
-// Middle panel gets a clean white background — bookend transparent panels show video.
-const PANEL_TONE: ('transparent' | 'white')[] = ['transparent', 'white', 'transparent'];
-
 export function ProductsShowcase() {
   return (
     <section
       id="products-showcase"
-      aria-label="See our real products serving millions of customers"
+      aria-label="Real products serving millions of customers"
       className="relative w-full"
     >
-      {/* ============ SECTION HEADER (scrolls above the pinned panels) ============ */}
-      <div className="relative px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 lg:pt-32 pb-12 lg:pb-16 overflow-hidden">
-        {/* Ambient backdrop */}
-        <div
-          aria-hidden
-          className="absolute inset-0 opacity-60 pointer-events-none"
-          style={{
-            background:
-              'radial-gradient(40% 30% at 80% 10%, rgba(0,194,255,0.06) 0%, transparent 70%), radial-gradient(40% 30% at 0% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)',
-          }}
-        />
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.5, ease: easingCurve.industrial }}
-          className="relative text-center max-w-3xl mx-auto"
-        >
-          <span className="inline-block text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-4">
-            Our Products
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-brand-navy leading-[1.1] tracking-tight">
-            Real products serving{' '}
-            <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-              millions of customers
-            </span>
-            .
-          </h2>
-          <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed">
-            Three platforms running in production every day — built, operated, and
-            iterated by the same engineers who partner with you.
-          </p>
-        </motion.div>
-      </div>
-
-      {/* ============ PINNED PANELS (tablet/desktop pin + flip-in) ============ */}
       <FlowArt aria-label="Product showcase scroll">
         {PRODUCTS.map((product, i) => (
           <ProductPanel
             key={product.index}
             product={product}
-            tone={PANEL_TONE[i]}
+            position={i}
             reverse={i % 2 === 1}
+            showIntro={i === 0}
           />
         ))}
       </FlowArt>
@@ -140,15 +116,38 @@ export default ProductsShowcase;
 
 function ProductPanel({
   product,
-  tone,
+  position,
   reverse,
+  showIntro,
 }: {
   product: Product;
-  tone: 'transparent' | 'white';
+  position: number;
   reverse: boolean;
+  showIntro: boolean;
 }) {
   const reduce = useReducedMotion();
-  const isWhite = tone === 'white';
+  const isDark = product.tone === 'video';
+
+  // Token map keeps the panel pure on either tone without scattering ternaries
+  const t = isDark
+    ? {
+        title: 'text-white',
+        eyebrow: 'text-brand-cyan',
+        body: 'text-white/75',
+        divider: 'bg-brand-cyan/40',
+        indexBadge: 'bg-brand-cyan text-brand-navy',
+        link: 'border-brand-cyan/40 hover:border-brand-cyan text-brand-cyan',
+        logoTint: 'brightness-0 invert',
+      }
+    : {
+        title: 'text-brand-navy',
+        eyebrow: 'text-brand-blue',
+        body: 'text-slate-600',
+        divider: 'bg-brand-blue/40',
+        indexBadge: 'bg-brand-blue text-white',
+        link: 'border-brand-blue/30 hover:border-brand-blue text-brand-blue',
+        logoTint: '',
+      };
 
   const initialUp = reduce ? false : { opacity: 0, y: 28 };
   const animateIn = { opacity: 1, y: 0 };
@@ -156,124 +155,148 @@ function ProductPanel({
   return (
     <FlowSection
       aria-label={`${product.index} — ${product.name}`}
-      data-theme="light"
-      className={isWhite ? 'bg-white' : 'bg-transparent'}
+      data-theme={isDark ? 'dark' : 'light'}
+      className={isDark ? 'bg-brand-navy' : 'bg-white'}
+      background={isDark ? <VideoBackdrop variant={position === 0 ? 'a' : 'b'} /> : <LightBackdrop />}
     >
-      {/* Ambient backdrop — subtle radial glow, consistent across panels */}
+      {/* Top-left section intro lives only on panel 1 */}
+      {showIntro && <SectionIntro />}
+
+      {/* Product row */}
       <div
-        aria-hidden
-        className="absolute inset-0 opacity-60 pointer-events-none"
-        style={{
-          background: isWhite
-            ? 'radial-gradient(40% 30% at 90% 10%, rgba(0,194,255,0.08) 0%, transparent 70%), radial-gradient(40% 30% at 10% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)'
-            : 'radial-gradient(40% 30% at 80% 10%, rgba(0,194,255,0.06) 0%, transparent 70%), radial-gradient(40% 30% at 0% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)',
-        }}
-      />
-
-      <div className="relative z-10 mx-auto flex w-full max-w-[1400px] flex-1 items-center">
+        className={cx(
+          'relative mx-auto flex w-full max-w-[1400px] flex-1 items-center',
+          showIntro && 'mt-6 sm:mt-8 lg:mt-4',
+        )}
+      >
         <div className="grid w-full grid-cols-1 items-center gap-y-10 lg:grid-cols-12 lg:gap-x-10 lg:gap-y-12 xl:gap-x-14">
-        {/* ============ CONTENT ============ */}
-        <motion.div
-          initial={initialUp}
-          whileInView={animateIn}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ duration: 0.7, ease: easingCurve.industrial }}
-          className={`order-1 lg:col-span-5 ${
-            reverse ? 'lg:order-2 lg:col-start-8' : 'lg:order-1'
-          }`}
-        >
-          {/* Eyebrow */}
-          <div className="mb-5 flex items-center gap-3 sm:mb-6">
-            <span className="inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-brand-blue text-white text-[10px] font-bold sm:h-8 sm:w-8 sm:text-[11px]">
-              {product.index}
-            </span>
-            <span className="h-px w-6 bg-brand-blue/40 sm:w-10" />
-            <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-brand-blue sm:text-[11px] sm:tracking-[0.32em]">
-              {product.index} / 03
-            </p>
-          </div>
-
-          {/* Logo */}
+          {/* ============ CONTENT ============ */}
           <motion.div
             initial={initialUp}
             whileInView={animateIn}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7, delay: 0.08, ease: easingCurve.industrial }}
-            className="mb-5 flex"
-            style={{ height: 'clamp(2.5rem, 4vw, 3rem)' }}
+            transition={{ duration: 0.7, ease: easingCurve.industrial }}
+            className={cx(
+              'order-1 lg:col-span-5',
+              reverse ? 'lg:order-2 lg:col-start-8' : 'lg:order-1',
+            )}
           >
-            <Image
-              src={product.logo}
-              alt={product.logoAlt}
-              width={1024}
-              height={230}
-              className="h-full w-auto object-contain object-left"
-            />
+            {/* Eyebrow */}
+            <div className="mb-5 flex items-center gap-3 sm:mb-6">
+              <span
+                className={cx(
+                  'inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-bold sm:h-8 sm:w-8 sm:text-[11px]',
+                  t.indexBadge,
+                )}
+              >
+                {product.index}
+              </span>
+              <span className={cx('h-px w-6 sm:w-10', t.divider)} />
+              <p
+                className={cx(
+                  'text-[10px] font-bold uppercase tracking-[0.28em] sm:text-[11px] sm:tracking-[0.32em]',
+                  t.eyebrow,
+                )}
+              >
+                {product.index} / 03
+              </p>
+            </div>
+
+            {/* Logo */}
+            <motion.div
+              initial={initialUp}
+              whileInView={animateIn}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: 0.08, ease: easingCurve.industrial }}
+              className="mb-5 flex"
+              style={{ height: 'clamp(2.5rem, 4vw, 3rem)' }}
+            >
+              <Image
+                src={product.logo}
+                alt={product.logoAlt}
+                width={1024}
+                height={230}
+                className={cx('h-full w-auto object-contain object-left', t.logoTint)}
+                priority={position === 0}
+              />
+            </motion.div>
+
+            {/* Tagline */}
+            <motion.p
+              initial={initialUp}
+              whileInView={animateIn}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: 0.12, ease: easingCurve.industrial }}
+              className={cx(
+                'mb-3 text-[11px] font-bold uppercase tracking-[0.22em] sm:mb-4',
+                t.eyebrow,
+              )}
+            >
+              {product.tagline}
+            </motion.p>
+
+            {/* Title */}
+            <motion.h3
+              initial={initialUp}
+              whileInView={animateIn}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: 0.14, ease: easingCurve.industrial }}
+              className={cx(
+                'mb-4 text-2xl font-bold leading-tight tracking-tight sm:text-3xl lg:text-4xl',
+                t.title,
+              )}
+            >
+              {product.name}
+            </motion.h3>
+
+            {/* Description */}
+            <motion.p
+              initial={initialUp}
+              whileInView={animateIn}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: 0.18, ease: easingCurve.industrial }}
+              className={cx(
+                'mb-7 max-w-[46ch] text-base leading-relaxed sm:mb-8 sm:text-lg',
+                t.body,
+              )}
+            >
+              {product.description}
+            </motion.p>
+
+            {/* CTA */}
+            <motion.a
+              initial={initialUp}
+              whileInView={animateIn}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.7, delay: 0.24, ease: easingCurve.industrial }}
+              href={product.href}
+              className={cx(
+                'group inline-flex min-h-[44px] items-center gap-2 border-b pb-2 text-[13px] font-bold uppercase tracking-[0.18em] transition-colors sm:text-sm',
+                t.link,
+              )}
+            >
+              View Product
+              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </motion.a>
           </motion.div>
 
-          {/* Tagline */}
-          <motion.p
-            initial={initialUp}
-            whileInView={animateIn}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7, delay: 0.12, ease: easingCurve.industrial }}
-            className="mb-3 text-[11px] font-bold uppercase tracking-[0.22em] text-brand-blue sm:mb-4"
+          {/* ============ DASHBOARD ============ */}
+          <motion.div
+            initial={reduce ? false : { opacity: 0, y: 32, scale: 0.97 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.9, delay: 0.12, ease: easingCurve.industrial }}
+            className={cx(
+              'order-2 lg:col-span-7',
+              reverse ? 'lg:order-1 lg:col-start-1' : 'lg:order-2',
+            )}
           >
-            {product.tagline}
-          </motion.p>
-
-          {/* Title */}
-          <motion.h3
-            initial={initialUp}
-            whileInView={animateIn}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7, delay: 0.14, ease: easingCurve.industrial }}
-            className="mb-4 text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-navy leading-tight tracking-tight"
-          >
-            {product.name}
-          </motion.h3>
-
-          {/* Description */}
-          <motion.p
-            initial={initialUp}
-            whileInView={animateIn}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7, delay: 0.18, ease: easingCurve.industrial }}
-            className="mb-7 max-w-[46ch] text-base sm:text-lg text-slate-600 leading-relaxed sm:mb-8"
-          >
-            {product.description}
-          </motion.p>
-
-          {/* View Product */}
-          <motion.a
-            initial={initialUp}
-            whileInView={animateIn}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7, delay: 0.24, ease: easingCurve.industrial }}
-            href={product.href}
-            className="group inline-flex min-h-[44px] items-center gap-2 border-b border-brand-blue/30 pb-2 text-[13px] font-bold uppercase tracking-[0.18em] text-brand-blue transition-colors hover:border-brand-blue sm:text-sm"
-          >
-            View Product
-            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-          </motion.a>
-        </motion.div>
-
-        {/* ============ DASHBOARD ============ */}
-        <motion.div
-          initial={reduce ? false : { opacity: 0, y: 32, scale: 0.97 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.9, delay: 0.12, ease: easingCurve.industrial }}
-          className={`order-2 lg:col-span-7 ${
-            reverse ? 'lg:order-1 lg:col-start-1' : 'lg:order-2'
-          }`}
-        >
-          <DashboardFrame>
-            {product.dashboard === 'hrsoft' && <HRSoftDash />}
-            {product.dashboard === 'chat' && <ChatDash />}
-            {product.dashboard === 'learn' && <LearnDash />}
-          </DashboardFrame>
-        </motion.div>
+            <DashboardFrame>
+              {product.dashboard === 'hrsoft' && <HRSoftDash />}
+              {product.dashboard === 'chat' && <ChatDash />}
+              {product.dashboard === 'learn' && <LearnDash />}
+            </DashboardFrame>
+          </motion.div>
         </div>
       </div>
     </FlowSection>
@@ -281,7 +304,102 @@ function ProductPanel({
 }
 
 // =============================================================================
-//  Dashboard frame — chrome + glow + subtle tilt
+//  Section intro — only appears inside panel 1, top-aligned
+// =============================================================================
+
+function SectionIntro() {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: '-80px' }}
+      transition={{ duration: 0.6, ease: easingCurve.industrial }}
+      className="relative mx-auto w-full max-w-[1400px]"
+    >
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between sm:gap-6">
+        <div className="max-w-3xl">
+          <span className="mb-3 inline-block text-[11px] font-bold uppercase tracking-[0.32em] text-brand-cyan sm:text-xs">
+            Our Products
+          </span>
+          <h2 className="text-2xl font-bold leading-[1.1] tracking-tight text-white sm:text-3xl lg:text-4xl xl:text-[2.75rem]">
+            Real products serving{' '}
+            <span className="bg-gradient-to-r from-brand-cyan to-white bg-clip-text text-transparent">
+              millions of customers
+            </span>
+            .
+          </h2>
+        </div>
+        <p className="hidden max-w-xs text-sm leading-relaxed text-white/65 sm:block">
+          Three platforms running in production every day — built, operated, and iterated by the same engineers who partner with you.
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
+// =============================================================================
+//  Backdrops — static, sit behind the rotating inner
+// =============================================================================
+
+function VideoBackdrop({ variant }: { variant: 'a' | 'b' }) {
+  // Slightly different overlay direction so panels 01 and 03 feel distinct
+  const overlay =
+    variant === 'a'
+      ? 'linear-gradient(135deg, rgba(10,25,47,0.88) 0%, rgba(10,25,47,0.72) 45%, rgba(4,92,179,0.58) 100%)'
+      : 'linear-gradient(225deg, rgba(10,25,47,0.88) 0%, rgba(4,92,179,0.65) 50%, rgba(0,194,255,0.38) 100%)';
+
+  const glow =
+    variant === 'a'
+      ? 'radial-gradient(55% 40% at 82% 18%, rgba(0,194,255,0.22), transparent 70%), radial-gradient(45% 35% at 15% 88%, rgba(4,92,179,0.22), transparent 70%)'
+      : 'radial-gradient(55% 40% at 18% 20%, rgba(0,194,255,0.20), transparent 70%), radial-gradient(45% 35% at 85% 85%, rgba(4,92,179,0.24), transparent 70%)';
+
+  return (
+    <>
+      <video
+        aria-hidden
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        className="absolute inset-0 h-full w-full object-cover"
+        style={{ filter: 'saturate(0.8) brightness(0.82)' }}
+      >
+        <source src="/herobackground.mp4" type="video/mp4" />
+      </video>
+      {/* Color wash for legibility */}
+      <div aria-hidden className="absolute inset-0" style={{ background: overlay }} />
+      {/* Accent glows for depth */}
+      <div aria-hidden className="absolute inset-0 opacity-70" style={{ background: glow }} />
+      {/* Subtle grain so the video doesn't read as plastic */}
+      <div
+        aria-hidden
+        className="absolute inset-0 opacity-[0.045] mix-blend-overlay"
+        style={{
+          backgroundImage:
+            "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>\")",
+        }}
+      />
+    </>
+  );
+}
+
+function LightBackdrop() {
+  return (
+    <div
+      aria-hidden
+      className="absolute inset-0 opacity-80"
+      style={{
+        background:
+          'radial-gradient(45% 30% at 90% 10%, rgba(0,194,255,0.10) 0%, transparent 70%), ' +
+          'radial-gradient(40% 30% at 10% 90%, rgba(4,92,179,0.07) 0%, transparent 70%)',
+      }}
+    />
+  );
+}
+
+// =============================================================================
+//  Dashboard frame
 // =============================================================================
 
 function DashboardFrame({ children }: { children: React.ReactNode }) {
@@ -289,10 +407,10 @@ function DashboardFrame({ children }: { children: React.ReactNode }) {
     <div className="group relative transition-transform duration-500 ease-out hover:scale-[1.012]">
       <div
         aria-hidden
-        className="absolute -inset-4 rounded-[2rem] bg-brand-blue/15 blur-3xl transition-opacity duration-500 sm:-inset-6 group-hover:opacity-90"
+        className="absolute -inset-4 rounded-[2rem] bg-brand-blue/20 blur-3xl transition-opacity duration-500 sm:-inset-6 group-hover:opacity-90"
       />
 
-      <div className="relative overflow-hidden rounded-xl border border-white/10 bg-[#0A1428] shadow-[0_30px_60px_-15px_rgba(4,12,32,0.5),0_15px_30px_-10px_rgba(4,92,179,0.4)] sm:rounded-2xl">
+      <div className="relative overflow-hidden rounded-xl border border-white/10 bg-[#0A1428] shadow-[0_30px_60px_-15px_rgba(4,12,32,0.55),0_15px_30px_-10px_rgba(4,92,179,0.4)] sm:rounded-2xl">
         <div className="flex items-center gap-1.5 border-b border-white/10 bg-white/[0.03] px-3 py-2.5 sm:gap-2 sm:px-4 sm:py-3">
           <span className="h-2 w-2 rounded-full bg-red-400/80 sm:h-2.5 sm:w-2.5" />
           <span className="h-2 w-2 rounded-full bg-amber-400/80 sm:h-2.5 sm:w-2.5" />
@@ -324,9 +442,7 @@ function HRSoftDash() {
             <div
               key={item}
               className={`flex items-center gap-1.5 rounded px-2 py-1 text-[10px] lg:gap-2 lg:px-2.5 lg:py-1.5 lg:text-[11px] ${
-                i === 0
-                  ? 'bg-brand-cyan/15 font-semibold text-brand-cyan'
-                  : 'text-white/65'
+                i === 0 ? 'bg-brand-cyan/15 font-semibold text-brand-cyan' : 'text-white/65'
               }`}
             >
               <span
@@ -422,8 +538,8 @@ function HRSoftDash() {
 
 function Sparkbars() {
   const bars = [
-    62, 78, 71, 84, 80, 88, 92, 85, 90, 76, 82, 88, 94, 91, 86, 90, 95, 88, 92, 96,
-    93, 88, 92, 95, 97, 93, 90, 96, 98, 95,
+    62, 78, 71, 84, 80, 88, 92, 85, 90, 76, 82, 88, 94, 91, 86, 90, 95, 88, 92, 96, 93, 88,
+    92, 95, 97, 93, 90, 96, 98, 95,
   ];
   return (
     <div className="flex h-16 items-end gap-[3px] sm:h-20 sm:gap-1">
@@ -472,9 +588,7 @@ function ChatDash() {
             <div
               key={c.name}
               className={`flex items-center justify-between rounded-md px-1.5 py-1 text-[10px] transition-colors sm:px-2 sm:py-1.5 sm:text-[11px] ${
-                c.active
-                  ? 'bg-brand-cyan/15 text-white'
-                  : 'text-white/65 hover:bg-white/[0.04]'
+                c.active ? 'bg-brand-cyan/15 text-white' : 'text-white/65 hover:bg-white/[0.04]'
               }`}
             >
               <span className="flex min-w-0 items-center gap-1.5">
@@ -603,9 +717,7 @@ function Message({
           <span className="font-semibold text-white">{name}</span>
           <span className="ml-2 text-white/40">{time}</span>
         </p>
-        <p className="text-[11px] leading-relaxed text-white/80 sm:text-[12px]">
-          {text}
-        </p>
+        <p className="text-[11px] leading-relaxed text-white/80 sm:text-[12px]">{text}</p>
       </div>
     </div>
   );
