@@ -28,11 +28,11 @@ import {
 import { easingCurve } from '@/lib/utils';
 
 const TOP_NAV = [
-  { key: 'services', label: 'Services' },
-  { key: 'products', label: 'Products' },
-  { key: 'industries', label: 'Industries' },
-  { key: 'talent', label: 'Talent & Engagement' },
-  { key: 'company', label: 'Company' },
+  { key: 'services', label: 'Services', href: '/services' },
+  { key: 'products', label: 'Products', href: '/products' },
+  { key: 'industries', label: 'Industries', href: '/industries' },
+  { key: 'talent', label: 'Talent & Engagement', href: '/talent' },
+  { key: 'company', label: 'Company', href: '#' },
 ] as const;
 
 type NavKey = (typeof TOP_NAV)[number]['key'];
@@ -338,7 +338,7 @@ function ServicesPanel({
               <p className="text-sm text-slate-600">{active.tagline}</p>
             </div>
             <a
-              href="#"
+              href={`/services/${active.key}`}
               className="hidden sm:flex items-center gap-1 text-xs font-semibold text-brand-blue hover:text-brand-navy"
             >
               Overview <ArrowUpRight className="w-3.5 h-3.5" />
@@ -350,7 +350,7 @@ function ServicesPanel({
             {active.items.map((item) => (
               <a
                 key={item.title}
-                href="#"
+                href={`/services/${active.key}`}
                 className="group relative p-4 rounded-lg border border-brand-blue/10 hover:border-brand-cyan/40 /50 hover:bg-white/70 backdrop-blur transition-all overflow-hidden"
               >
                 {/* Hover glow */}
@@ -390,7 +390,7 @@ function ProductsPanel() {
         {PRODUCTS.map((product) => (
           <a
             key={product.title}
-            href="#"
+            href={`/products/${product.slug}`}
             className="group relative flex flex-col p-6 rounded-xl overflow-hidden /70 border border-brand-blue/15 hover:border-brand-cyan/50 backdrop-blur hover:bg-white/90 hover:-translate-y-1 hover:shadow-[0_25px_50px_-15px_rgba(4,92,179,0.3)] transition-all duration-300"
           >
             {/* Top luminous line */}
@@ -462,7 +462,7 @@ function IndustriesPanel() {
           {INDUSTRIES_NEW.map((ind) => (
             <a
               key={ind.title}
-              href="#"
+              href={`/industries/${ind.slug}`}
               className="group p-4 rounded-md border border-transparent hover:border-brand-blue/20 hover:bg-slate-50/80 transition-all"
             >
               <h4 className="text-sm font-semibold text-brand-navy mb-1 group-hover:text-brand-blue transition-colors flex items-center justify-between gap-2">
@@ -485,6 +485,7 @@ function IndustriesPanel() {
         heading="Tailor-made solutions"
         body="Calibrated to your target vertical constraints. We match dedicated engineering muscle to sector-specific compliance rules."
         cta="See All Industry Roadmaps"
+        href="/industries"
       />
     </div>
   );
@@ -505,7 +506,7 @@ function TalentPanel() {
           {TALENT_MODELS.map((t) => (
             <a
               key={t.title}
-              href="#"
+              href="/talent"
               className="group p-4 rounded-md border border-transparent hover:border-brand-blue/20 hover:bg-slate-50/80 transition-all"
             >
               <h4 className="text-sm font-semibold text-brand-navy mb-1 group-hover:text-brand-blue transition-colors">
@@ -526,7 +527,7 @@ function TalentPanel() {
           Scale up system capabilities with <span className="font-bold">pre-vetted senior engineering talent deployed within 7 business days.</span>
         </p>
         <a
-          href="#"
+          href="/talent"
           className="inline-flex items-center gap-1 text-xs font-semibold text-brand-blue hover:text-brand-navy transition-colors"
         >
           Match a Team
@@ -552,7 +553,7 @@ function CompanyPanel() {
           {COMPANY_LINKS.map((c) => (
             <a
               key={c.title}
-              href="#"
+              href="/"
               className="group p-4 rounded-md border border-transparent hover:border-brand-blue/20 hover:bg-slate-50/80 transition-all"
             >
               <h4 className="text-sm font-semibold text-brand-navy mb-1 group-hover:text-brand-blue transition-colors">
@@ -573,6 +574,7 @@ function CompanyPanel() {
         heading="Architecting infrastructure that runs modern operations"
         body="Managing core database transactions, full-stack application builds, and automated systems globally."
         cta="Read Our Corporate Story"
+        href="#"
       />
     </div>
   );
@@ -586,10 +588,12 @@ function SpotlightPanel({
   heading,
   body,
   cta,
+  href,
 }: {
   heading: string;
   body: string;
   cta: string;
+  href: string;
 }) {
   return (
     <div className="col-span-4 relative p-7 rounded-md bg-brand-navy text-white overflow-hidden">
@@ -606,7 +610,7 @@ function SpotlightPanel({
         <h4 className="text-lg font-bold leading-tight mb-3">{heading}</h4>
         <p className="text-sm text-slate-300 leading-relaxed mb-5">{body}</p>
         <a
-          href="#"
+          href={href}
           className="inline-flex items-center gap-1 text-sm font-semibold text-brand-cyan hover:text-white transition-colors"
         >
           {cta}
@@ -720,10 +724,16 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
                                     className="overflow-hidden/50 rounded-md"
                                   >
                                     <div className="px-3 py-2 space-y-1">
+                                      <a
+                                        href={`/services/${cat.key}`}
+                                        className="block py-2 px-3 rounded text-sm font-semibold text-brand-blue hover:bg-white transition-colors"
+                                      >
+                                        View all {cat.title} →
+                                      </a>
                                       {cat.items.map((it) => (
                                         <a
                                           key={it.title}
-                                          href="#"
+                                          href={`/services/${cat.key}`}
                                           className="block py-2 px-3 rounded text-sm text-slate-600 hover:text-brand-blue hover:bg-white transition-colors"
                                         >
                                           {it.title}
@@ -777,7 +787,7 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
                                         {p.description}
                                       </p>
                                       <a
-                                        href="#"
+                                        href={`/products/${p.slug}`}
                                         className="inline-flex items-center gap-1 text-xs font-semibold text-brand-blue"
                                       >
                                         Learn More
@@ -791,33 +801,51 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
                           );
                         })}
 
-                      {item.key === 'industries' &&
-                        INDUSTRIES_NEW.map((s) => (
+                      {item.key === 'industries' && (
+                        <>
                           <a
-                            key={s.title}
-                            href="#"
-                            className="block py-3 px-3 rounded-md text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-blue"
+                            href="/industries"
+                            className="block py-3 px-3 rounded-md text-sm font-semibold text-brand-blue hover:bg-slate-50"
                           >
-                            {s.title}
+                            View all Industries →
                           </a>
-                        ))}
+                          {INDUSTRIES_NEW.map((s) => (
+                            <a
+                              key={s.title}
+                              href={`/industries/${s.slug}`}
+                              className="block py-3 px-3 rounded-md text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-blue"
+                            >
+                              {s.title}
+                            </a>
+                          ))}
+                        </>
+                      )}
 
-                      {item.key === 'talent' &&
-                        TALENT_MODELS.map((s) => (
+                      {item.key === 'talent' && (
+                        <>
                           <a
-                            key={s.title}
-                            href="#"
-                            className="block py-3 px-3 rounded-md text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-blue"
+                            href="/talent"
+                            className="block py-3 px-3 rounded-md text-sm font-semibold text-brand-blue hover:bg-slate-50"
                           >
-                            {s.title}
+                            View Talent & Engagement →
                           </a>
-                        ))}
+                          {TALENT_MODELS.map((s) => (
+                            <a
+                              key={s.title}
+                              href="/talent"
+                              className="block py-3 px-3 rounded-md text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-blue"
+                            >
+                              {s.title}
+                            </a>
+                          ))}
+                        </>
+                      )}
 
                       {item.key === 'company' &&
                         COMPANY_LINKS.map((s) => (
                           <a
                             key={s.title}
-                            href="#"
+                            href="/"
                             className="block py-3 px-3 rounded-md text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-blue"
                           >
                             {s.title}

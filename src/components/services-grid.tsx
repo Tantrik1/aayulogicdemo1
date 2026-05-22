@@ -328,7 +328,7 @@ function ServiceContent({ category }: { category: typeof SERVICE_CATEGORIES[numb
         {category.items.map((item) => (
           <motion.a
             key={item.title}
-            href="#"
+            href={`/services/${category.key}`}
             variants={itemVariants}
             className="group relative p-5 sm:p-6 rounded-lg border border-slate-200 bg-gradient-to-br from-white/60 to-white/40 backdrop-blur-sm hover:border-brand-blue/50 hover:shadow-[0_16px_32px_-12px_rgba(4,92,179,0.25)] transition-all overflow-hidden"
             whileHover={{

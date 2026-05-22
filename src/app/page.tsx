@@ -10,6 +10,7 @@ import { TestimonialsSection } from '@/components/testimonials-section';
 import { BlogSection } from '@/components/blog-section';
 import { HowWeWork } from '@/components/how-we-work';
 import { ProductsShowcase } from '@/components/products-showcase';
+import { IndustriesWeServe } from '@/components/industries-we-serve';
 import { WhyChooseUs } from '@/components/why-choose-us';
 import { DigitalTransformCTA } from '@/components/digital-transform-cta';
 import { Footer } from '@/components/footer';
@@ -27,8 +28,9 @@ export default function Home() {
       <CaseStudies />
       <TechStackSection />
       <ProductsShowcase />
-      <HowWeWork />
       <BlogSection />
+      <HowWeWork />
+      <IndustriesWeServe />
       <WhyChooseUs />
       <DigitalTransformCTA />
       <Footer />

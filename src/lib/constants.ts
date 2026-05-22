@@ -250,6 +250,7 @@ export const SERVICES = SERVICE_CATEGORIES.reduce((acc, cat) => {
 
 export const PRODUCTS = [
   {
+    slug: "realhrsoft",
     title: "RealHRsoft",
     tagline: "Complete HR Intelligence Technology",
     description:
@@ -258,6 +259,7 @@ export const PRODUCTS = [
     icon: "Users",
   },
   {
+    slug: "realchat",
     title: "Real Chat",
     tagline: "Secure Team Communication",
     description:
@@ -266,6 +268,7 @@ export const PRODUCTS = [
     icon: "MessageCircle",
   },
   {
+    slug: "reallearn",
     title: "Real Learn",
     tagline: "Empower Growth, Drive Success",
     description:
@@ -281,36 +284,43 @@ export const PRODUCTS = [
 
 export const INDUSTRIES_NEW = [
   {
+    slug: "bfsi",
     title: "Banking & Digital Finance (BFSI)",
     description:
       "Cloud-native architectures, secure ledgers, and transaction routing modernization.",
   },
   {
+    slug: "healthcare",
     title: "Healthcare & MedDev",
     description:
       "HIPAA-compliant clinical systems, patient portals, and connected medical devices.",
   },
   {
+    slug: "pharma",
     title: "Pharma & Life Sciences",
     description:
       "Validated clinical trial automation, R&D logging, and field-force platforms.",
   },
   {
+    slug: "professional-services",
     title: "Professional Services & EdTech",
     description:
       "Custom learning platforms, scalable Moodle structures, adaptive AI learning.",
   },
   {
+    slug: "media",
     title: "Media & Entertainment",
     description:
       "Automated print composition, web-to-print, and real-time streaming.",
   },
   {
+    slug: "retail",
     title: "Retail & Digital Commerce",
     description:
       "Multi-tenant headless storefronts, omnichannel inventory, order processing.",
   },
   {
+    slug: "technology",
     title: "Technology & SaaS",
     description:
       "Architecture optimization, MVP acceleration, scale engineering support.",
@@ -326,21 +336,25 @@ export const INDUSTRIES = INDUSTRIES_NEW.map((i) => i.title);
 
 export const TALENT_MODELS = [
   {
+    slug: "staff-augmentation",
     title: "IT Staff Augmentation",
     description:
       "On-demand technical specialists integrated into your active SDLC.",
   },
   {
+    slug: "dedicated-teams",
     title: "Dedicated Product Engineering Teams",
     description:
       "Cohesive, self-managed squads handling dedicated platform roadmaps.",
   },
   {
+    slug: "contract-to-hire",
     title: "Contract-to-Hire (C2H)",
     description:
       "Flexible, milestone-validated engineering resources for strategic conversion.",
   },
   {
+    slug: "build-operate-transfer",
     title: "Build-Operate-Transfer (BOT)",
     description:
       "Offshore development center configuration, management, and ownership transfer.",
