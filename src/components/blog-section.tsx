@@ -203,7 +203,7 @@ function BlogCard({ post }: { post: (typeof BLOG_POSTS)[number] }) {
   return (
     <a
       href="#"
-      className="group relative h-full block rounded-2xl overflow-hidden border border-white/60 ring-1 ring-slate-200/70 bg-white/55 backdrop-blur-xl shadow-[0_10px_40px_-18px_rgba(10,25,47,0.18)] hover:ring-brand-blue/30 hover:shadow-[0_24px_50px_-20px_rgba(4,92,179,0.22)] transition-[box-shadow,border-color] duration-500"
+      className="group relative h-full block rounded-2xl overflow-hidden border border-slate-300 ring-1 ring-brand-blue/15 bg-white shadow-[0_12px_32px_-12px_rgba(4,92,179,0.28),0_4px_12px_-4px_rgba(10,25,47,0.12)] hover:border-brand-blue/60 hover:ring-brand-blue/40 hover:shadow-[0_24px_56px_-16px_rgba(4,92,179,0.45),0_8px_20px_-6px_rgba(0,194,255,0.25)] transition-[box-shadow,border-color,--tw-ring-color] duration-500"
     >
       {/* Soft top sheen */}
       <span
@@ -212,7 +212,7 @@ function BlogCard({ post }: { post: (typeof BLOG_POSTS)[number] }) {
       />
 
       {/* Cover image */}
-      <div className="relative aspect-[4/5] overflow-hidden">
+      <div className="relative aspect-video overflow-hidden">
         <Image
           src={post.image}
           alt={post.title}

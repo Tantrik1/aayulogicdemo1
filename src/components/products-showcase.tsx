@@ -68,24 +68,12 @@ const PRODUCTS: Product[] = [
   },
 ];
 
-type Tone = 'blue' | 'white';
-const VARIANTS: { tone: Tone; bgClass: string }[] = [
-  {
-    tone: 'blue',
-    bgClass:
-      'bg-[radial-gradient(120%_80%_at_0%_0%,#0A1E48_0%,#045CB3_55%,#0A192F_100%)]',
-  },
-  { tone: 'white', bgClass: 'bg-white' },
-  {
-    tone: 'blue',
-    bgClass:
-      'bg-[radial-gradient(120%_80%_at_100%_100%,#00C2FF_0%,#045CB3_45%,#0A1E48_100%)]',
-  },
-];
-
 // =============================================================================
 //  Main
 // =============================================================================
+
+// Middle panel gets a clean white background — bookend transparent panels show video.
+const PANEL_TONE: ('transparent' | 'white')[] = ['transparent', 'white', 'transparent'];
 
 export function ProductsShowcase() {
   return (
@@ -94,13 +82,49 @@ export function ProductsShowcase() {
       aria-label="See our real products serving millions of customers"
       className="relative w-full"
     >
+      {/* ============ SECTION HEADER (scrolls above the pinned panels) ============ */}
+      <div className="relative px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 lg:pt-32 pb-12 lg:pb-16 overflow-hidden">
+        {/* Ambient backdrop */}
+        <div
+          aria-hidden
+          className="absolute inset-0 opacity-60 pointer-events-none"
+          style={{
+            background:
+              'radial-gradient(40% 30% at 80% 10%, rgba(0,194,255,0.06) 0%, transparent 70%), radial-gradient(40% 30% at 0% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)',
+          }}
+        />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.5, ease: easingCurve.industrial }}
+          className="relative text-center max-w-3xl mx-auto"
+        >
+          <span className="inline-block text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-4">
+            Our Products
+          </span>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-brand-navy leading-[1.1] tracking-tight">
+            Real products serving{' '}
+            <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
+              millions of customers
+            </span>
+            .
+          </h2>
+          <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed">
+            Three platforms running in production every day — built, operated, and
+            iterated by the same engineers who partner with you.
+          </p>
+        </motion.div>
+      </div>
+
+      {/* ============ PINNED PANELS (tablet/desktop pin + flip-in) ============ */}
       <FlowArt aria-label="Product showcase scroll">
         {PRODUCTS.map((product, i) => (
           <ProductPanel
             key={product.index}
             product={product}
-            variant={VARIANTS[i]}
-            isFirst={i === 0}
+            tone={PANEL_TONE[i]}
+            reverse={i % 2 === 1}
           />
         ))}
       </FlowArt>
@@ -111,20 +135,20 @@ export function ProductsShowcase() {
 export default ProductsShowcase;
 
 // =============================================================================
-//  Panel — one section per product
+//  Panel — one row per product
 // =============================================================================
 
 function ProductPanel({
   product,
-  variant,
-  isFirst,
+  tone,
+  reverse,
 }: {
   product: Product;
-  variant: { tone: Tone; bgClass: string };
-  isFirst: boolean;
+  tone: 'transparent' | 'white';
+  reverse: boolean;
 }) {
-  const isBlue = variant.tone === 'blue';
   const reduce = useReducedMotion();
+  const isWhite = tone === 'white';
 
   const initialUp = reduce ? false : { opacity: 0, y: 28 };
   const animateIn = { opacity: 1, y: 0 };
@@ -132,177 +156,124 @@ function ProductPanel({
   return (
     <FlowSection
       aria-label={`${product.index} — ${product.name}`}
-      className={variant.bgClass}
-      style={{ color: isBlue ? '#FFFFFF' : '#0A192F' }}
-      data-theme={isBlue ? 'dark' : 'light'}
+      data-theme="light"
+      className={isWhite ? 'bg-white' : 'bg-transparent'}
     >
-      {/* ============ AMBIENT LAYERS ============ */}
-      {isBlue && (
-        <>
-          <div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 opacity-[0.06]"
-            style={{
-              backgroundImage:
-                'linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)',
-              backgroundSize: 'clamp(48px, 6vw, 80px) clamp(48px, 6vw, 80px)',
-              maskImage:
-                'radial-gradient(ellipse at center, black 30%, transparent 75%)',
-              WebkitMaskImage:
-                'radial-gradient(ellipse at center, black 30%, transparent 75%)',
-            }}
-          />
-          <div
-            aria-hidden
-            className="pointer-events-none absolute top-1/4 left-[12%] h-72 w-72 -translate-x-1/2 rounded-full bg-brand-cyan/15 blur-3xl sm:h-96 sm:w-96"
-          />
-        </>
-      )}
-      {!isBlue && (
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              'linear-gradient(to right, #0A192F 1px, transparent 1px), linear-gradient(to bottom, #0A192F 1px, transparent 1px)',
-            backgroundSize: 'clamp(48px, 6vw, 80px) clamp(48px, 6vw, 80px)',
-            maskImage:
-              'radial-gradient(ellipse at center, black 30%, transparent 80%)',
-            WebkitMaskImage:
-              'radial-gradient(ellipse at center, black 30%, transparent 80%)',
-          }}
-        />
-      )}
+      {/* Ambient backdrop — subtle radial glow, consistent across panels */}
+      <div
+        aria-hidden
+        className="absolute inset-0 opacity-60 pointer-events-none"
+        style={{
+          background: isWhite
+            ? 'radial-gradient(40% 30% at 90% 10%, rgba(0,194,255,0.08) 0%, transparent 70%), radial-gradient(40% 30% at 10% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)'
+            : 'radial-gradient(40% 30% at 80% 10%, rgba(0,194,255,0.06) 0%, transparent 70%), radial-gradient(40% 30% at 0% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)',
+        }}
+      />
 
-      {/* ============ CONTAINER ============ */}
       <div className="relative z-10 mx-auto flex w-full max-w-[1400px] flex-1 items-center">
-        <div className="grid w-full grid-cols-1 items-center gap-y-8 sm:gap-y-10 lg:grid-cols-12 lg:gap-x-10 lg:gap-y-12 xl:gap-x-14">
-          {/* ============ LEFT — content ============ */}
+        <div className="grid w-full grid-cols-1 items-center gap-y-10 lg:grid-cols-12 lg:gap-x-10 lg:gap-y-12 xl:gap-x-14">
+        {/* ============ CONTENT ============ */}
+        <motion.div
+          initial={initialUp}
+          whileInView={animateIn}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.7, ease: easingCurve.industrial }}
+          className={`order-1 lg:col-span-5 ${
+            reverse ? 'lg:order-2 lg:col-start-8' : 'lg:order-1'
+          }`}
+        >
+          {/* Eyebrow */}
+          <div className="mb-5 flex items-center gap-3 sm:mb-6">
+            <span className="inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-brand-blue text-white text-[10px] font-bold sm:h-8 sm:w-8 sm:text-[11px]">
+              {product.index}
+            </span>
+            <span className="h-px w-6 bg-brand-blue/40 sm:w-10" />
+            <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-brand-blue sm:text-[11px] sm:tracking-[0.32em]">
+              {product.index} / 03
+            </p>
+          </div>
+
+          {/* Logo */}
           <motion.div
             initial={initialUp}
             whileInView={animateIn}
             viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.7, ease: easingCurve.industrial }}
-            className="order-1 lg:col-span-5 lg:pr-2"
+            transition={{ duration: 0.7, delay: 0.08, ease: easingCurve.industrial }}
+            className="mb-5 flex"
+            style={{ height: 'clamp(2.5rem, 4vw, 3rem)' }}
           >
-            {/* Eyebrow */}
-            <div className="mb-5 flex items-center gap-3 sm:mb-6">
-              <span
-                className="inline-flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-bold sm:h-8 sm:w-8 sm:text-[11px]"
-                style={{
-                  color: isBlue ? '#0A192F' : '#FFFFFF',
-                  background: isBlue ? '#7FE2FF' : '#045CB3',
-                }}
-              >
-                {product.index}
-              </span>
-              <span
-                className="h-px w-6 sm:w-10"
-                style={{
-                  background: isBlue
-                    ? 'rgba(0,194,255,0.7)'
-                    : 'rgba(4,92,179,0.5)',
-                }}
-              />
-              <p
-                className="text-[10px] font-bold uppercase tracking-[0.28em] sm:text-[11px] sm:tracking-[0.32em]"
-                style={{ color: isBlue ? '#7FE2FF' : '#045CB3' }}
-              >
-                Our Products · {product.index} / 03
-              </p>
-            </div>
-
-            {/* Section title — first only */}
-            {isFirst && (
-              <p
-                className="mb-6 max-w-[26ch] font-bold leading-[1.15] tracking-tight sm:mb-7"
-                style={{ fontSize: 'clamp(1.5rem, 1.4vw + 1rem, 2.1rem)' }}
-              >
-                See our real products serving{' '}
-                <span className="text-brand-cyan">millions of customers.</span>
-              </p>
-            )}
-
-            {/* Logo */}
-            <motion.div
-              initial={initialUp}
-              whileInView={animateIn}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.7, delay: 0.08, ease: easingCurve.industrial }}
-              className="mb-5 flex"
-              style={{ height: 'clamp(2.5rem, 4vw, 3rem)' }}
-            >
-              <Image
-                src={product.logo}
-                alt={product.logoAlt}
-                width={1024}
-                height={230}
-                priority={isFirst}
-                className={`h-full w-auto object-contain object-left ${
-                  isBlue ? 'brightness-0 invert' : ''
-                }`}
-              />
-            </motion.div>
-
-            {/* Tagline */}
-            <motion.p
-              initial={initialUp}
-              whileInView={animateIn}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.7, delay: 0.12, ease: easingCurve.industrial }}
-              className="mb-3 text-[11px] font-bold uppercase tracking-[0.22em] sm:mb-4"
-              style={{ color: isBlue ? 'rgba(255,255,255,0.7)' : '#045CB3' }}
-            >
-              {product.tagline}
-            </motion.p>
-
-            {/* Description */}
-            <motion.p
-              initial={initialUp}
-              whileInView={animateIn}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.7, delay: 0.18, ease: easingCurve.industrial }}
-              className="mb-7 max-w-[46ch] leading-relaxed sm:mb-8"
-              style={{
-                fontSize: 'clamp(0.95rem, 0.4vw + 0.85rem, 1.125rem)',
-                color: isBlue ? 'rgba(255,255,255,0.82)' : 'rgba(10,25,47,0.72)',
-              }}
-            >
-              {product.description}
-            </motion.p>
-
-            {/* View Product */}
-            <motion.a
-              initial={initialUp}
-              whileInView={animateIn}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.7, delay: 0.24, ease: easingCurve.industrial }}
-              href={product.href}
-              className={`group inline-flex min-h-[44px] items-center gap-2 border-b pb-2 text-[13px] font-bold uppercase tracking-[0.18em] transition-colors sm:text-sm ${
-                isBlue
-                  ? 'border-white/30 text-white hover:border-brand-cyan hover:text-brand-cyan'
-                  : 'border-brand-blue/30 text-brand-blue hover:border-brand-blue'
-              }`}
-            >
-              View Product
-              <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </motion.a>
+            <Image
+              src={product.logo}
+              alt={product.logoAlt}
+              width={1024}
+              height={230}
+              className="h-full w-auto object-contain object-left"
+            />
           </motion.div>
 
-          {/* ============ RIGHT — dashboard ============ */}
-          <motion.div
-            initial={reduce ? false : { opacity: 0, y: 32, scale: 0.97 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.9, delay: 0.12, ease: easingCurve.industrial }}
-            className="order-2 lg:col-span-7"
+          {/* Tagline */}
+          <motion.p
+            initial={initialUp}
+            whileInView={animateIn}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7, delay: 0.12, ease: easingCurve.industrial }}
+            className="mb-3 text-[11px] font-bold uppercase tracking-[0.22em] text-brand-blue sm:mb-4"
           >
-            <DashboardFrame tone={variant.tone}>
-              {product.dashboard === 'hrsoft' && <HRSoftDash />}
-              {product.dashboard === 'chat' && <ChatDash />}
-              {product.dashboard === 'learn' && <LearnDash />}
-            </DashboardFrame>
-          </motion.div>
+            {product.tagline}
+          </motion.p>
+
+          {/* Title */}
+          <motion.h3
+            initial={initialUp}
+            whileInView={animateIn}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7, delay: 0.14, ease: easingCurve.industrial }}
+            className="mb-4 text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-navy leading-tight tracking-tight"
+          >
+            {product.name}
+          </motion.h3>
+
+          {/* Description */}
+          <motion.p
+            initial={initialUp}
+            whileInView={animateIn}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7, delay: 0.18, ease: easingCurve.industrial }}
+            className="mb-7 max-w-[46ch] text-base sm:text-lg text-slate-600 leading-relaxed sm:mb-8"
+          >
+            {product.description}
+          </motion.p>
+
+          {/* View Product */}
+          <motion.a
+            initial={initialUp}
+            whileInView={animateIn}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7, delay: 0.24, ease: easingCurve.industrial }}
+            href={product.href}
+            className="group inline-flex min-h-[44px] items-center gap-2 border-b border-brand-blue/30 pb-2 text-[13px] font-bold uppercase tracking-[0.18em] text-brand-blue transition-colors hover:border-brand-blue sm:text-sm"
+          >
+            View Product
+            <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </motion.a>
+        </motion.div>
+
+        {/* ============ DASHBOARD ============ */}
+        <motion.div
+          initial={reduce ? false : { opacity: 0, y: 32, scale: 0.97 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.9, delay: 0.12, ease: easingCurve.industrial }}
+          className={`order-2 lg:col-span-7 ${
+            reverse ? 'lg:order-1 lg:col-start-1' : 'lg:order-2'
+          }`}
+        >
+          <DashboardFrame>
+            {product.dashboard === 'hrsoft' && <HRSoftDash />}
+            {product.dashboard === 'chat' && <ChatDash />}
+            {product.dashboard === 'learn' && <LearnDash />}
+          </DashboardFrame>
+        </motion.div>
         </div>
       </div>
     </FlowSection>
@@ -313,21 +284,12 @@ function ProductPanel({
 //  Dashboard frame — chrome + glow + subtle tilt
 // =============================================================================
 
-function DashboardFrame({
-  tone,
-  children,
-}: {
-  tone: Tone;
-  children: React.ReactNode;
-}) {
-  const isBlue = tone === 'blue';
+function DashboardFrame({ children }: { children: React.ReactNode }) {
   return (
     <div className="group relative transition-transform duration-500 ease-out hover:scale-[1.012]">
       <div
         aria-hidden
-        className={`absolute -inset-4 rounded-[2rem] blur-3xl transition-opacity duration-500 sm:-inset-6 ${
-          isBlue ? 'bg-brand-cyan/25' : 'bg-brand-blue/15'
-        } group-hover:opacity-90`}
+        className="absolute -inset-4 rounded-[2rem] bg-brand-blue/15 blur-3xl transition-opacity duration-500 sm:-inset-6 group-hover:opacity-90"
       />
 
       <div className="relative overflow-hidden rounded-xl border border-white/10 bg-[#0A1428] shadow-[0_30px_60px_-15px_rgba(4,12,32,0.5),0_15px_30px_-10px_rgba(4,92,179,0.4)] sm:rounded-2xl">

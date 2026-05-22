@@ -71,13 +71,6 @@ const STEPS: Step[] = [
   },
 ];
 
-// Subtle floating orbs in the backdrop
-const ORBS = [
-  { top: '8%', left: '6%', size: 280, delay: 0 },
-  { top: '55%', left: '88%', size: 360, delay: 1.2 },
-  { top: '78%', left: '12%', size: 220, delay: 2.4 },
-];
-
 export function HowWeWork() {
   const sectionRef = useRef<HTMLDivElement>(null);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -112,64 +105,17 @@ export function HowWeWork() {
     <section
       ref={sectionRef}
       id="how-we-work"
-      className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white"
+      className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden"
     >
-      {/* =============== AMBIENT BACKDROP =============== */}
+      {/* Ambient backdrop — matches Services section */}
       <div
         aria-hidden
         className="absolute inset-0 opacity-60 pointer-events-none"
         style={{
           background:
-            'radial-gradient(40% 30% at 10% 10%, rgba(0,194,255,0.05) 0%, transparent 70%), radial-gradient(40% 30% at 95% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)',
+            'radial-gradient(40% 30% at 80% 10%, rgba(0,194,255,0.06) 0%, transparent 70%), radial-gradient(40% 30% at 0% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)',
         }}
       />
-
-      {/* Faint grid texture */}
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-[0.04] pointer-events-none"
-        style={{
-          backgroundImage:
-            'linear-gradient(to right, #0A192F 1px, transparent 1px), linear-gradient(to bottom, #0A192F 1px, transparent 1px)',
-          backgroundSize: '64px 64px',
-          maskImage:
-            'radial-gradient(ellipse at center, black 35%, transparent 80%)',
-          WebkitMaskImage:
-            'radial-gradient(ellipse at center, black 35%, transparent 80%)',
-        }}
-      />
-
-      {/* Floating orbs */}
-      {ORBS.map((orb, i) => (
-        <motion.div
-          key={i}
-          aria-hidden
-          className="absolute rounded-full pointer-events-none"
-          style={{
-            top: orb.top,
-            left: orb.left,
-            width: orb.size,
-            height: orb.size,
-            background:
-              i % 2 === 0
-                ? 'radial-gradient(circle, rgba(0,194,255,0.10) 0%, transparent 70%)'
-                : 'radial-gradient(circle, rgba(4,92,179,0.10) 0%, transparent 70%)',
-            filter: 'blur(40px)',
-            transform: 'translate(-50%, -50%)',
-          }}
-          animate={{
-            x: [0, 30, -20, 0],
-            y: [0, -25, 20, 0],
-            scale: [1, 1.08, 0.95, 1],
-          }}
-          transition={{
-            duration: 18,
-            delay: orb.delay,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-        />
-      ))}
 
       <div className="relative max-w-7xl mx-auto">
         {/* =============== HEADER =============== */}
@@ -185,7 +131,7 @@ export function HowWeWork() {
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-brand-navy leading-[1.1] tracking-tight">
             6 Easy Steps To{' '}
-            <span className="inline-block pb-1 bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
               Work With Us
             </span>
             .
@@ -205,7 +151,7 @@ export function HowWeWork() {
             className="hidden lg:block absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-px"
             style={{
               background:
-                'linear-gradient(to bottom, transparent 0%, rgba(4,92,179,0.18) 8%, rgba(4,92,179,0.18) 92%, transparent 100%)',
+                'linear-gradient(to bottom, transparent 0%, rgba(4,92,179,0.18) 8%, rgba(0,194,255,0.30) 92%, transparent 100%)',
             }}
           />
           {/* Animated scroll-progress fill on the rail */}
@@ -240,12 +186,12 @@ export function HowWeWork() {
                     className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 items-center justify-center"
                   >
                     <motion.span
-                      className="block w-3 h-3 rounded-full bg-white border-2 border-brand-blue shadow-[0_0_0_4px_rgba(4,92,179,0.12)]"
+                      className="block w-3 h-3 rounded-full bg-white border-2 border-brand-cyan shadow-[0_0_0_4px_rgba(0,194,255,0.18)]"
                       animate={{
                         boxShadow: [
-                          '0 0 0 4px rgba(4,92,179,0.12)',
-                          '0 0 0 10px rgba(0,194,255,0.04)',
-                          '0 0 0 4px rgba(4,92,179,0.12)',
+                          '0 0 0 4px rgba(0,194,255,0.20)',
+                          '0 0 0 12px rgba(0,194,255,0.06)',
+                          '0 0 0 4px rgba(0,194,255,0.20)',
                         ],
                       }}
                       transition={{
@@ -270,8 +216,8 @@ export function HowWeWork() {
                       className={[
                         'hidden lg:block absolute top-1/2 -translate-y-1/2 h-px',
                         isLeft
-                          ? 'right-0 left-auto w-12 bg-gradient-to-l from-brand-blue/40 to-transparent'
-                          : 'left-0 right-auto w-12 bg-gradient-to-r from-brand-blue/40 to-transparent',
+                          ? 'right-0 left-auto w-12 bg-gradient-to-l from-brand-cyan/60 to-transparent'
+                          : 'left-0 right-auto w-12 bg-gradient-to-r from-brand-cyan/60 to-transparent',
                       ].join(' ')}
                       style={{
                         [isLeft ? 'right' : 'left']: '-48px',
@@ -281,7 +227,7 @@ export function HowWeWork() {
                     <motion.div
                       whileHover={{ y: -6 }}
                       transition={{ duration: 0.4, ease: easingCurve.industrial }}
-                      className="group relative rounded-2xl shadow-[0_12px_32px_-12px_rgba(4,92,179,0.18),0_4px_12px_-4px_rgba(10,25,47,0.06)] hover:shadow-[0_30px_60px_-20px_rgba(4,92,179,0.32),0_8px_20px_-6px_rgba(10,25,47,0.08)] transition-shadow"
+                      className="group relative rounded-2xl shadow-[0_12px_32px_-12px_rgba(4,92,179,0.18),0_4px_12px_-4px_rgba(10,25,47,0.08)] hover:shadow-[0_24px_56px_-16px_rgba(4,92,179,0.30),0_8px_20px_-6px_rgba(0,194,255,0.20)] transition-shadow"
                     >
                       {/* Gradient border wrapper */}
                       <div
