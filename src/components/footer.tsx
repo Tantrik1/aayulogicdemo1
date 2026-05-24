@@ -16,44 +16,49 @@ const LINK_GROUPS = [
     title: 'Company',
     links: [
       { label: 'About Us', href: '/about' },
-      { label: 'Careers', href: '/careers' },
       { label: 'Leadership', href: '/leadership' },
+      { label: 'Careers', href: '/careers' },
+      { label: 'Locations', href: '/locations' },
       { label: 'Contact', href: '/contact' },
     ],
   },
   {
     title: 'Services',
     links: [
-      { label: 'AI & Machine Learning', href: '#' },
-      { label: 'Cloud Infrastructure', href: '#' },
-      { label: 'Digital Commerce', href: '#' },
-      { label: 'Cybersecurity', href: '#' },
+      { label: 'AI & Automation', href: '/services/ai' },
+      { label: 'Software Engineering', href: '/services/engineering' },
+      { label: 'Cloud & DevOps', href: '/services/cloud' },
+      { label: 'Digital & Commerce', href: '/services/commerce' },
+      { label: 'Enterprise Software', href: '/services/enterprise' },
+      { label: 'Emerging Tech & IoT', href: '/services/emerging' },
     ],
   },
   {
-    title: 'Resources',
+    title: 'Solutions',
     links: [
-      { label: 'Documentation', href: '#' },
-      { label: 'Case Studies', href: '#' },
-      { label: 'Whitepapers', href: '#' },
-      { label: 'Events', href: '#' },
+      { label: 'RealHRsoft', href: '/products/realhrsoft' },
+      { label: 'Real Chat', href: '/products/realchat' },
+      { label: 'Real Learn', href: '/products/reallearn' },
+      { label: 'Industries', href: '/industries' },
+      { label: 'Talent & Engagement', href: '/talent' },
     ],
   },
   {
     title: 'Legal',
     links: [
-      { label: 'Privacy Policy', href: '#' },
-      { label: 'Terms of Service', href: '#' },
-      { label: 'Cookie Policy', href: '#' },
-      { label: 'Security', href: '#' },
+      { label: 'Privacy Policy', href: '/legal/privacy' },
+      { label: 'Terms of Service', href: '/legal/terms' },
+      { label: 'Cookie Policy', href: '/legal/cookies' },
+      { label: 'Security', href: '/legal/security' },
+      { label: 'Sitemap', href: '/sitemap.xml' },
     ],
   },
 ];
 
 const SOCIALS = [
-  { icon: Linkedin, label: 'LinkedIn', href: '#' },
-  { icon: Github, label: 'GitHub', href: '#' },
-  { icon: Twitter, label: 'Twitter', href: '#' },
+  { icon: Linkedin, label: 'LinkedIn', href: 'https://www.linkedin.com/company/aayulogic' },
+  { icon: Github, label: 'GitHub', href: 'https://github.com/aayulogic' },
+  { icon: Twitter, label: 'Twitter', href: 'https://twitter.com/aayulogic' },
 ];
 
 const OFFICES = ['Toronto', 'Kathmandu', 'Louisville', 'Sydney', 'Dubai'];

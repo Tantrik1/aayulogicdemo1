@@ -64,10 +64,10 @@
       /talent/dedicated-teams                                      [Dedicated Teams]
       /talent/contract-to-hire                                     [Contract-to-Hire]
       /talent/build-operate-transfer                               [Build-Operate-Transfer]
-    /legal/privacy                                                 [legal — planned]
-    /legal/terms                                                   [legal — planned]
-    /legal/cookies                                                 [legal — planned]
-    /legal/security                                                [legal — planned]
+    /legal/privacy                                                 [legal]
+    /legal/terms                                                   [legal]
+    /legal/cookies                                                 [legal]
+    /legal/security                                                [legal]
 -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
@@ -448,30 +448,30 @@
     <priority>0.7</priority>
   </url>
 
-  <!-- ========== LEGAL (planned) ========== -->
+  <!-- ========== LEGAL ========== -->
   <url>
     <loc>https://aayulogic.com/legal/privacy</loc>
-    <lastmod>2026-05-24</lastmod>
+    <lastmod>2026-05-25</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <priority>0.4</priority>
   </url>
   <url>
     <loc>https://aayulogic.com/legal/terms</loc>
-    <lastmod>2026-05-24</lastmod>
+    <lastmod>2026-05-25</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <priority>0.4</priority>
   </url>
   <url>
     <loc>https://aayulogic.com/legal/cookies</loc>
-    <lastmod>2026-05-24</lastmod>
+    <lastmod>2026-05-25</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://aayulogic.com/legal/security</loc>
-    <lastmod>2026-05-24</lastmod>
+    <lastmod>2026-05-25</lastmod>
     <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
+    <priority>0.5</priority>
   </url>
 
 </urlset>

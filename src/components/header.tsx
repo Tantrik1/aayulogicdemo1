@@ -2,11 +2,11 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ChevronDown,
   ChevronRight,
-  Menu,
   X,
   Sparkles,
   Code2,
@@ -16,6 +16,10 @@ import {
   Cpu,
   Building2,
   ArrowUpRight,
+  Mail,
+  CalendarCheck,
+  ShieldCheck,
+  Globe2,
   type LucideIcon,
 } from 'lucide-react';
 import {
@@ -211,17 +215,27 @@ export function Header() {
               </motion.a>
             </div>
 
-            {/* Mobile Hamburger */}
+            {/* Mobile Hamburger — animated three-line, brand-tinted */}
             <button
               onClick={() => setMobileOpen(true)}
-              className={`lg:hidden p-2 -mr-2 transition-colors ${
+              className={`lg:hidden group relative w-11 h-11 -mr-1 rounded-xl flex items-center justify-center transition-all ${
                 isOverDark
-                  ? 'text-white hover:text-brand-cyan'
-                  : 'text-brand-navy hover:text-brand-blue'
+                  ? 'text-white hover:bg-white/10'
+                  : 'text-brand-navy hover:bg-slate-100'
               }`}
               aria-label="Open menu"
+              aria-expanded={mobileOpen}
             >
-              <Menu className="w-6 h-6" />
+              {/* Subtle ring on hover */}
+              <span
+                aria-hidden
+                className="absolute inset-0 rounded-xl border border-transparent group-hover:border-brand-blue/30 transition-colors"
+              />
+              <span className="relative flex flex-col items-end gap-[5px]">
+                <span className="block h-[2px] w-6 rounded-full bg-current transition-all duration-300 group-hover:w-5" />
+                <span className="block h-[2px] w-4 rounded-full bg-current transition-all duration-300 group-hover:w-6" />
+                <span className="block h-[2px] w-5 rounded-full bg-current transition-all duration-300 group-hover:w-4" />
+              </span>
             </button>
           </div>
         </div>
@@ -351,8 +365,8 @@ function ServicesPanel({
             {active.items.map((item) => (
               <a
                 key={item.title}
-                href={`/services/${active.key}`}
-                className="group relative p-4 rounded-lg border border-brand-blue/10 hover:border-brand-cyan/40 /50 hover:bg-white/70 backdrop-blur transition-all overflow-hidden"
+                href={`/services/${active.key}/${item.slug}`}
+                className="group relative p-4 rounded-lg border border-brand-blue/10 hover:border-brand-cyan/40 bg-white/50 hover:bg-white/70 backdrop-blur transition-all overflow-hidden"
               >
                 {/* Hover glow */}
                 <div className="absolute -inset-px rounded-lg bg-gradient-to-br from-brand-blue/5 via-brand-cyan/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
@@ -507,7 +521,7 @@ function TalentPanel() {
           {TALENT_MODELS.map((t) => (
             <a
               key={t.title}
-              href="/talent"
+              href={`/talent/${t.slug}`}
               className="group p-4 rounded-md border border-transparent hover:border-brand-blue/20 hover:bg-slate-50/80 transition-all"
             >
               <h4 className="text-sm font-semibold text-brand-navy mb-1 group-hover:text-brand-blue transition-colors">
@@ -637,250 +651,412 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
     setProductSub(null);
   };
 
+  // Close on Escape
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
-      className="lg:hidden fixed inset-0 z-50  flex flex-col"
-    >
-      {/* Header */}
-      <div className="flex items-center justify-between h-16 px-6 border-b border-slate-200 flex-shrink-0">
-        <Image
-          src="/logo.png"
-          alt="Aayulogic"
-          width={1623}
-          height={429}
-          className="h-10 w-auto"
+    <>
+      {/* Backdrop — dark, blurred, click-to-close */}
+      <motion.div
+        key="backdrop"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.3, ease: easingCurve.industrial }}
+        onClick={onClose}
+        aria-hidden
+        className="lg:hidden fixed inset-0 z-50 bg-brand-navy/60 backdrop-blur-md"
+      />
+
+      {/* Side Panel — slides in from the right */}
+      <motion.aside
+        key="drawer"
+        initial={{ x: '100%' }}
+        animate={{ x: 0 }}
+        exit={{ x: '100%' }}
+        transition={{ duration: 0.45, ease: easingCurve.industrial }}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Site navigation"
+        className="lg:hidden fixed top-0 right-0 bottom-0 z-50 w-[88%] max-w-md bg-white flex flex-col shadow-[-24px_0_60px_-12px_rgba(4,12,40,0.45)]"
+      >
+        {/* Top luminous accent line */}
+        <div
+          aria-hidden
+          className="absolute top-0 inset-x-0 h-[3px] bg-gradient-to-r from-brand-blue via-brand-cyan to-brand-blue"
         />
-        <button
-          onClick={onClose}
-          className="p-2 -mr-2 text-brand-navy hover:text-brand-blue"
-          aria-label="Close menu"
-        >
-          <X className="w-6 h-6" />
-        </button>
-      </div>
+        {/* Decorative corner glow */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -top-16 -right-16 w-72 h-72 rounded-full blur-3xl opacity-50"
+          style={{
+            background:
+              'radial-gradient(circle, rgba(0,194,255,0.22) 0%, transparent 70%)',
+          }}
+        />
 
-      {/* Scrollable body */}
-      <div className="flex-1 overflow-y-auto overscroll-contain px-6 py-4">
-        <div className="space-y-1">
-          {TOP_NAV.map((item) => (
-            <div key={item.key} className="border-b border-slate-100">
-              <button
-                onClick={() => toggle(item.key)}
-                className="w-full flex items-center justify-between py-4 text-base font-semibold text-brand-navy"
-              >
-                {item.label}
-                <ChevronDown
-                  className={`w-5 h-5 text-slate-400 transition-transform ${
-                    expanded === item.key ? 'rotate-180 text-brand-blue' : ''
-                  }`}
-                />
-              </button>
-
-              <AnimatePresence initial={false}>
-                {expanded === item.key && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.25, ease: easingCurve.industrial }}
-                    className="overflow-hidden"
-                  >
-                    <div className="pb-4 space-y-1">
-                      {item.key === 'services' &&
-                        SERVICE_CATEGORIES.map((cat) => {
-                          const Icon = SERVICE_ICON_MAP[cat.iconKey] ?? Sparkles;
-                          const isOpen = serviceSub === cat.key;
-                          return (
-                            <div key={cat.key}>
-                              <button
-                                onClick={() =>
-                                  setServiceSub(isOpen ? null : cat.key)
-                                }
-                                className="w-full flex items-center justify-between py-3 px-3 rounded-md hover:bg-slate-50"
-                              >
-                                <span className="flex items-center gap-3 text-sm font-semibold text-brand-navy">
-                                  <Icon className="w-4 h-4 text-brand-blue" />
-                                  {cat.title}
-                                </span>
-                                <ChevronDown
-                                  className={`w-4 h-4 text-slate-400 transition-transform ${
-                                    isOpen ? 'rotate-180' : ''
-                                  }`}
-                                />
-                              </button>
-                              <AnimatePresence initial={false}>
-                                {isOpen && (
-                                  <motion.div
-                                    initial={{ height: 0, opacity: 0 }}
-                                    animate={{ height: 'auto', opacity: 1 }}
-                                    exit={{ height: 0, opacity: 0 }}
-                                    transition={{
-                                      duration: 0.2,
-                                      ease: easingCurve.industrial,
-                                    }}
-                                    className="overflow-hidden/50 rounded-md"
-                                  >
-                                    <div className="px-3 py-2 space-y-1">
-                                      <a
-                                        href={`/services/${cat.key}`}
-                                        className="block py-2 px-3 rounded text-sm font-semibold text-brand-blue hover:bg-white transition-colors"
-                                      >
-                                        View all {cat.title} →
-                                      </a>
-                                      {cat.items.map((it) => (
-                                        <a
-                                          key={it.title}
-                                          href={`/services/${cat.key}`}
-                                          className="block py-2 px-3 rounded text-sm text-slate-600 hover:text-brand-blue hover:bg-white transition-colors"
-                                        >
-                                          {it.title}
-                                        </a>
-                                      ))}
-                                    </div>
-                                  </motion.div>
-                                )}
-                              </AnimatePresence>
-                            </div>
-                          );
-                        })}
-
-                      {item.key === 'products' &&
-                        PRODUCTS.map((p) => {
-                          const isOpen = productSub === p.title;
-                          return (
-                            <div key={p.title}>
-                              <button
-                                onClick={() =>
-                                  setProductSub(isOpen ? null : p.title)
-                                }
-                                className="w-full flex items-center justify-between py-3 px-3 rounded-md hover:bg-slate-50"
-                              >
-                                <span className="text-sm font-semibold text-brand-navy">
-                                  {p.title}
-                                </span>
-                                <ChevronDown
-                                  className={`w-4 h-4 text-slate-400 transition-transform ${
-                                    isOpen ? 'rotate-180 text-brand-blue' : ''
-                                  }`}
-                                />
-                              </button>
-                              <AnimatePresence initial={false}>
-                                {isOpen && (
-                                  <motion.div
-                                    initial={{ height: 0, opacity: 0 }}
-                                    animate={{ height: 'auto', opacity: 1 }}
-                                    exit={{ height: 0, opacity: 0 }}
-                                    transition={{
-                                      duration: 0.2,
-                                      ease: easingCurve.industrial,
-                                    }}
-                                    className="overflow-hidden"
-                                  >
-                                    <div className="px-3 pb-3">
-                                      <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-brand-blue mb-1.5">
-                                        {p.tagline}
-                                      </p>
-                                      <p className="text-xs text-slate-600 leading-relaxed mb-3">
-                                        {p.description}
-                                      </p>
-                                      <a
-                                        href={`/products/${p.slug}`}
-                                        className="inline-flex items-center gap-1 text-xs font-semibold text-brand-blue"
-                                      >
-                                        Learn More
-                                        <ArrowUpRight className="w-3.5 h-3.5" />
-                                      </a>
-                                    </div>
-                                  </motion.div>
-                                )}
-                              </AnimatePresence>
-                            </div>
-                          );
-                        })}
-
-                      {item.key === 'industries' && (
-                        <>
-                          <a
-                            href="/industries"
-                            className="block py-3 px-3 rounded-md text-sm font-semibold text-brand-blue hover:bg-slate-50"
-                          >
-                            View all Industries →
-                          </a>
-                          {INDUSTRIES_NEW.map((s) => (
-                            <a
-                              key={s.title}
-                              href={`/industries/${s.slug}`}
-                              className="block py-3 px-3 rounded-md text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-blue"
-                            >
-                              {s.title}
-                            </a>
-                          ))}
-                        </>
-                      )}
-
-                      {item.key === 'talent' && (
-                        <>
-                          <a
-                            href="/talent"
-                            className="block py-3 px-3 rounded-md text-sm font-semibold text-brand-blue hover:bg-slate-50"
-                          >
-                            View Talent & Engagement →
-                          </a>
-                          {TALENT_MODELS.map((s) => (
-                            <a
-                              key={s.title}
-                              href="/talent"
-                              className="block py-3 px-3 rounded-md text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-blue"
-                            >
-                              {s.title}
-                            </a>
-                          ))}
-                        </>
-                      )}
-
-                      {item.key === 'company' &&
-                        COMPANY_LINKS.map((s) => (
-                          <a
-                            key={s.title}
-                            href={s.href}
-                            className="block py-3 px-3 rounded-md text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-blue"
-                          >
-                            {s.title}
-                          </a>
-                        ))}
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          ))}
+        {/* Branded Header */}
+        <div className="relative flex items-center justify-between h-20 px-6 border-b border-slate-100 flex-shrink-0">
+          <a
+            href="/"
+            onClick={onClose}
+            className="flex items-center"
+            aria-label="Aayulogic — Home"
+          >
+            <Image
+              src="/logo.png"
+              alt="Aayulogic"
+              width={1623}
+              height={429}
+              className="h-10 w-auto"
+            />
+          </a>
+          <button
+            onClick={onClose}
+            className="group relative w-10 h-10 rounded-full bg-slate-50 hover:bg-brand-blue text-brand-navy hover:text-white flex items-center justify-center transition-all duration-300"
+            aria-label="Close menu"
+          >
+            <X className="w-5 h-5 group-hover:rotate-90 transition-transform duration-300" />
+          </button>
         </div>
-      </div>
 
-      {/* Footer CTA — Glass styled */}
-      <div className="p-6 border-t border-white/20 flex-shrink-0 /5 backdrop-blur-sm">
-        <motion.a
-          href="/contact"
-          onClick={onClose}
-          whileHover={{ scale: 1.02, y: -2 }}
-          whileTap={{ scale: 0.96 }}
-          className="group relative w-full px-5 py-4 text-white text-sm font-bold rounded-xl overflow-hidden shadow-lg block"
-        >
-          {/* Glass + Gradient */}
-          <div className="absolute inset-0 bg-gradient-to-br from-brand-blue to-brand-cyan opacity-90 rounded-xl" />
-          <div className="absolute inset-0 /15 backdrop-blur-xl rounded-xl" />
-          <div className="absolute inset-0 rounded-xl border border-white/40 group-hover:border-white/60 transition-colors" />
+        {/* Brand tagline strip */}
+        <div className="relative px-6 py-4 border-b border-slate-100 bg-gradient-to-br from-brand-blue/5 via-transparent to-brand-cyan/5 flex-shrink-0">
+          <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-blue mb-1 flex items-center gap-2">
+            <Globe2 className="w-3 h-3" />
+            Canadian HQ · Global Delivery
+          </p>
+          <p className="text-sm text-brand-navy leading-snug">
+            Engineering infrastructure for modern operations.
+          </p>
+        </div>
 
-          <span className="relative flex items-center justify-center gap-2">
-            Start Project
-            <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </span>
-        </motion.a>
-      </div>
-    </motion.div>
+        {/* Scrollable nav body */}
+        <div className="relative flex-1 overflow-y-auto overscroll-contain px-4 py-4">
+          <p className="px-3 text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400 mb-2">
+            Navigate
+          </p>
+          <div className="space-y-1">
+            {TOP_NAV.map((item) => {
+              const isOpen = expanded === item.key;
+              return (
+                <div key={item.key}>
+                  <button
+                    onClick={() => toggle(item.key)}
+                    className={`w-full flex items-center justify-between py-3.5 px-3 text-[15px] font-semibold rounded-xl transition-colors ${
+                      isOpen
+                        ? 'bg-brand-blue/8 text-brand-blue'
+                        : 'text-brand-navy hover:bg-slate-50'
+                    }`}
+                  >
+                    <span className="flex items-center gap-3">
+                      <span
+                        className={`w-1.5 h-1.5 rounded-full transition-all ${
+                          isOpen ? 'bg-brand-blue scale-125' : 'bg-slate-300'
+                        }`}
+                      />
+                      {item.label}
+                    </span>
+                    <ChevronDown
+                      className={`w-4 h-4 transition-all duration-300 ${
+                        isOpen ? 'rotate-180 text-brand-blue' : 'text-slate-400'
+                      }`}
+                    />
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: easingCurve.industrial }}
+                        className="overflow-hidden"
+                      >
+                        <div className="pl-3 pr-1 pb-2 pt-1 space-y-0.5">
+                          {item.key === 'services' &&
+                            SERVICE_CATEGORIES.map((cat) => {
+                              const Icon = SERVICE_ICON_MAP[cat.iconKey] ?? Sparkles;
+                              const isSubOpen = serviceSub === cat.key;
+                              return (
+                                <div key={cat.key}>
+                                  <button
+                                    onClick={() =>
+                                      setServiceSub(isSubOpen ? null : cat.key)
+                                    }
+                                    className="w-full flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-slate-50 transition-colors"
+                                  >
+                                    <span className="flex items-center gap-2.5 text-sm font-semibold text-brand-navy">
+                                      <span className="w-7 h-7 rounded-md bg-gradient-to-br from-brand-blue/10 to-brand-cyan/10 flex items-center justify-center">
+                                        <Icon className="w-3.5 h-3.5 text-brand-blue" />
+                                      </span>
+                                      {cat.title}
+                                    </span>
+                                    <ChevronDown
+                                      className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-300 ${
+                                        isSubOpen ? 'rotate-180 text-brand-blue' : ''
+                                      }`}
+                                    />
+                                  </button>
+                                  <AnimatePresence initial={false}>
+                                    {isSubOpen && (
+                                      <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: 'auto', opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{
+                                          duration: 0.25,
+                                          ease: easingCurve.industrial,
+                                        }}
+                                        className="overflow-hidden"
+                                      >
+                                        <div className="ml-6 pl-3 border-l border-brand-blue/15 py-1 space-y-0.5">
+                                          <a
+                                            href={`/services/${cat.key}`}
+                                            onClick={onClose}
+                                            className="flex items-center justify-between py-1.5 px-2 rounded text-xs font-semibold text-brand-blue hover:bg-brand-blue/5 transition-colors"
+                                          >
+                                            View all {cat.title}
+                                            <ArrowUpRight className="w-3 h-3" />
+                                          </a>
+                                          {cat.items.map((it) => (
+                                            <a
+                                              key={it.title}
+                                              href={`/services/${cat.key}/${it.slug}`}
+                                              onClick={onClose}
+                                              className="block py-1.5 px-2 rounded text-xs text-slate-600 hover:text-brand-blue hover:bg-slate-50 transition-colors"
+                                            >
+                                              {it.title}
+                                            </a>
+                                          ))}
+                                        </div>
+                                      </motion.div>
+                                    )}
+                                  </AnimatePresence>
+                                </div>
+                              );
+                            })}
+
+                          {item.key === 'products' &&
+                            PRODUCTS.map((p) => {
+                              const isSubOpen = productSub === p.title;
+                              return (
+                                <div key={p.title}>
+                                  <button
+                                    onClick={() =>
+                                      setProductSub(isSubOpen ? null : p.title)
+                                    }
+                                    className="w-full flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-slate-50 transition-colors"
+                                  >
+                                    <span className="text-sm font-semibold text-brand-navy">
+                                      {p.title}
+                                    </span>
+                                    <ChevronDown
+                                      className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-300 ${
+                                        isSubOpen ? 'rotate-180 text-brand-blue' : ''
+                                      }`}
+                                    />
+                                  </button>
+                                  <AnimatePresence initial={false}>
+                                    {isSubOpen && (
+                                      <motion.div
+                                        initial={{ height: 0, opacity: 0 }}
+                                        animate={{ height: 'auto', opacity: 1 }}
+                                        exit={{ height: 0, opacity: 0 }}
+                                        transition={{
+                                          duration: 0.25,
+                                          ease: easingCurve.industrial,
+                                        }}
+                                        className="overflow-hidden"
+                                      >
+                                        <div className="ml-3 pl-3 border-l border-brand-blue/15 py-2 pr-2">
+                                          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-brand-blue mb-1.5">
+                                            {p.tagline}
+                                          </p>
+                                          <p className="text-xs text-slate-600 leading-relaxed mb-3">
+                                            {p.description}
+                                          </p>
+                                          <a
+                                            href={`/products/${p.slug}`}
+                                            onClick={onClose}
+                                            className="inline-flex items-center gap-1 text-xs font-semibold text-brand-blue hover:gap-1.5 transition-all"
+                                          >
+                                            Learn More
+                                            <ArrowUpRight className="w-3.5 h-3.5" />
+                                          </a>
+                                        </div>
+                                      </motion.div>
+                                    )}
+                                  </AnimatePresence>
+                                </div>
+                              );
+                            })}
+
+                          {item.key === 'industries' && (
+                            <>
+                              <a
+                                href="/industries"
+                                onClick={onClose}
+                                className="flex items-center justify-between py-2.5 px-3 rounded-lg text-sm font-semibold text-brand-blue hover:bg-brand-blue/5 transition-colors"
+                              >
+                                View all Industries
+                                <ArrowUpRight className="w-3.5 h-3.5" />
+                              </a>
+                              {INDUSTRIES_NEW.map((s) => (
+                                <a
+                                  key={s.title}
+                                  href={`/industries/${s.slug}`}
+                                  onClick={onClose}
+                                  className="block py-2.5 px-3 rounded-lg text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-blue transition-colors"
+                                >
+                                  {s.title}
+                                </a>
+                              ))}
+                            </>
+                          )}
+
+                          {item.key === 'talent' && (
+                            <>
+                              <a
+                                href="/talent"
+                                onClick={onClose}
+                                className="flex items-center justify-between py-2.5 px-3 rounded-lg text-sm font-semibold text-brand-blue hover:bg-brand-blue/5 transition-colors"
+                              >
+                                View Talent & Engagement
+                                <ArrowUpRight className="w-3.5 h-3.5" />
+                              </a>
+                              {TALENT_MODELS.map((s) => (
+                                <a
+                                  key={s.title}
+                                  href={`/talent/${s.slug}`}
+                                  onClick={onClose}
+                                  className="block py-2.5 px-3 rounded-lg text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-blue transition-colors"
+                                >
+                                  {s.title}
+                                </a>
+                              ))}
+                            </>
+                          )}
+
+                          {item.key === 'company' &&
+                            COMPANY_LINKS.map((s) => (
+                              <a
+                                key={s.title}
+                                href={s.href}
+                                onClick={onClose}
+                                className="block py-2.5 px-3 rounded-lg text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-blue transition-colors"
+                              >
+                                {s.title}
+                              </a>
+                            ))}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Quick contact strip */}
+          <div className="mt-5 pt-4 border-t border-slate-100">
+            <p className="px-3 text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400 mb-2">
+              Reach Out
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              <a
+                href="mailto:hello@aayulogic.com"
+                className="group flex items-center gap-2.5 py-3 px-3 rounded-xl border border-slate-200 hover:border-brand-blue/40 hover:bg-brand-blue/5 transition-all"
+              >
+                <span className="w-9 h-9 rounded-lg bg-brand-blue/10 group-hover:bg-brand-blue group-hover:text-white text-brand-blue flex items-center justify-center transition-colors">
+                  <Mail className="w-4 h-4" />
+                </span>
+                <span className="flex flex-col leading-tight">
+                  <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">
+                    Email
+                  </span>
+                  <span className="text-xs font-semibold text-brand-navy">hello@</span>
+                </span>
+              </a>
+              <a
+                href="/contact"
+                onClick={onClose}
+                className="group flex items-center gap-2.5 py-3 px-3 rounded-xl border border-slate-200 hover:border-brand-cyan/50 hover:bg-brand-cyan/5 transition-all"
+              >
+                <span className="w-9 h-9 rounded-lg bg-brand-cyan/10 group-hover:bg-brand-cyan group-hover:text-white text-brand-cyan flex items-center justify-center transition-colors">
+                  <CalendarCheck className="w-4 h-4" />
+                </span>
+                <span className="flex flex-col leading-tight">
+                  <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">
+                    Schedule
+                  </span>
+                  <span className="text-xs font-semibold text-brand-navy">Book a Call</span>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        {/* Bottom CTA + trust footer */}
+        <div className="relative flex-shrink-0 overflow-hidden">
+          {/* Dark gradient backdrop */}
+          <div className="absolute inset-0 bg-gradient-to-br from-brand-navy via-brand-navy to-[#0a1c4a]" />
+          <div
+            aria-hidden
+            className="absolute -top-8 -left-8 w-40 h-40 rounded-full blur-3xl opacity-40"
+            style={{
+              background: 'radial-gradient(circle, rgba(0,194,255,0.4) 0%, transparent 70%)',
+            }}
+          />
+
+          <div className="relative p-6 space-y-3">
+            {/* Primary CTA */}
+            <motion.a
+              href="/contact"
+              onClick={onClose}
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.97 }}
+              transition={{ duration: 0.25, ease: easingCurve.industrial }}
+              className="group relative w-full px-5 py-4 text-white text-sm font-bold rounded-xl overflow-hidden shadow-xl block"
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-brand-blue to-brand-cyan rounded-xl" />
+              <div className="absolute inset-0 rounded-xl border border-white/40 group-hover:border-white/70 transition-colors" />
+              <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-brand-blue via-brand-cyan to-brand-blue opacity-0 group-hover:opacity-40 blur-lg transition-opacity" />
+              <span className="relative flex items-center justify-center gap-2">
+                Start Your Project
+                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </span>
+            </motion.a>
+
+            {/* Secondary CTA */}
+            <a
+              href="mailto:projects@aayulogic.com"
+              className="group relative w-full px-5 py-3 text-white/90 hover:text-white text-sm font-semibold rounded-xl border border-white/20 hover:border-white/50 hover:bg-white/5 flex items-center justify-center gap-2 transition-all"
+            >
+              <Mail className="w-4 h-4" />
+              Email Sales
+            </a>
+
+            {/* Trust badges */}
+            <div className="pt-3 mt-1 border-t border-white/10 flex items-center justify-center gap-3 text-[10px] text-white/60">
+              <span className="flex items-center gap-1">
+                <ShieldCheck className="w-3 h-3 text-brand-cyan" />
+                ISO 27001
+              </span>
+              <span className="text-white/30">·</span>
+              <span>ISO 9001</span>
+              <span className="text-white/30">·</span>
+              <span>SOC 2</span>
+            </div>
+          </div>
+        </div>
+      </motion.aside>
+    </>
   );
 }
