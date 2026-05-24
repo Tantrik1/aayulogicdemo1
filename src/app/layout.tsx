@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import '@/globals.css';
+import { ClientShell } from '@/components/ClientShell';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -80,27 +81,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`${inter.className} text-brand-navy relative`} suppressHydrationWarning>
-        {/* Full-page video background — 100% visible */}
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="fixed inset-0 w-full h-full object-cover -z-10"
-          style={{
-            pointerEvents: 'none',
-          }}
-        >
-          <source src="/herobackground.mp4" type="video/mp4" />
-        </video>
-
-        <div className="flex flex-col min-h-screen relative">
-          <main className="flex-1">
-            {children}
-          </main>
-        </div>
+    <html lang="en">
+      <body className={`${inter.className} text-brand-navy`} suppressHydrationWarning>
+        <ClientShell>{children}</ClientShell>
       </body>
     </html>
   );

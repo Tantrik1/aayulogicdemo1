@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   Github,
@@ -155,17 +156,38 @@ export function Footer() {
                 {group.title}
               </h4>
               <ul className="space-y-3">
-                {group.links.map((link) => (
-                  <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="group inline-flex items-center gap-1 text-sm text-slate-600 transition-colors hover:text-brand-navy"
-                    >
-                      <span>{link.label}</span>
-                      <ArrowUpRight className="h-3 w-3 -translate-x-1 text-brand-blue opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
-                    </a>
-                  </li>
-                ))}
+                {group.links.map((link) => {
+                  const isStatic =
+                    link.href.startsWith('http') ||
+                    link.href.startsWith('mailto:') ||
+                    link.href.endsWith('.xml');
+                  const linkClass =
+                    'group inline-flex items-center gap-1 text-sm text-slate-600 transition-colors hover:text-brand-navy';
+                  return (
+                    <li key={link.label}>
+                      {isStatic ? (
+                        <a
+                          href={link.href}
+                          className={linkClass}
+                          {...(link.href.startsWith('http')
+                            ? {
+                                target: '_blank',
+                                rel: 'noopener noreferrer',
+                              }
+                            : {})}
+                        >
+                          <span>{link.label}</span>
+                          <ArrowUpRight className="h-3 w-3 -translate-x-1 text-brand-blue opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
+                        </a>
+                      ) : (
+                        <Link href={link.href} className={linkClass}>
+                          <span>{link.label}</span>
+                          <ArrowUpRight className="h-3 w-3 -translate-x-1 text-brand-blue opacity-0 transition-all group-hover:translate-x-0 group-hover:opacity-100" />
+                        </Link>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           ))}

@@ -39,6 +39,8 @@ const TOP_NAV = [
   { key: 'company', label: 'Company', href: '/about' },
 ] as const;
 
+const MotionLink = motion.create(Link);
+
 type NavKey = (typeof TOP_NAV)[number]['key'];
 
 const SERVICE_ICON_MAP: Record<string, LucideIcon> = {
@@ -149,7 +151,7 @@ export function Header() {
         <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
-            <a href="/" className="flex items-center group" aria-label="Aayulogic — Home">
+            <Link href="/" className="flex items-center group" aria-label="Aayulogic — Home">
               <Image
                 src="/logo.png"
                 alt="Aayulogic"
@@ -160,7 +162,7 @@ export function Header() {
                   isOverDark && !activeMenu ? 'brightness-0 invert' : ''
                 }`}
               />
-            </a>
+            </Link>
 
             {/* Desktop Nav */}
             <nav className="hidden lg:flex items-center gap-1" onMouseLeave={scheduleClose}>
@@ -191,7 +193,7 @@ export function Header() {
 
             {/* Desktop CTA — Same as Hero Button */}
             <div className="hidden lg:flex items-center">
-              <motion.a
+              <MotionLink
                 href="/contact"
                 whileHover={{ y: -3, scale: 1.02 }}
                 whileTap={{ scale: 0.96 }}
@@ -212,7 +214,7 @@ export function Header() {
                   Start Project
                   <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </span>
-              </motion.a>
+              </MotionLink>
             </div>
 
             {/* Mobile Hamburger — animated three-line, brand-tinted */}
@@ -352,18 +354,18 @@ function ServicesPanel({
               <h3 className="text-lg font-bold text-brand-navy mb-1">{active.title}</h3>
               <p className="text-sm text-slate-600">{active.tagline}</p>
             </div>
-            <a
+            <Link
               href={`/services/${active.key}`}
               className="hidden sm:flex items-center gap-1 text-xs font-semibold text-brand-blue hover:text-brand-navy"
             >
               Overview <ArrowUpRight className="w-3.5 h-3.5" />
-            </a>
+            </Link>
           </div>
 
           {/* Service items grid */}
           <div className="grid grid-cols-2 xl:grid-cols-3 gap-3">
             {active.items.map((item) => (
-              <a
+              <Link
                 key={item.title}
                 href={`/services/${active.key}/${item.slug}`}
                 className="group relative p-4 rounded-lg border border-brand-blue/10 hover:border-brand-cyan/40 bg-white/50 hover:bg-white/70 backdrop-blur transition-all overflow-hidden"
@@ -382,7 +384,7 @@ function ServicesPanel({
                     {item.description}
                   </p>
                 </div>
-              </a>
+              </Link>
             ))}
           </div>
         </motion.div>
@@ -403,10 +405,10 @@ function ProductsPanel() {
       </p>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
         {PRODUCTS.map((product) => (
-          <a
+          <Link
             key={product.title}
             href={`/products/${product.slug}`}
-            className="group relative flex flex-col p-6 rounded-xl overflow-hidden /70 border border-brand-blue/15 hover:border-brand-cyan/50 backdrop-blur hover:bg-white/90 hover:-translate-y-1 hover:shadow-[0_25px_50px_-15px_rgba(4,92,179,0.3)] transition-all duration-300"
+            className="group relative flex flex-col p-6 rounded-xl overflow-hidden bg-white/70 border border-brand-blue/15 hover:border-brand-cyan/50 backdrop-blur hover:bg-white/90 hover:-translate-y-1 hover:shadow-[0_25px_50px_-15px_rgba(4,92,179,0.3)] transition-all duration-300"
           >
             {/* Top luminous line */}
             <span
@@ -455,7 +457,7 @@ function ProductsPanel() {
                 <ArrowUpRight className="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </span>
             </div>
-          </a>
+          </Link>
         ))}
       </div>
     </div>
@@ -475,7 +477,7 @@ function IndustriesPanel() {
         </p>
         <div className="grid grid-cols-2 gap-3">
           {INDUSTRIES_NEW.map((ind) => (
-            <a
+            <Link
               key={ind.title}
               href={`/industries/${ind.slug}`}
               className="group p-4 rounded-md border border-transparent hover:border-brand-blue/20 hover:bg-slate-50/80 transition-all"
@@ -485,7 +487,7 @@ function IndustriesPanel() {
                 <ArrowUpRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-brand-blue group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
               </h4>
               <p className="text-xs text-slate-500 leading-relaxed">{ind.description}</p>
-            </a>
+            </Link>
           ))}
         </div>
         {/* Bottom stat row */}
@@ -519,7 +521,7 @@ function TalentPanel() {
         </p>
         <div className="grid grid-cols-2 gap-3">
           {TALENT_MODELS.map((t) => (
-            <a
+            <Link
               key={t.title}
               href={`/talent/${t.slug}`}
               className="group p-4 rounded-md border border-transparent hover:border-brand-blue/20 hover:bg-slate-50/80 transition-all"
@@ -528,7 +530,7 @@ function TalentPanel() {
                 {t.title}
               </h4>
               <p className="text-xs text-slate-500 leading-relaxed">{t.description}</p>
-            </a>
+            </Link>
           ))}
         </div>
       </div>
@@ -541,13 +543,13 @@ function TalentPanel() {
         <p className="text-sm text-brand-navy leading-relaxed mb-4">
           Scale up system capabilities with <span className="font-bold">pre-vetted senior engineering talent deployed within 7 business days.</span>
         </p>
-        <a
+        <Link
           href="/talent"
           className="inline-flex items-center gap-1 text-xs font-semibold text-brand-blue hover:text-brand-navy transition-colors"
         >
           Match a Team
           <ArrowUpRight className="w-3.5 h-3.5" />
-        </a>
+        </Link>
       </div>
     </div>
   );
@@ -566,7 +568,7 @@ function CompanyPanel() {
         </p>
         <div className="grid grid-cols-2 gap-3">
           {COMPANY_LINKS.map((c) => (
-            <a
+            <Link
               key={c.title}
               href={c.href}
               className="group p-4 rounded-md border border-transparent hover:border-brand-blue/20 hover:bg-slate-50/80 transition-all"
@@ -575,7 +577,7 @@ function CompanyPanel() {
                 {c.title}
               </h4>
               <p className="text-xs text-slate-500 leading-relaxed">{c.description}</p>
-            </a>
+            </Link>
           ))}
         </div>
         <div className="mt-6 pt-5 border-t border-slate-200 flex flex-wrap gap-x-6 gap-y-2 text-xs">
@@ -624,13 +626,13 @@ function SpotlightPanel({
         </p>
         <h4 className="text-lg font-bold leading-tight mb-3">{heading}</h4>
         <p className="text-sm text-slate-300 leading-relaxed mb-5">{body}</p>
-        <a
+        <Link
           href={href}
           className="inline-flex items-center gap-1 text-sm font-semibold text-brand-cyan hover:text-white transition-colors"
         >
           {cta}
           <ArrowUpRight className="w-4 h-4" />
-        </a>
+        </Link>
       </div>
     </div>
   );
@@ -703,7 +705,7 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
 
         {/* Branded Header */}
         <div className="relative flex items-center justify-between h-20 px-6 border-b border-slate-100 flex-shrink-0">
-          <a
+          <Link
             href="/"
             onClick={onClose}
             className="flex items-center"
@@ -716,7 +718,7 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
               height={429}
               className="h-10 w-auto"
             />
-          </a>
+          </Link>
           <button
             onClick={onClose}
             className="group relative w-10 h-10 rounded-full bg-slate-50 hover:bg-brand-blue text-brand-navy hover:text-white flex items-center justify-center transition-all duration-300"
@@ -817,23 +819,23 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
                                         className="overflow-hidden"
                                       >
                                         <div className="ml-6 pl-3 border-l border-brand-blue/15 py-1 space-y-0.5">
-                                          <a
+                                          <Link
                                             href={`/services/${cat.key}`}
                                             onClick={onClose}
                                             className="flex items-center justify-between py-1.5 px-2 rounded text-xs font-semibold text-brand-blue hover:bg-brand-blue/5 transition-colors"
                                           >
                                             View all {cat.title}
                                             <ArrowUpRight className="w-3 h-3" />
-                                          </a>
+                                          </Link>
                                           {cat.items.map((it) => (
-                                            <a
+                                            <Link
                                               key={it.title}
                                               href={`/services/${cat.key}/${it.slug}`}
                                               onClick={onClose}
                                               className="block py-1.5 px-2 rounded text-xs text-slate-600 hover:text-brand-blue hover:bg-slate-50 transition-colors"
                                             >
                                               {it.title}
-                                            </a>
+                                            </Link>
                                           ))}
                                         </div>
                                       </motion.div>
@@ -882,14 +884,14 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
                                           <p className="text-xs text-slate-600 leading-relaxed mb-3">
                                             {p.description}
                                           </p>
-                                          <a
+                                          <Link
                                             href={`/products/${p.slug}`}
                                             onClick={onClose}
                                             className="inline-flex items-center gap-1 text-xs font-semibold text-brand-blue hover:gap-1.5 transition-all"
                                           >
                                             Learn More
                                             <ArrowUpRight className="w-3.5 h-3.5" />
-                                          </a>
+                                          </Link>
                                         </div>
                                       </motion.div>
                                     )}
@@ -900,60 +902,60 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
 
                           {item.key === 'industries' && (
                             <>
-                              <a
+                              <Link
                                 href="/industries"
                                 onClick={onClose}
                                 className="flex items-center justify-between py-2.5 px-3 rounded-lg text-sm font-semibold text-brand-blue hover:bg-brand-blue/5 transition-colors"
                               >
                                 View all Industries
                                 <ArrowUpRight className="w-3.5 h-3.5" />
-                              </a>
+                              </Link>
                               {INDUSTRIES_NEW.map((s) => (
-                                <a
+                                <Link
                                   key={s.title}
                                   href={`/industries/${s.slug}`}
                                   onClick={onClose}
                                   className="block py-2.5 px-3 rounded-lg text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-blue transition-colors"
                                 >
                                   {s.title}
-                                </a>
+                                </Link>
                               ))}
                             </>
                           )}
 
                           {item.key === 'talent' && (
                             <>
-                              <a
+                              <Link
                                 href="/talent"
                                 onClick={onClose}
                                 className="flex items-center justify-between py-2.5 px-3 rounded-lg text-sm font-semibold text-brand-blue hover:bg-brand-blue/5 transition-colors"
                               >
                                 View Talent & Engagement
                                 <ArrowUpRight className="w-3.5 h-3.5" />
-                              </a>
+                              </Link>
                               {TALENT_MODELS.map((s) => (
-                                <a
+                                <Link
                                   key={s.title}
                                   href={`/talent/${s.slug}`}
                                   onClick={onClose}
                                   className="block py-2.5 px-3 rounded-lg text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-blue transition-colors"
                                 >
                                   {s.title}
-                                </a>
+                                </Link>
                               ))}
                             </>
                           )}
 
                           {item.key === 'company' &&
                             COMPANY_LINKS.map((s) => (
-                              <a
+                              <Link
                                 key={s.title}
                                 href={s.href}
                                 onClick={onClose}
                                 className="block py-2.5 px-3 rounded-lg text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-blue transition-colors"
                               >
                                 {s.title}
-                              </a>
+                              </Link>
                             ))}
                         </div>
                       </motion.div>
@@ -984,7 +986,7 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
                   <span className="text-xs font-semibold text-brand-navy">hello@</span>
                 </span>
               </a>
-              <a
+              <Link
                 href="/contact"
                 onClick={onClose}
                 className="group flex items-center gap-2.5 py-3 px-3 rounded-xl border border-slate-200 hover:border-brand-cyan/50 hover:bg-brand-cyan/5 transition-all"
@@ -998,7 +1000,7 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
                   </span>
                   <span className="text-xs font-semibold text-brand-navy">Book a Call</span>
                 </span>
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -1017,7 +1019,7 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
 
           <div className="relative p-6 space-y-3">
             {/* Primary CTA */}
-            <motion.a
+            <MotionLink
               href="/contact"
               onClick={onClose}
               whileHover={{ scale: 1.02, y: -2 }}
@@ -1032,7 +1034,7 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
                 Start Your Project
                 <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
               </span>
-            </motion.a>
+            </MotionLink>
 
             {/* Secondary CTA */}
             <a
