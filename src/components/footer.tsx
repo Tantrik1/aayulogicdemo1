@@ -15,10 +15,10 @@ const LINK_GROUPS = [
   {
     title: 'Company',
     links: [
-      { label: 'About Us', href: '#about' },
-      { label: 'Careers', href: '#' },
-      { label: 'Blog', href: '#' },
-      { label: 'Contact', href: '#' },
+      { label: 'About Us', href: '/about' },
+      { label: 'Careers', href: '/careers' },
+      { label: 'Leadership', href: '/leadership' },
+      { label: 'Contact', href: '/contact' },
     ],
   },
   {

@@ -32,7 +32,7 @@ const TOP_NAV = [
   { key: 'products', label: 'Products', href: '/products' },
   { key: 'industries', label: 'Industries', href: '/industries' },
   { key: 'talent', label: 'Talent & Engagement', href: '/talent' },
-  { key: 'company', label: 'Company', href: '#' },
+  { key: 'company', label: 'Company', href: '/about' },
 ] as const;
 
 type NavKey = (typeof TOP_NAV)[number]['key'];
@@ -187,7 +187,8 @@ export function Header() {
 
             {/* Desktop CTA — Same as Hero Button */}
             <div className="hidden lg:flex items-center">
-              <motion.button
+              <motion.a
+                href="/contact"
                 whileHover={{ y: -3, scale: 1.02 }}
                 whileTap={{ scale: 0.96 }}
                 transition={{ duration: 0.3, ease: easingCurve.industrial }}
@@ -207,7 +208,7 @@ export function Header() {
                   Start Project
                   <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </span>
-              </motion.button>
+              </motion.a>
             </div>
 
             {/* Mobile Hamburger */}
@@ -553,7 +554,7 @@ function CompanyPanel() {
           {COMPANY_LINKS.map((c) => (
             <a
               key={c.title}
-              href="/"
+              href={c.href}
               className="group p-4 rounded-md border border-transparent hover:border-brand-blue/20 hover:bg-slate-50/80 transition-all"
             >
               <h4 className="text-sm font-semibold text-brand-navy mb-1 group-hover:text-brand-blue transition-colors">
@@ -574,7 +575,7 @@ function CompanyPanel() {
         heading="Architecting infrastructure that runs modern operations"
         body="Managing core database transactions, full-stack application builds, and automated systems globally."
         cta="Read Our Corporate Story"
-        href="#"
+        href="/about"
       />
     </div>
   );
@@ -845,7 +846,7 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
                         COMPANY_LINKS.map((s) => (
                           <a
                             key={s.title}
-                            href="/"
+                            href={s.href}
                             className="block py-3 px-3 rounded-md text-sm text-slate-700 hover:bg-slate-50 hover:text-brand-blue"
                           >
                             {s.title}
@@ -862,10 +863,12 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
 
       {/* Footer CTA — Glass styled */}
       <div className="p-6 border-t border-white/20 flex-shrink-0 /5 backdrop-blur-sm">
-        <motion.button
+        <motion.a
+          href="/contact"
+          onClick={onClose}
           whileHover={{ scale: 1.02, y: -2 }}
           whileTap={{ scale: 0.96 }}
-          className="group relative w-full px-5 py-4 text-white text-sm font-bold rounded-xl overflow-hidden shadow-lg"
+          className="group relative w-full px-5 py-4 text-white text-sm font-bold rounded-xl overflow-hidden shadow-lg block"
         >
           {/* Glass + Gradient */}
           <div className="absolute inset-0 bg-gradient-to-br from-brand-blue to-brand-cyan opacity-90 rounded-xl" />
@@ -876,7 +879,7 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
             Start Project
             <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
           </span>
-        </motion.button>
+        </motion.a>
       </div>
     </motion.div>
   );

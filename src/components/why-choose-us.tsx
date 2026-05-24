@@ -132,7 +132,7 @@ export function WhyChooseUs() {
           className="mt-12 lg:mt-14 text-center"
         >
           <a
-            href="#contact"
+            href="/contact"
             className="group inline-flex items-center gap-2 rounded-full bg-brand-navy text-white px-7 py-3.5 text-sm font-semibold hover:bg-brand-blue transition-colors shadow-[0_12px_32px_-12px_rgba(4,92,179,0.45)]"
           >
             Request a partnership deck

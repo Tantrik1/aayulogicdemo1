@@ -235,7 +235,8 @@ export function HeroSection() {
             className="flex flex-col sm:flex-row gap-4 sm:gap-5 pt-3 justify-center"
           >
             {/* Primary CTA — Premium Glassmorphism with strong presence */}
-            <motion.button
+            <motion.a
+              href="/contact"
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.2, ease: 'easeOut' }}
@@ -255,10 +256,11 @@ export function HeroSection() {
                 Start Transformation
                 <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </span>
-            </motion.button>
+            </motion.a>
 
             {/* Secondary CTA — Clear outline style */}
-            <motion.button
+            <motion.a
+              href="/contact"
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.2, ease: 'easeOut' }}
@@ -268,9 +270,9 @@ export function HeroSection() {
               <div className="absolute inset-0 /40 backdrop-blur-lg rounded-xl opacity-0 group-hover:opacity-100 transition-opacity" />
 
               <span className="relative flex items-center justify-center gap-2 text-lg">
-                View Case Studies
+                Talk to an Engineer
               </span>
-            </motion.button>
+            </motion.a>
           </motion.div>
         </motion.div>
       </div>

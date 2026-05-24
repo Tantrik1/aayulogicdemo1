@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Aayulogic — Static Sitemap
+  Generated: 2026-05-24
+  Base URL: https://aayulogic.com
+
+  Tree:
+    /                                                              [home]
+    /about                                                         [company]
+    /careers                                                       [company]
+    /leadership                                                    [company]
+    /locations                                                     [company]
+    /contact                                                       [company]
+    /services                                                      [services overview]
+      /services/ai                                                 [AI & Automation]
+        /services/ai/vibe-coding                                   [Vibe Coding]
+        /services/ai/ai-agents                                     [AI Agents]
+        /services/ai/conversational-ai                             [Conversational AI]
+        /services/ai/computer-vision-ml                            [Computer Vision & ML]
+        /services/ai/data-analytics                                [Data & Analytics]
+        /services/ai/rpa-automation                                [RPA & Automation]
+      /services/engineering                                        [Software Engineering]
+        /services/engineering/full-stack-backend                   [Full-Stack Backend]
+        /services/engineering/full-stack-databases                 [Full-Stack Databases]
+        /services/engineering/frontend-layers                      [Frontend Layers]
+        /services/engineering/preconfigured-stacks                 [Preconfigured Stacks]
+        /services/engineering/mobile-frameworks                    [Mobile Frameworks]
+        /services/engineering/desktop-frameworks                   [Desktop Frameworks]
+        /services/engineering/jvm-enterprise                       [JVM Enterprise]
+        /services/engineering/automation-qa                        [Automation QA]
+        /services/engineering/specialized-testing                  [Specialized Testing]
+        /services/engineering/business-core                        [Business Core / ERP / Low-Code]
+        /services/engineering/immersive-core                       [Immersive Core / Unity]
+      /services/cloud                                              [Cloud & DevOps]
+        /services/cloud/platform-operations                        [Platform Operations]
+        /services/cloud/devops-cicd                                [DevOps & CI/CD Pipelines]
+      /services/commerce                                           [Digital & Commerce]
+        /services/commerce/ecommerce-frameworks                    [E-commerce Frameworks]
+        /services/commerce/enterprise-cms                          [Enterprise CMS]
+        /services/commerce/web-cms                                 [Web CMS]
+        /services/commerce/core-experience                         [Core Experience]
+      /services/emerging                                           [Emerging Tech & IoT]
+        /services/emerging/ar-vr-frameworks                        [AR/VR Frameworks]
+        /services/emerging/connected-systems                       [Core Connected Systems]
+      /services/enterprise                                         [Enterprise Software]
+        /services/enterprise/financial-saas                        [Financial SaaS]
+        /services/enterprise/microsoft-ecosystem                   [Microsoft Ecosystem]
+        /services/enterprise/open-source-core                      [Open-Source Core]
+        /services/enterprise/corporate-tools                       [Corporate Tools]
+    /products                                                      [products overview]
+      /products/realhrsoft                                         [RealHRsoft — HR Platform]
+      /products/realchat                                           [Real Chat — Messaging]
+      /products/reallearn                                          [Real Learn — LMS]
+    /industries                                                    [industries overview]
+      /industries/bfsi                                             [Banking, Finance, Insurance]
+      /industries/healthcare                                       [Healthcare]
+      /industries/pharma                                           [Pharma & Life Sciences]
+      /industries/professional-services                            [Professional Services]
+      /industries/media                                            [Media & Entertainment]
+      /industries/retail                                           [Retail]
+      /industries/technology                                       [Technology]
+    /talent                                                        [talent & engagement overview]
+      /talent/staff-augmentation                                   [Staff Augmentation]
+      /talent/dedicated-teams                                      [Dedicated Teams]
+      /talent/contract-to-hire                                     [Contract-to-Hire]
+      /talent/build-operate-transfer                               [Build-Operate-Transfer]
+    /legal/privacy                                                 [legal — planned]
+    /legal/terms                                                   [legal — planned]
+    /legal/cookies                                                 [legal — planned]
+    /legal/security                                                [legal — planned]
+-->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+  <!-- ========== HOME ========== -->
+  <url>
+    <loc>https://aayulogic.com/</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- ========== COMPANY ========== -->
+  <url>
+    <loc>https://aayulogic.com/about</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/leadership</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/careers</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/locations</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/contact</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- ========== SERVICES ========== -->
+  <url>
+    <loc>https://aayulogic.com/services</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <!-- AI & Automation -->
+  <url>
+    <loc>https://aayulogic.com/services/ai</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/ai/vibe-coding</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/ai/ai-agents</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/ai/conversational-ai</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/ai/computer-vision-ml</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/ai/data-analytics</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/ai/rpa-automation</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Software Engineering -->
+  <url>
+    <loc>https://aayulogic.com/services/engineering</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/engineering/full-stack-backend</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/engineering/full-stack-databases</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/engineering/frontend-layers</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/engineering/preconfigured-stacks</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/engineering/mobile-frameworks</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/engineering/desktop-frameworks</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/engineering/jvm-enterprise</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/engineering/automation-qa</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/engineering/specialized-testing</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/engineering/business-core</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/engineering/immersive-core</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Cloud & DevOps -->
+  <url>
+    <loc>https://aayulogic.com/services/cloud</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/cloud/platform-operations</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/cloud/devops-cicd</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Digital & Commerce -->
+  <url>
+    <loc>https://aayulogic.com/services/commerce</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/commerce/ecommerce-frameworks</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/commerce/enterprise-cms</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/commerce/web-cms</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/commerce/core-experience</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Emerging Tech & IoT -->
+  <url>
+    <loc>https://aayulogic.com/services/emerging</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/emerging/ar-vr-frameworks</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/emerging/connected-systems</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Enterprise Software -->
+  <url>
+    <loc>https://aayulogic.com/services/enterprise</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/enterprise/financial-saas</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/enterprise/microsoft-ecosystem</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/enterprise/open-source-core</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/services/enterprise/corporate-tools</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- ========== PRODUCTS ========== -->
+  <url>
+    <loc>https://aayulogic.com/products</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/products/realhrsoft</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/products/realchat</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/products/reallearn</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ========== INDUSTRIES ========== -->
+  <url>
+    <loc>https://aayulogic.com/industries</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/industries/bfsi</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/industries/healthcare</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/industries/pharma</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/industries/professional-services</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/industries/media</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/industries/retail</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/industries/technology</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- ========== TALENT & ENGAGEMENT ========== -->
+  <url>
+    <loc>https://aayulogic.com/talent</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/talent/staff-augmentation</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/talent/dedicated-teams</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/talent/contract-to-hire</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/talent/build-operate-transfer</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- ========== LEGAL (planned) ========== -->
+  <url>
+    <loc>https://aayulogic.com/legal/privacy</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/legal/terms</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/legal/cookies</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://aayulogic.com/legal/security</loc>
+    <lastmod>2026-05-24</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+</urlset>

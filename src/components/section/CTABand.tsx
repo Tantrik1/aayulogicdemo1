@@ -19,9 +19,9 @@ export function CTABand({
   title,
   body,
   primaryLabel = 'Start a Project',
-  primaryHref = '#contact',
+  primaryHref = '/contact',
   secondaryLabel = 'Talk to Sales',
-  secondaryHref = '#contact',
+  secondaryHref = '/contact',
 }: CTABandProps) {
   return (
     <section className="relative py-20 sm:py-28 overflow-hidden">
