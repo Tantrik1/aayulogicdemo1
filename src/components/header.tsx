@@ -138,8 +138,8 @@ export function Header() {
           activeMenu
             ? 'bg-white border-brand-blue/15'
             : isOverDark
-              ? 'bg-brand-navy/40 backdrop-blur-2xl border-white/10'
-              : '/10 backdrop-blur-2xl border-white/20'
+              ? 'bg-brand-navy/40 backdrop-blur-md border-white/10'
+              : 'bg-white/70 backdrop-blur-md border-white/40'
         }`}
       >
         {/* Top luminous line */}
@@ -202,7 +202,7 @@ export function Header() {
               >
                 {/* Premium glassmorphic gradient */}
                 <div className="absolute inset-0 bg-gradient-to-br from-brand-blue to-brand-cyan opacity-95 rounded-xl" />
-                <div className="absolute inset-0 /15 backdrop-blur-2xl rounded-xl" />
+                <div className="absolute inset-0 bg-white/15 rounded-xl" />
 
                 {/* Border glow */}
                 <div className="absolute inset-0 rounded-xl border border-white/50 group-hover:border-white transition-colors" />

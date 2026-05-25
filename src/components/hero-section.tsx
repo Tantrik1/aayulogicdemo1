@@ -163,7 +163,7 @@ export function HeroSection() {
       {/* ============ CONTENT ============ */}
       <div className="relative max-w-5xl mx-auto w-full">
         {/* Smart overlay behind text only */}
-        <div className="absolute inset-0 -z-10 rounded-3xl /5 backdrop-blur-sm" />
+        <div className="absolute inset-0 -z-10 rounded-3xl bg-white/5 backdrop-blur-sm" />
 
         <motion.div
           variants={containerVariants}
