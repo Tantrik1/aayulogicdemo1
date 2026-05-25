@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import {
   CheckCircle2,
@@ -121,13 +122,13 @@ export default async function ProductDetailPage({
       {/* Breadcrumb */}
       <div className="bg-white border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-3 flex items-center gap-2 text-xs text-slate-500">
-          <a href="/" className="hover:text-brand-blue transition-colors">
+          <Link href="/" className="hover:text-brand-blue transition-colors">
             Home
-          </a>
+          </Link>
           <span>/</span>
-          <a href="/products" className="hover:text-brand-blue transition-colors">
+          <Link href="/products" className="hover:text-brand-blue transition-colors">
             Products
-          </a>
+          </Link>
           <span>/</span>
           <span className="text-brand-navy font-medium">{product.title}</span>
         </div>

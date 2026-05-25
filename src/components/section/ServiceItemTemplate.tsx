@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import StackIcon from 'tech-stack-icons';
 import {
@@ -37,23 +38,23 @@ export function ServiceItemTemplate({
       {/* Breadcrumb */}
       <div className="bg-white border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-3 flex items-center gap-2 text-xs text-slate-500">
-          <a href="/" className="hover:text-brand-blue transition-colors">
+          <Link href="/" className="hover:text-brand-blue transition-colors">
             Home
-          </a>
+          </Link>
           <span>/</span>
-          <a
+          <Link
             href="/services"
             className="hover:text-brand-blue transition-colors"
           >
             Services
-          </a>
+          </Link>
           <span>/</span>
-          <a
+          <Link
             href={`/services/${category.key}`}
             className="hover:text-brand-blue transition-colors"
           >
             {category.title}
-          </a>
+          </Link>
           <span>/</span>
           <span className="text-brand-navy font-medium">{item.title}</span>
         </div>
@@ -245,13 +246,13 @@ export function ServiceItemTemplate({
               built {item.title.toLowerCase()} platforms in production for
               regulated industries.
             </p>
-            <a
+            <Link
               href="/contact"
               className="mt-7 inline-flex items-center gap-2 px-6 py-3 text-sm font-bold rounded-lg bg-brand-navy text-white hover:bg-brand-blue transition-colors"
             >
               Scope a {item.title} Build
               <ArrowUpRight className="w-4 h-4" />
-            </a>
+            </Link>
           </div>
 
           <div className="lg:col-span-7">

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
 import {
   Landmark,
@@ -256,13 +257,13 @@ function ViewAllBand({ delay }: { delay: number }) {
         </div>
 
         <div className="flex flex-shrink-0 items-center gap-3">
-          <a
+          <Link
             href="/industries"
             className="group inline-flex items-center gap-2 rounded-full bg-brand-navy text-white px-5 sm:px-6 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold hover:bg-brand-blue transition-colors shadow-[0_10px_24px_-8px_rgba(4,92,179,0.45)]"
           >
             View all industries
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
-          </a>
+          </Link>
         </div>
       </div>
     </motion.div>

@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   ShieldCheck,
@@ -169,9 +170,9 @@ export function C2HClient() {
 
       <div className="bg-white border-b border-slate-100">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-3 flex items-center gap-2 text-xs text-slate-500">
-          <a href="/" className="hover:text-brand-blue transition-colors">Home</a>
+          <Link href="/" className="hover:text-brand-blue transition-colors">Home</Link>
           <span>/</span>
-          <a href="/talent" className="hover:text-brand-blue transition-colors">Talent & Engagement</a>
+          <Link href="/talent" className="hover:text-brand-blue transition-colors">Talent & Engagement</Link>
           <span>/</span>
           <span className="text-brand-navy font-medium">Contract-to-Hire (C2H)</span>
         </div>

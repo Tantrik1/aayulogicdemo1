@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { motion, useReducedMotion } from 'framer-motion';
 import {
   ShieldCheck,
@@ -131,13 +132,13 @@ export function WhyChooseUs() {
           transition={motionConfig.default}
           className="mt-12 lg:mt-14 text-center"
         >
-          <a
+          <Link
             href="/contact"
             className="group inline-flex items-center gap-2 rounded-full bg-brand-navy text-white px-7 py-3.5 text-sm font-semibold hover:bg-brand-blue transition-colors shadow-[0_12px_32px_-12px_rgba(4,92,179,0.45)]"
           >
             Request a partnership deck
             <ArrowUpRight className="w-4 h-4 transition-transform group-hover:rotate-45" />
-          </a>
+          </Link>
           <p className="mt-3 text-xs text-slate-500">
             Tailored case studies and references within one business day.
           </p>

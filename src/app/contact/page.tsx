@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   Mail,
@@ -395,13 +396,13 @@ function SuccessState({ onReset }: { onReset: () => void }) {
         >
           Submit Another
         </button>
-        <a
+        <Link
           href="/locations"
           className="group inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl border border-slate-200 bg-slate-50 text-sm font-bold text-slate-700 hover:border-brand-blue/30 hover:bg-white transition-colors"
         >
           View Offices
           <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-        </a>
+        </Link>
       </div>
     </div>
   );
@@ -567,13 +568,13 @@ function OfficesQuickSection() {
               .
             </h2>
           </div>
-          <a
+          <Link
             href="/locations"
             className="group inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-brand-blue/30 bg-white text-sm font-bold text-brand-navy hover:border-brand-blue hover:text-brand-blue transition-colors self-start"
           >
             See full office details
             <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </a>
+          </Link>
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-5">

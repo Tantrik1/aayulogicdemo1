@@ -1,11 +1,14 @@
 'use client';
 
+import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useRef } from 'react';
 import StackIcon from 'tech-stack-icons';
 import { easingCurve } from '@/lib/utils';
 import { CLIENT_BRANDS } from '@/lib/constants';
 import { ArrowUpRight } from 'lucide-react';
+
+const MotionLink = motion.create(Link);
 
 const TRUST_BADGES = [
   { value: '10+', label: 'Years of Experience' },
@@ -235,44 +238,36 @@ export function HeroSection() {
             className="flex flex-col sm:flex-row gap-4 sm:gap-5 pt-3 justify-center"
           >
             {/* Primary CTA — Premium Glassmorphism with strong presence */}
-            <motion.a
+            <MotionLink
               href="/contact"
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.2, ease: 'easeOut' }}
               className="group relative px-10 sm:px-14 py-5 sm:py-6 text-white font-bold rounded-xl overflow-hidden shadow-2xl"
             >
-              {/* Premium glassmorphic layer */}
               <div className="absolute inset-0 bg-gradient-to-br from-brand-blue to-brand-cyan opacity-95 rounded-xl" />
-              <div className="absolute inset-0 /15 backdrop-blur-2xl rounded-xl" />
-
-              {/* Border glow */}
+              <div className="absolute inset-0 bg-white/15 backdrop-blur-2xl rounded-xl" />
               <div className="absolute inset-0 rounded-xl border border-white/50 group-hover:border-white transition-colors" />
-
-              {/* Hover glow effect */}
               <div className="absolute -inset-1 rounded-xl bg-gradient-to-r from-brand-blue via-brand-cyan to-brand-blue opacity-0 group-hover:opacity-40 blur-lg transition-opacity" />
-
               <span className="relative flex items-center justify-center gap-3 text-lg">
                 Start Transformation
                 <ArrowUpRight className="w-6 h-6 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
               </span>
-            </motion.a>
+            </MotionLink>
 
             {/* Secondary CTA — Clear outline style */}
-            <motion.a
+            <MotionLink
               href="/contact"
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
               transition={{ duration: 0.2, ease: 'easeOut' }}
               className="group relative px-10 sm:px-14 py-5 sm:py-6 text-brand-navy font-bold rounded-xl border-2 border-brand-blue/60 hover:border-brand-blue transition-all shadow-lg hover:shadow-2xl"
             >
-              {/* Subtle glassmorphism */}
-              <div className="absolute inset-0 /40 backdrop-blur-lg rounded-xl opacity-0 group-hover:opacity-100 transition-opacity" />
-
+              <div className="absolute inset-0 bg-white/40 backdrop-blur-lg rounded-xl opacity-0 group-hover:opacity-100 transition-opacity" />
               <span className="relative flex items-center justify-center gap-2 text-lg">
                 Talk to an Engineer
               </span>
-            </motion.a>
+            </MotionLink>
           </motion.div>
         </motion.div>
       </div>
