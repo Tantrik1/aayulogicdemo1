@@ -2,8 +2,7 @@
 
 import { memo, useEffect, type ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
-import { AnimatePresence, motion } from 'framer-motion';
-import { easingCurve } from '@/lib/utils';
+import { motion } from 'framer-motion';
 
 const VideoBackdrop = memo(function VideoBackdrop() {
   return (
@@ -13,7 +12,6 @@ const VideoBackdrop = memo(function VideoBackdrop() {
       loop
       playsInline
       preload="auto"
-      poster="/herobackground-poster.jpg"
       className="fixed inset-0 w-full h-full object-cover -z-10"
       aria-hidden
       style={{ pointerEvents: 'none' }}
@@ -37,18 +35,15 @@ export function ClientShell({ children }: { children: ReactNode }) {
   return (
     <>
       <VideoBackdrop />
-      <AnimatePresence mode="wait" initial={false}>
-        <motion.div
-          key={pathname}
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.4, ease: easingCurve.industrial }}
-          className="flex flex-col min-h-[100dvh] relative"
-        >
-          <main className="flex-1">{children}</main>
-        </motion.div>
-      </AnimatePresence>
+      <motion.div
+        key={pathname}
+        initial={{ opacity: 0.55 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.2, ease: 'easeOut' }}
+        className="flex flex-col min-h-[100dvh] relative"
+      >
+        <main className="flex-1">{children}</main>
+      </motion.div>
     </>
   );
 }
