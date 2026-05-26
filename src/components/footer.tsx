@@ -20,6 +20,7 @@ const LINK_GROUPS = [
       { label: 'Leadership', href: '/leadership' },
       { label: 'Careers', href: '/careers' },
       { label: 'Locations', href: '/locations' },
+      { label: 'FAQ', href: '/faq' },
       { label: 'Contact', href: '/contact' },
     ],
   },

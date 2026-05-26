@@ -2715,3 +2715,336 @@ export const OFFICES_DETAILED = [
     badge: "Coming Soon",
   },
 ];
+
+// =============================================================================
+//  ABOUT — MISSION & VISION PILLARS
+// =============================================================================
+
+export const MISSION_VISION = {
+  mission: {
+    title: "Our Mission",
+    statement:
+      "Engineer dependable software systems that compound in value — for the organizations the world quietly depends on.",
+    detail:
+      "We exist to build the platforms, products, and partnerships that mature businesses can run on for a decade — not the demos that look great on a slide and quietly fail under load.",
+  },
+  vision: {
+    title: "Our Vision",
+    statement:
+      "A world where great engineering is a service, not an artisanal scarcity.",
+    detail:
+      "A future where companies in any market — not just Silicon Valley — can access senior, production-grade engineering at the cadence their business actually needs.",
+  },
+  pillars: [
+    {
+      title: "Customers come first, always",
+      description:
+        "Every roadmap decision, every release, every escalation — anchored in measurable customer outcomes, not internal politics.",
+      iconKey: "Heart",
+    },
+    {
+      title: "Operator-grade discipline",
+      description:
+        "We measure ourselves like an SRE team. SLAs, audits, runbooks, decision logs — all real, all in production.",
+      iconKey: "ShieldCheck",
+    },
+    {
+      title: "Compounding craft",
+      description:
+        "Codebases get better quarter over quarter. Talent gets sharper year over year. Nothing we own is allowed to rot.",
+      iconKey: "TrendingUp",
+    },
+  ],
+};
+
+// =============================================================================
+//  ABOUT — FOUNDER SPOTLIGHT
+// =============================================================================
+
+export const FOUNDERS = [
+  {
+    name: "Ratish Raj Guragain",
+    role: "Co-Founder · CEO, Engineering & Operations",
+    location: "Lalitpur, Nepal",
+    image:
+      "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80",
+    quote:
+      "We started with six engineers and a refusal to ship anything we wouldn't operate ourselves. A decade later, that's still the only rule.",
+    contributions: [
+      "Scaled engineering from 6 to 300+ across a decade",
+      "Authored the operating principles every team still ships against",
+      "Founded the Lalitpur engineering hub — now our largest",
+    ],
+  },
+  {
+    name: "Puspa Khadka",
+    role: "Co-Founder · Chief Executive Officer",
+    location: "Toronto, Canada",
+    image:
+      "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=800&q=80",
+    quote:
+      "Building from Kathmandu and anchoring in Toronto wasn't an accident — it was the only structure that lets us serve mature enterprises without losing engineering depth.",
+    contributions: [
+      "Incorporated Aayulogic Inc. in Canada (2022)",
+      "Architected our cross-continent delivery model",
+      "Owns global strategy and North American enterprise relationships",
+    ],
+  },
+];
+
+// =============================================================================
+//  ABOUT — REGIONAL HEADQUARTERS (condensed for about page)
+// =============================================================================
+
+export const REGIONAL_HEADQUARTERS = [
+  {
+    region: "North America",
+    city: "Toronto, Canada",
+    role: "Global HQ",
+    countryCode: "CA",
+    focus: "Strategy · Enterprise delivery · Partnerships",
+    established: "2022",
+    headcount: "20+",
+  },
+  {
+    region: "South Asia",
+    city: "Lalitpur, Nepal",
+    role: "Engineering Hub",
+    countryCode: "NP",
+    focus: "Product engineering · Platform R&D · AI research",
+    established: "2016",
+    headcount: "300+",
+  },
+  {
+    region: "Americas",
+    city: "Louisville, USA",
+    role: "Finance & Operations",
+    countryCode: "US",
+    focus: "Finance · Compliance · US client operations",
+    established: "2024",
+    headcount: "Representative",
+  },
+  {
+    region: "APAC",
+    city: "Brisbane, Australia",
+    role: "Regional Operations",
+    countryCode: "AU",
+    focus: "APAC delivery · Regulated industries · Audit-grade",
+    established: "2024",
+    headcount: "Representative",
+  },
+  {
+    region: "MENA",
+    city: "Dubai, UAE",
+    role: "Middle East Office",
+    countryCode: "AE",
+    focus: "Government · BFSI · Partnership development",
+    established: "2026",
+    headcount: "Opening 2026",
+  },
+];
+
+// =============================================================================
+//  ABOUT — TEAM / DEPARTMENTS BREAKDOWN
+// =============================================================================
+
+export const COMPANY_DEPARTMENTS = [
+  {
+    name: "Platform Engineering",
+    description: "Backend, infrastructure, and the systems behind 15M+ daily transactions.",
+    size: "120+",
+    iconKey: "Server",
+  },
+  {
+    name: "Product & Design",
+    description: "Roadmaps, UX, and design systems across RealHRsoft, Real Chat, and Real Learn.",
+    size: "40+",
+    iconKey: "Compass",
+  },
+  {
+    name: "AI & Research",
+    description: "Multi-agent orchestration, applied ML, and production LLM systems.",
+    size: "25+",
+    iconKey: "Sparkles",
+  },
+  {
+    name: "Frontend & Mobile",
+    description: "Cross-platform interfaces, design systems, and customer-facing apps.",
+    size: "60+",
+    iconKey: "Layout",
+  },
+  {
+    name: "Site Reliability",
+    description: "Observability, incident response, and capacity planning at scale.",
+    size: "20+",
+    iconKey: "Activity",
+  },
+  {
+    name: "Operations & Success",
+    description: "Customer success, finance, talent, and global business operations.",
+    size: "35+",
+    iconKey: "Briefcase",
+  },
+];
+
+// =============================================================================
+//  ABOUT — AWARDS & RECOGNITION
+// =============================================================================
+
+export const AWARDS_RECOGNITION = [
+  {
+    year: "2024",
+    title: "ISO 27001:2022 Certified",
+    body: "Independently audited information security management system — global standard.",
+    issuer: "International Organization for Standardization",
+  },
+  {
+    year: "2024",
+    title: "Top HR Tech Vendor — South Asia",
+    body: "RealHRsoft recognized among the region's leading enterprise HR platforms.",
+    issuer: "Regional Industry Council",
+  },
+  {
+    year: "2023",
+    title: "Best Engineering Workplace",
+    body: "Recognized for engineering culture, async-first practices, and retention.",
+    issuer: "Tech Employer Survey",
+  },
+  {
+    year: "2020",
+    title: "ISO 9001:2015 Certified",
+    body: "Quality Management System independently certified across delivery practices.",
+    issuer: "International Organization for Standardization",
+  },
+];
+
+// =============================================================================
+//  FAQ PAGE — CATEGORIES & QUESTIONS
+// =============================================================================
+
+export const FAQ_CATEGORIES = [
+  {
+    key: "company",
+    label: "Company",
+    iconKey: "Building2",
+    blurb: "About Aayulogic — who we are and how we operate.",
+    items: [
+      {
+        q: "What does Aayulogic actually do?",
+        a: "We're a Canadian-headquartered global technology company. We build and operate production software — flagship products (RealHRsoft, Real Chat, Real Learn) and custom engagements for enterprise clients across AI, cloud, and engineering. 300+ engineers across four continents.",
+      },
+      {
+        q: "Where is Aayulogic headquartered?",
+        a: "Global HQ is Aayulogic Inc. in Toronto, Canada (incorporated 2022). Our primary engineering hub is Aayulogic Systems Pvt. Ltd. in Lalitpur, Nepal — where we started in 2016 — and we have representative offices in Louisville (USA), Brisbane (Australia), and a Dubai (UAE) office opening in 2026.",
+      },
+      {
+        q: "How long has Aayulogic been around?",
+        a: "Since 2016. A decade of compounding craft — same operating principles, same focus on shippable systems, just at much larger scale today.",
+      },
+      {
+        q: "Are you certified for enterprise procurement?",
+        a: "Yes. We hold ISO 9001:2015 (Quality Management) and ISO 27001:2022 (Information Security Management) — both independently audited and current. We can support enterprise vendor due diligence on request.",
+      },
+    ],
+  },
+  {
+    key: "services",
+    label: "Services & Engagements",
+    iconKey: "Briefcase",
+    blurb: "Working with us — scope, model, and what to expect.",
+    items: [
+      {
+        q: "What engagement models do you offer?",
+        a: "Four core models: Staff Augmentation (senior engineers embedded in your team), Dedicated Teams (a complete pod owned by us, accountable to your roadmap), Contract-to-Hire (try before you commit), and Build-Operate-Transfer (we stand up a function, then hand the keys over). The model is shaped by your timeline and risk profile, not the other way around.",
+      },
+      {
+        q: "What's a typical engagement size and length?",
+        a: "Most engagements run 6 to 36 months and involve 3 to 20 engineers. We don't take on staffing-shop short-tail work — we're built for compounding relationships. Discovery to first sprint is typically 2-4 weeks.",
+      },
+      {
+        q: "Do you work with startups or only enterprises?",
+        a: "Primarily mature businesses and enterprises — that's where our operator-grade discipline matters most. We do partner with funded startups when the engineering ambition matches ours and the runway justifies senior engineering depth.",
+      },
+      {
+        q: "Which industries do you serve?",
+        a: "Financial services (BFSI), healthcare, education, public sector, retail and commerce, and SaaS platform companies. ISO 27001 + sector experience makes us a fit for regulated environments where audit-grade matters.",
+      },
+    ],
+  },
+  {
+    key: "hiring",
+    label: "Hiring & Careers",
+    iconKey: "Users",
+    blurb: "Joining the team — what the process looks like.",
+    items: [
+      {
+        q: "What's it like to work at Aayulogic?",
+        a: "Senior-heavy team, async-first communication, decision logs and runbooks for everything, and a clear bar for operate-what-you-build. We pay for craft, sponsor visas, and run a real sabbatical program at five years.",
+      },
+      {
+        q: "Do you hire juniors?",
+        a: "Rarely. Our hiring bar is seniors-only for production roles — typically 5+ years of experience with real systems in production. We invest deeply in those we hire instead of running a high-churn pipeline.",
+      },
+      {
+        q: "Is remote work supported?",
+        a: "Yes. We're remote-first across all offices. You can work from any of our four locations, fully remote, or a hybrid blend. Async communication is treated as a first-class engineering tool.",
+      },
+      {
+        q: "How long does the hiring process take?",
+        a: "Four focused conversations over 3-4 weeks. Application screen (week 1), technical conversation (week 2), paid work sample (week 2-3), team and leadership round (week 3-4). Offer and onboarding plan within 5 days of the final round.",
+      },
+      {
+        q: "Do you offer visa sponsorship or relocation?",
+        a: "Yes — across Toronto, Lalitpur, and Brisbane. We've relocated engineers between continents and routinely sponsor work permits for the right hires. Global mobility is part of our retention story.",
+      },
+    ],
+  },
+  {
+    key: "technical",
+    label: "Technical & Security",
+    iconKey: "ShieldCheck",
+    blurb: "How we engineer, secure, and operate what we ship.",
+    items: [
+      {
+        q: "What's your engineering stack?",
+        a: "Production stacks lean on proven choices: Node.js, Python, Go, PostgreSQL, Redis, Kubernetes, Terraform, AWS/Azure/GCP. We pick boring technology by default — novelty belongs in R&D, not in systems your business depends on.",
+      },
+      {
+        q: "How do you handle data security and compliance?",
+        a: "ISO 27001:2022 controls govern every repo. Threat models, IAM, secrets management, and audit logging are designed in — not bolted on. We support SOC-style customer audits and operate dedicated security review on every engagement.",
+      },
+      {
+        q: "Do you sign NDAs and DPAs?",
+        a: "Yes — standard mutual NDA before any technical discussion, and DPA (data processing agreement) is part of every contract that touches customer data. We have template language ready and have signed against major enterprise paper.",
+      },
+      {
+        q: "Who owns the IP we build together?",
+        a: "You do. All custom engagement IP is assigned to the client at delivery — clean ownership, no patent encumbrances, full source. Our product IP (RealHRsoft, Real Chat, Real Learn) stays with us, of course.",
+      },
+    ],
+  },
+  {
+    key: "partnerships",
+    label: "Partnerships & Procurement",
+    iconKey: "HandshakeIcon",
+    blurb: "Getting started commercially — partnerships and procurement.",
+    items: [
+      {
+        q: "How do we get started?",
+        a: "Send a note via the contact form or email hello@aayulogic.com. We'll schedule a 45-minute discovery call with the engineering or product lead closest to your context — not an account manager. From there, scope, statement of work, and a kickoff plan typically takes 2-4 weeks.",
+      },
+      {
+        q: "Can we visit one of your offices?",
+        a: "Absolutely. We host clients regularly in Toronto and Lalitpur. We'll arrange engineering deep-dives, leadership meetings, and a walk-through of how teams actually operate. Most enterprise engagements start with at least one office visit.",
+      },
+      {
+        q: "Do you participate in vendor due diligence?",
+        a: "Yes — we have a standard vendor-vetting pack covering certifications (ISO 9001 / 27001), insurance, governance, financials, references, and security architecture. Ready to share under NDA on request.",
+      },
+      {
+        q: "What's your billing and payment model?",
+        a: "Standard models: fixed-scope (for clearly bounded deliverables), time-and-materials (for evolving engagements), and dedicated team (monthly recurring). We bill in CAD, USD, AUD, or AED depending on the entity. Net-30 terms standard, customizable for enterprise.",
+      },
+    ],
+  },
+];

@@ -17,6 +17,9 @@ import {
   Briefcase,
   Clock,
   Sparkles,
+  Users2,
+  Globe2,
+  Code2,
   type LucideIcon,
 } from 'lucide-react';
 import { Header } from '@/components/header';
@@ -61,6 +64,7 @@ export default function CareersPage() {
         secondaryCta={{ label: 'How We Hire', href: '#hiring' }}
       />
 
+      <AtGlanceSection />
       <WhyJoinSection />
       <TeamEnvironmentSection />
       <OpenRolesSection />
@@ -83,7 +87,82 @@ export default function CareersPage() {
 }
 
 // =============================================================================
-//  WHY JOIN
+//  AT A GLANCE — clean snapshot card right under the hero
+// =============================================================================
+
+function AtGlanceSection() {
+  const GLANCE = [
+    {
+      label: 'Hiring bar',
+      value: 'Seniors only',
+      icon: Code2,
+    },
+    {
+      label: 'Work setup',
+      value: 'Remote-first',
+      icon: Home,
+    },
+    {
+      label: 'Visa sponsorship',
+      value: 'Yes — 3 offices',
+      icon: Plane,
+    },
+    {
+      label: 'Time to offer',
+      value: '< 4 weeks',
+      icon: Clock,
+    },
+  ];
+
+  return (
+    <section className="relative -mt-12 sm:-mt-16 px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16 z-10">
+      <div className="relative max-w-6xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={{ duration: 0.6, ease: easingCurve.industrial }}
+          className="rounded-2xl border border-slate-200 bg-white shadow-[0_30px_60px_-25px_rgba(10,25,47,0.2)] overflow-hidden"
+        >
+          <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-slate-100">
+            {GLANCE.map((g, idx) => {
+              const Icon = g.icon;
+              return (
+                <motion.div
+                  key={g.label}
+                  initial={{ opacity: 0, y: 12 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{
+                    duration: 0.4,
+                    delay: idx * 0.06,
+                    ease: easingCurve.industrial,
+                  }}
+                  className="flex items-center gap-4 p-5 sm:p-6"
+                >
+                  <div className="flex-shrink-0 w-11 h-11 rounded-xl bg-gradient-to-br from-brand-blue to-brand-cyan flex items-center justify-center shadow-md shadow-brand-blue/15">
+                    <Icon className="w-5 h-5 text-white" />
+                  </div>
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400 mb-1">
+                      {g.label}
+                    </p>
+                    <p className="text-base sm:text-lg font-bold text-brand-navy leading-tight">
+                      {g.value}
+                    </p>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+// =============================================================================
+//  WHY JOIN — simpler four-reason layout
 // =============================================================================
 
 function WhyJoinSection() {
@@ -92,26 +171,30 @@ function WhyJoinSection() {
       title: 'Seniors-only hiring',
       description:
         'No bootcamp churn. You join a team of experienced engineers who pair, review, and push each other to ship better.',
+      icon: Code2,
     },
     {
       title: 'Operate what you build',
       description:
         'You carry the pager for what you ship. Direct ownership end-to-end — no throw-it-over-the-wall culture.',
+      icon: Briefcase,
     },
     {
       title: 'Real customers, real scale',
       description:
         '15M+ daily transactions across products serving hundreds of organizations. The work has weight from day one.',
+      icon: Users2,
     },
     {
       title: 'Global mobility',
       description:
         'Spend quarters in another office. We sponsor visas and relocate engineers across our Toronto-Lalitpur-Brisbane-Louisville network.',
+      icon: Globe2,
     },
   ];
 
   return (
-    <section className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white">
+    <section className="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white">
       <div
         aria-hidden
         className="absolute inset-0 opacity-60 pointer-events-none"
@@ -127,7 +210,7 @@ function WhyJoinSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={motionConfig.default}
-          className="text-center max-w-3xl mx-auto mb-12 lg:mb-16"
+          className="text-center max-w-3xl mx-auto mb-10 lg:mb-14"
         >
           <span className="inline-block text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-4">
             Why Aayulogic
@@ -144,34 +227,35 @@ function WhyJoinSection() {
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
-          {REASONS.map((r, idx) => (
-            <motion.div
-              key={r.title}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{
-                duration: 0.5,
-                delay: idx * 0.06,
-                ease: easingCurve.industrial,
-              }}
-              whileHover={{ y: -3 }}
-              className="group relative p-7 sm:p-8 rounded-2xl border border-slate-200 bg-gradient-to-br from-white to-slate-50/60 hover:border-brand-blue/30 hover:shadow-[0_20px_40px_-15px_rgba(4,92,179,0.18)] transition-all"
-            >
-              <div className="flex items-start gap-4 mb-4">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-brand-blue/10 text-sm font-black tracking-tight text-brand-blue">
-                  0{idx + 1}
-                </span>
-                <h3 className="flex-1 text-xl sm:text-2xl font-bold text-brand-navy leading-tight pt-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
+          {REASONS.map((r, idx) => {
+            const Icon = r.icon;
+            return (
+              <motion.div
+                key={r.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-60px' }}
+                transition={{
+                  duration: 0.5,
+                  delay: idx * 0.06,
+                  ease: easingCurve.industrial,
+                }}
+                whileHover={{ y: -3 }}
+                className="group relative p-6 rounded-2xl border border-slate-200 bg-white hover:border-brand-blue/30 hover:shadow-[0_18px_40px_-15px_rgba(4,92,179,0.16)] transition-all"
+              >
+                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-blue to-brand-cyan flex items-center justify-center mb-4 shadow-md shadow-brand-blue/15">
+                  <Icon className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="text-base sm:text-lg font-bold text-brand-navy mb-2 leading-tight">
                   {r.title}
                 </h3>
-              </div>
-              <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-                {r.description}
-              </p>
-            </motion.div>
-          ))}
+                <p className="text-sm text-slate-600 leading-relaxed">
+                  {r.description}
+                </p>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>
@@ -184,27 +268,8 @@ function WhyJoinSection() {
 
 function TeamEnvironmentSection() {
   return (
-    <section className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section className="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
       <div className="relative max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={motionConfig.default}
-          className="text-center max-w-3xl mx-auto mb-12 lg:mb-16"
-        >
-          <span className="inline-block text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-4">
-            Team Environment
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-brand-navy leading-[1.1] tracking-tight">
-            A team{' '}
-            <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-              that writes things down
-            </span>
-            .
-          </h2>
-        </motion.div>
-
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -251,7 +316,7 @@ function TeamEnvironmentSection() {
 }
 
 // =============================================================================
-//  OPEN ROLES
+//  OPEN ROLES — cleaner role list
 // =============================================================================
 
 function OpenRolesSection() {
@@ -262,10 +327,15 @@ function OpenRolesSection() {
       ? JOB_POSTINGS
       : JOB_POSTINGS.filter((j) => j.department === activeFilter);
 
+  const DEPT_LABEL: Record<string, string> = JOB_DEPARTMENTS.reduce(
+    (acc, d) => ({ ...acc, [d.key]: d.label }),
+    {}
+  );
+
   return (
     <section
       id="open-roles"
-      className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white"
+      className="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white"
     >
       <div
         aria-hidden
@@ -330,7 +400,7 @@ function OpenRolesSection() {
           })}
         </div>
 
-        {/* Jobs list */}
+        {/* Jobs list — cleaner with department badge */}
         <div className="space-y-3">
           <AnimatePresence mode="popLayout">
             {filteredJobs.map((job, idx) => (
@@ -346,9 +416,18 @@ function OpenRolesSection() {
                   ease: easingCurve.industrial,
                 }}
                 href="mailto:careers@aayulogic.com"
-                className="group relative flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 p-5 sm:p-6 rounded-xl border border-slate-200 bg-white hover:border-brand-blue/40 hover:shadow-[0_16px_32px_-12px_rgba(4,92,179,0.18)] transition-all"
+                className="group relative flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 p-5 sm:p-6 rounded-2xl border border-slate-200 bg-white hover:border-brand-blue/40 hover:shadow-[0_18px_36px_-12px_rgba(4,92,179,0.18)] transition-all"
               >
                 <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center gap-2 mb-2">
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-brand-blue/10 text-[10px] font-bold uppercase tracking-[0.15em] text-brand-blue">
+                      {DEPT_LABEL[job.department] ?? job.department}
+                    </span>
+                    <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-[0.15em] text-slate-500">
+                      <Clock className="w-3 h-3" />
+                      {job.experience}
+                    </span>
+                  </div>
                   <h3 className="text-lg sm:text-xl font-bold text-brand-navy mb-2 group-hover:text-brand-blue transition-colors leading-tight">
                     {job.title}
                   </h3>
@@ -363,10 +442,6 @@ function OpenRolesSection() {
                     <span className="inline-flex items-center gap-1.5">
                       <Briefcase className="w-3.5 h-3.5 text-brand-blue" />
                       {job.type}
-                    </span>
-                    <span className="inline-flex items-center gap-1.5">
-                      <Clock className="w-3.5 h-3.5 text-brand-blue" />
-                      {job.experience}
                     </span>
                   </div>
                 </div>
@@ -389,29 +464,31 @@ function OpenRolesSection() {
 }
 
 // =============================================================================
-//  BENEFITS
+//  BENEFITS — grouped into 2 clear themes for easier scanning
 // =============================================================================
 
 function BenefitsSection() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.06, delayChildren: 0.1 },
+  const GROUPS = [
+    {
+      title: 'Compensation & Growth',
+      blurb: 'Pay for craft, invest in learning, reward longevity.',
+      keys: ['Coins', 'GraduationCap', 'Palmtree', 'CalendarCheck'],
     },
-  };
+    {
+      title: 'Work & Wellbeing',
+      blurb: 'Flexibility, equipment, mobility, and real health cover.',
+      keys: ['Home', 'Laptop', 'HeartPulse', 'Plane'],
+    },
+  ];
 
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: motionConfig.default,
-    },
-  };
+  const benefitsByKey: Record<string, (typeof CAREER_BENEFITS)[number]> =
+    CAREER_BENEFITS.reduce(
+      (acc, b) => ({ ...acc, [b.iconKey]: b }),
+      {} as Record<string, (typeof CAREER_BENEFITS)[number]>
+    );
 
   return (
-    <section className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section className="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
       <div
         aria-hidden
         className="absolute inset-0 opacity-60 pointer-events-none"
@@ -427,7 +504,7 @@ function BenefitsSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={motionConfig.default}
-          className="text-center max-w-3xl mx-auto mb-12 lg:mb-16"
+          className="text-center max-w-3xl mx-auto mb-12 lg:mb-14"
         >
           <span className="inline-block text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-4">
             Benefits & Perks
@@ -439,39 +516,62 @@ function BenefitsSection() {
             </span>
             .
           </h2>
-          <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed">
-            Above-market base, equity, real health cover, learning budgets, and the equipment you need to do your best work.
-          </p>
         </motion.div>
 
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-80px' }}
-          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6"
-        >
-          {CAREER_BENEFITS.map((b) => {
-            const Icon = BENEFIT_ICONS[b.iconKey] ?? Sparkles;
-            return (
-              <motion.div
-                key={b.title}
-                variants={itemVariants}
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.3, ease: easingCurve.industrial }}
-                className="group relative p-6 rounded-xl border border-slate-200 bg-white/80 backdrop-blur hover:border-brand-blue/30 hover:bg-white hover:shadow-[0_20px_40px_-15px_rgba(4,92,179,0.18)] transition-all"
-              >
-                <div className="w-11 h-11 rounded-lg bg-gradient-to-br from-brand-blue to-brand-cyan flex items-center justify-center mb-4 shadow-md shadow-brand-blue/20">
-                  <Icon className="w-5 h-5 text-white" />
+        <div className="space-y-10 lg:space-y-12">
+          {GROUPS.map((group, groupIdx) => (
+            <motion.div
+              key={group.title}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{
+                duration: 0.5,
+                delay: groupIdx * 0.08,
+                ease: easingCurve.industrial,
+              }}
+            >
+              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-6">
+                <div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-brand-navy leading-tight">
+                    {group.title}
+                  </h3>
+                  <p className="text-sm text-slate-600 mt-1">{group.blurb}</p>
                 </div>
-                <h3 className="text-base sm:text-lg font-bold text-brand-navy mb-2 leading-tight">
-                  {b.title}
-                </h3>
-                <p className="text-sm text-slate-600 leading-relaxed">{b.description}</p>
-              </motion.div>
-            );
-          })}
-        </motion.div>
+                <div className="h-px flex-1 sm:max-w-xs bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
+                {group.keys.map((key) => {
+                  const b = benefitsByKey[key];
+                  if (!b) return null;
+                  const Icon = BENEFIT_ICONS[b.iconKey] ?? Sparkles;
+                  return (
+                    <motion.div
+                      key={b.title}
+                      whileHover={{ y: -3 }}
+                      transition={{
+                        duration: 0.3,
+                        ease: easingCurve.industrial,
+                      }}
+                      className="group relative p-5 rounded-xl border border-slate-200 bg-white/80 backdrop-blur hover:border-brand-blue/30 hover:bg-white hover:shadow-[0_18px_36px_-15px_rgba(4,92,179,0.18)] transition-all"
+                    >
+                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-brand-blue to-brand-cyan flex items-center justify-center mb-3 shadow-md shadow-brand-blue/15">
+                        <Icon className="w-5 h-5 text-white" />
+                      </div>
+                      <h4 className="text-sm sm:text-base font-bold text-brand-navy mb-1.5 leading-tight">
+                        {b.title}
+                      </h4>
+                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                        {b.description}
+                      </p>
+                    </motion.div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          ))}
+        </div>
       </div>
     </section>
   );
@@ -486,7 +586,7 @@ function HiringProcessSection() {
     <section
       id="hiring"
       data-theme="dark"
-      className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-brand-navy text-white"
+      className="relative py-20 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden bg-brand-navy text-white"
     >
       <div
         aria-hidden
