@@ -18,6 +18,7 @@ import {
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CTABand } from '@/components/section/CTABand';
+import { IndustryHero } from '@/components/industry-hero';
 import { easingCurve } from '@/lib/utils';
 
 const CHALLENGES = [
@@ -170,19 +171,26 @@ export function TechnologyClient() {
     <>
       <Header />
 
-      {/* Breadcrumb */}
-      <div className="bg-white border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-3 flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-brand-blue transition-colors">Home</Link>
-          <span>/</span>
-          <Link href="/industries" className="hover:text-brand-blue transition-colors">Industries</Link>
-          <span>/</span>
-          <span className="text-brand-navy font-medium">Technology & SaaS</span>
-        </div>
-      </div>
+      <IndustryHero
+        breadcrumbName="Technology & SaaS"
+        industry="Technology & SaaS"
+        icon={Cpu}
+        title={
+          <>
+            Architecture reviews that{' '}
+            <span className="bg-gradient-to-r from-brand-cyan via-white to-brand-cyan bg-clip-text text-transparent">
+              move the needle, not just the deck.
+            </span>
+          </>
+        }
+        subtitle="MVP acceleration, scale engineering, FinOps that recovers real dollars, API productization. We engineer for the next 10x — and the one after it."
+        primary={{ label: 'Scope a SaaS Build', href: '#contact' }}
+        secondary={{ label: 'Read the Helix Case Study', href: '#case-study' }}
+        stats={STATS}
+      />
 
-      {/* Hero — slate / electric blue / orange terminal vibe */}
-      <section className="relative overflow-hidden bg-[#0B0D12] text-white pt-24 pb-24 sm:pt-28 sm:pb-32">
+      {/* Hero — slate / electric blue / orange terminal vibe (LEGACY — hidden) */}
+      <section className="hidden relative overflow-hidden bg-[#0B0D12] text-white pt-24 pb-24 sm:pt-28 sm:pb-32">
         {/* Background grid + glows */}
         <div
           aria-hidden

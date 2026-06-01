@@ -2,136 +2,135 @@
 
 import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { Quote } from 'lucide-react';
+import { Quote, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { TESTIMONIALS } from '@/lib/constants';
 import { cn, easingCurve } from '@/lib/utils';
 
 type Testimonial = (typeof TESTIMONIALS)[number];
 
-// ---------------------------------------------------------------------------
-// Vertical Marquee primitive — self-contained, no external deps
-// ---------------------------------------------------------------------------
-interface VerticalMarqueeProps {
-  items: Testimonial[];
-  reverse?: boolean;
-  duration?: string;
-  className?: string;
-  repeat?: number;
+const AUTOPLAY_MS = 5500;
+const TRANSITION_MS = 700;
+
+function useSlidesPerView() {
+  const [n, setN] = useState(3);
+  useEffect(() => {
+    const update = () => {
+      const w = window.innerWidth;
+      if (w < 640) setN(1);
+      else if (w < 1024) setN(2);
+      else setN(3);
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
+  return n;
 }
 
-function VerticalMarquee({
-  items,
-  reverse = false,
-  duration = '40s',
-  className,
-  repeat = 3,
-}: VerticalMarqueeProps) {
-  return (
-    <div
-      className={cn(
-        'group flex flex-col overflow-hidden [--gap:1rem] [gap:var(--gap)]',
-        className,
-      )}
-      style={{ ['--duration' as string]: duration }}
-    >
-      {Array.from({ length: repeat }).map((_, i) => (
-        <div
-          key={i}
-          className={cn(
-            'flex shrink-0 flex-col justify-around [gap:var(--gap)] animate-marquee-v',
-            reverse && '[animation-direction:reverse]',
-            'group-hover:[animation-play-state:paused]',
-          )}
-        >
-          {items.map((t) => (
-            <TestimonialCard key={`${i}-${t.author}`} testimonial={t} />
-          ))}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-// ---------------------------------------------------------------------------
-// Testimonial card — Aayulogic glass style, light theme
-// ---------------------------------------------------------------------------
 function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   return (
     <figure
       className={cn(
-        'relative w-64 sm:w-72 shrink-0 rounded-md',
-        'border border-slate-200 bg-white p-5',
-        'shadow-[0_10px_30px_-15px_rgba(10,25,47,0.10)]',
-        'transition-colors duration-300',
-        'hover:border-brand-blue/30',
+        'relative h-full flex flex-col rounded-2xl',
+        'border border-slate-200 bg-white p-6 sm:p-7',
+        'shadow-[0_12px_30px_-16px_rgba(10,25,47,0.12)]',
+        'hover:border-brand-blue/30 transition-colors duration-300',
       )}
     >
       <Quote
-        className="absolute top-4 right-4 w-5 h-5 text-brand-cyan/30"
+        className="absolute top-5 right-5 w-7 h-7 text-brand-cyan/25"
         fill="currentColor"
         aria-hidden
       />
 
-      <div className="flex items-center gap-3">
-        <div className="relative w-10 h-10 rounded-full overflow-hidden border border-brand-blue/20 flex-shrink-0">
+      <blockquote className="text-[15px] leading-relaxed text-slate-700 mb-6 flex-1">
+        &ldquo;{testimonial.quote}&rdquo;
+      </blockquote>
+
+      <figcaption className="flex items-center gap-3 pt-4 border-t border-slate-100">
+        <div className="relative w-11 h-11 rounded-full overflow-hidden border border-brand-blue/20 flex-shrink-0">
           <Image
             src={testimonial.avatar}
             alt={testimonial.author}
             fill
-            sizes="40px"
+            sizes="44px"
             className="object-cover"
           />
         </div>
-        <figcaption className="min-w-0">
+        <div className="min-w-0">
           <p className="text-sm font-bold text-brand-navy truncate">
             {testimonial.author}
           </p>
           <p className="text-xs text-slate-500 truncate">
             {testimonial.role} ·{' '}
-            <span className="text-brand-blue font-semibold">
-              {testimonial.company}
-            </span>
+            <span className="text-brand-blue font-semibold">{testimonial.company}</span>
           </p>
-        </figcaption>
-      </div>
-
-      <blockquote className="mt-3 text-[13px] leading-relaxed text-slate-700">
-        &ldquo;{testimonial.quote}&rdquo;
-      </blockquote>
+        </div>
+      </figcaption>
     </figure>
   );
 }
 
-// ---------------------------------------------------------------------------
-// Section
-// ---------------------------------------------------------------------------
 export function TestimonialsSection() {
-  // Split the list across 4 columns so each lane feels distinct
-  const chunk = (arr: Testimonial[], n: number) => {
-    const out: Testimonial[][] = Array.from({ length: n }, () => []);
-    arr.forEach((item, i) => out[i % n].push(item));
-    return out;
-  };
-  const [colA, colB, colC, colD] = chunk(TESTIMONIALS, 4);
+  const slidesPerView = useSlidesPerView();
+  const total = TESTIMONIALS.length;
+
+  // Pad with copies of the head so the loop wraps seamlessly.
+  const slides = useMemo(
+    () => [...TESTIMONIALS, ...TESTIMONIALS.slice(0, slidesPerView)],
+    [slidesPerView],
+  );
+
+  const [index, setIndex] = useState(0);
+  const [animate, setAnimate] = useState(true);
+  const [paused, setPaused] = useState(false);
+  const indexRef = useRef(index);
+  indexRef.current = index;
+
+  const next = useCallback(() => {
+    setAnimate(true);
+    setIndex((i) => i + 1);
+  }, []);
+
+  const prev = useCallback(() => {
+    setAnimate(true);
+    setIndex((i) => (i <= 0 ? total - 1 : i - 1));
+  }, [total]);
+
+  useEffect(() => {
+    if (paused) return;
+    const id = window.setInterval(next, AUTOPLAY_MS);
+    return () => window.clearInterval(id);
+  }, [paused, next, slidesPerView]);
+
+  // Snap back to start without transition once we've crossed the duplicates.
+  useEffect(() => {
+    if (index >= total) {
+      const t = window.setTimeout(() => {
+        setAnimate(false);
+        setIndex(0);
+      }, TRANSITION_MS);
+      return () => window.clearTimeout(t);
+    }
+    if (!animate) {
+      const raf = requestAnimationFrame(() => setAnimate(true));
+      return () => cancelAnimationFrame(raf);
+    }
+  }, [index, total, animate]);
+
+  const slideWidth = 100 / slidesPerView;
+  const translate = -(index * slideWidth);
+  const activeDot = ((index % total) + total) % total;
 
   return (
     <section className="relative bg-white py-20 sm:py-24 lg:py-32 px-6 sm:px-8 lg:px-12 overflow-hidden">
-      {/* Soft branded background wash — subtle, stays white-feeling */}
       <div
         aria-hidden
         className="absolute inset-0 pointer-events-none"
         style={{
           background:
-            'radial-gradient(60% 50% at 50% 0%, rgba(0,194,255,0.06) 0%, transparent 60%), radial-gradient(50% 50% at 50% 100%, rgba(4,92,179,0.05) 0%, transparent 60%)',
-        }}
-      />
-      <div
-        aria-hidden
-        className="absolute inset-0 pointer-events-none opacity-[0.025]"
-        style={{
-          backgroundImage:
-            'linear-gradient(to right, #0A192F 1px, transparent 1px), linear-gradient(to bottom, #0A192F 1px, transparent 1px)',
-          backgroundSize: '64px 64px',
+            'radial-gradient(60% 50% at 50% 0%, rgba(0,194,255,0.05) 0%, transparent 60%), radial-gradient(50% 50% at 50% 100%, rgba(4,92,179,0.04) 0%, transparent 60%)',
         }}
       />
 
@@ -148,66 +147,80 @@ export function TestimonialsSection() {
             Voices of Partnership
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-brand-navy leading-[1.1] tracking-tight">
-            What Industry Leaders Say{' '}
+            What leaders say about{' '}
             <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-              About Working With Us
+              working with us
             </span>
           </h2>
           <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed">
-            Technology executives, product leaders, and enterprise teams discuss the impact of partnering with Aayulogic — from faster execution and stronger engineering capabilities to scalable systems built for long-term growth.
+            Technology executives, product leaders, and enterprise teams on the impact of partnering with Aayulogic — faster execution, stronger engineering, systems built to last.
           </p>
         </motion.div>
 
-        {/* 3D vertical marquee stage */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: '-50px' }}
-          transition={{ duration: 0.8, ease: easingCurve.industrial }}
-          className="relative h-[520px] sm:h-[600px] lg:h-[680px] w-full overflow-hidden [perspective:1000px]"
+        {/* Carousel */}
+        <div
+          className="relative"
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
         >
-          {/* Inner 3D tilt — flattens on mobile so it stays readable */}
-          <div
-            className="
-              flex h-full flex-row items-start justify-center
-              gap-3 sm:gap-5 lg:gap-6
-              [transform:translateZ(-20px)_rotateX(8deg)_rotateY(-6deg)_rotateZ(2deg)]
-              sm:[transform:translateZ(-60px)_rotateX(14deg)_rotateY(-10deg)_rotateZ(6deg)]
-              lg:[transform:translateZ(-100px)_rotateX(18deg)_rotateY(-12deg)_rotateZ(10deg)]
-              [transform-origin:center_center]
-            "
-          >
-            {/* Mobile: 2 columns. Tablet: 3. Desktop: 4 */}
-            <VerticalMarquee
-              items={colA}
-              duration="36s"
-              className="h-full"
-            />
-            <VerticalMarquee
-              items={colB}
-              reverse
-              duration="44s"
-              className="h-full"
-            />
-            <VerticalMarquee
-              items={colC}
-              duration="40s"
-              className="hidden sm:flex h-full"
-            />
-            <VerticalMarquee
-              items={colD}
-              reverse
-              duration="48s"
-              className="hidden lg:flex h-full"
-            />
+          <div className="overflow-hidden">
+            <div
+              className="flex"
+              style={{
+                transform: `translate3d(${translate}%, 0, 0)`,
+                transition: animate
+                  ? `transform ${TRANSITION_MS}ms cubic-bezier(0.16, 1, 0.3, 1)`
+                  : 'none',
+              }}
+            >
+              {slides.map((t, i) => (
+                <div
+                  key={`${t.author}-${i}`}
+                  className="flex-shrink-0 px-3"
+                  style={{ width: `${slideWidth}%` }}
+                >
+                  <TestimonialCard testimonial={t} />
+                </div>
+              ))}
+            </div>
           </div>
 
-          {/* White edge fades — keep the section feeling fully white */}
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-1/4 bg-gradient-to-b from-white via-white/80 to-transparent" />
-          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-white via-white/80 to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-12 sm:w-24 lg:w-32 bg-gradient-to-r from-white via-white/70 to-transparent" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-12 sm:w-24 lg:w-32 bg-gradient-to-l from-white via-white/70 to-transparent" />
-        </motion.div>
+          {/* Arrow controls */}
+          <button
+            aria-label="Previous testimonial"
+            onClick={prev}
+            className="hidden sm:flex absolute -left-2 lg:-left-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white border border-slate-200 shadow-md items-center justify-center text-brand-navy hover:bg-brand-blue hover:text-white hover:border-brand-blue transition-colors"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button
+            aria-label="Next testimonial"
+            onClick={next}
+            className="hidden sm:flex absolute -right-2 lg:-right-4 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white border border-slate-200 shadow-md items-center justify-center text-brand-navy hover:bg-brand-blue hover:text-white hover:border-brand-blue transition-colors"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </div>
+
+        {/* Dots */}
+        <div className="mt-8 flex items-center justify-center gap-2">
+          {TESTIMONIALS.map((_, i) => (
+            <button
+              key={i}
+              aria-label={`Go to testimonial ${i + 1}`}
+              onClick={() => {
+                setAnimate(true);
+                setIndex(i);
+              }}
+              className={cn(
+                'h-1.5 rounded-full transition-all',
+                i === activeDot
+                  ? 'w-8 bg-brand-blue'
+                  : 'w-1.5 bg-slate-300 hover:bg-brand-blue/60',
+              )}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );

@@ -19,6 +19,7 @@ import {
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CTABand } from '@/components/section/CTABand';
+import { IndustryHero } from '@/components/industry-hero';
 import { easingCurve } from '@/lib/utils';
 
 const CHALLENGES = [
@@ -154,19 +155,26 @@ export function MediaClient() {
     <>
       <Header />
 
-      {/* Breadcrumb */}
-      <div className="bg-white border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-3 flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-brand-blue transition-colors">Home</Link>
-          <span>/</span>
-          <Link href="/industries" className="hover:text-brand-blue transition-colors">Industries</Link>
-          <span>/</span>
-          <span className="text-brand-navy font-medium">Media & Entertainment</span>
-        </div>
-      </div>
+      <IndustryHero
+        breadcrumbName="Media & Entertainment"
+        industry="Media & Entertainment"
+        icon={Clapperboard}
+        title={
+          <>
+            Built for the{' '}
+            <span className="bg-gradient-to-r from-brand-cyan via-white to-brand-cyan bg-clip-text text-transparent">
+              press deadline &amp; the live whistle.
+            </span>
+          </>
+        }
+        subtitle="Low-latency streaming, CV-powered DAM, automated print composition, and paywalls that don't crater SEO. We engineer for the moment newsrooms have, not the moment they wish they had."
+        primary={{ label: 'Scope a Media Build', href: '#contact' }}
+        secondary={{ label: 'Read the Cobalt Case Study', href: '#case-study' }}
+        stats={STATS}
+      />
 
-      {/* Hero — cinematic black + magenta */}
-      <section className="relative overflow-hidden bg-[#0A0612] text-white pt-24 pb-24 sm:pt-28 sm:pb-32">
+      {/* Hero — cinematic black + magenta (LEGACY — hidden) */}
+      <section className="hidden relative overflow-hidden bg-[#0A0612] text-white pt-24 pb-24 sm:pt-28 sm:pb-32">
         {/* Vibrant accent radials */}
         <div
           aria-hidden

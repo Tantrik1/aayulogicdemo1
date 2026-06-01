@@ -1,7 +1,7 @@
 'use client';
 
-import { useRef } from 'react';
-import { motion, useInView, useScroll, useTransform } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Compass,
   PenTool,
@@ -10,14 +10,14 @@ import {
   Rocket,
   LineChart,
 } from 'lucide-react';
-import { motionConfig, easingCurve } from '@/lib/utils';
+import { easingCurve } from '@/lib/utils';
 
 type Step = {
   number: string;
   title: string;
   description: string;
   icon: React.ComponentType<{ className?: string }>;
-  accent: string;
+  highlights: string[];
 };
 
 const STEPS: Step[] = [
@@ -27,353 +27,296 @@ const STEPS: Step[] = [
     description:
       'We start by understanding your business, users, and goals — translating vision into a clear technical roadmap with measurable outcomes.',
     icon: Compass,
-    accent: 'from-brand-blue to-brand-cyan',
+    highlights: ['Stakeholder interviews', 'Outcome KPIs', 'Roadmap'],
   },
   {
     number: '02',
     title: 'Design & Architecture',
     description:
-      'Wireframes, system design, and UI prototypes are built collaboratively — ensuring scalable architecture before a single line of code is written.',
+      'Wireframes, system design, and prototypes built collaboratively — scalable architecture before a single line of code is written.',
     icon: PenTool,
-    accent: 'from-brand-cyan to-brand-blue',
+    highlights: ['System design', 'UI prototypes', 'Scope sign-off'],
   },
   {
     number: '03',
     title: 'Development',
     description:
-      'Our engineers ship in agile sprints with code reviews, version control, and continuous integration — building reliable, maintainable systems.',
+      'Engineers ship in agile sprints with code reviews, version control, and continuous integration — building reliable, maintainable systems.',
     icon: Code2,
-    accent: 'from-brand-blue to-brand-cyan',
+    highlights: ['Agile sprints', 'Code reviews', 'CI on every PR'],
   },
   {
     number: '04',
     title: 'Automation & QA',
     description:
-      'Automated testing, CI/CD pipelines, and quality gates ensure every release is verified, secure, and ready for production at scale.',
+      'Automated testing and quality gates ensure every release is verified, secure, and ready for production at scale.',
     icon: Workflow,
-    accent: 'from-brand-cyan to-brand-blue',
+    highlights: ['Test pyramid', 'Security checks', 'Quality gates'],
   },
   {
     number: '05',
     title: 'Deployment & Launch',
     description:
-      'We deploy with zero-downtime strategies, monitoring, and rollback plans — so your launch is smooth, predictable, and instrumented from day one.',
+      'Zero-downtime strategies, monitoring, and rollback plans — your launch is smooth, predictable, and instrumented from day one.',
     icon: Rocket,
-    accent: 'from-brand-blue to-brand-cyan',
+    highlights: ['Zero-downtime', 'Observability', 'Rollback plan'],
   },
   {
     number: '06',
     title: 'Iterate & Scale',
     description:
-      'Post-launch, we monitor performance, gather insights, and continuously improve — turning every release into a foundation for the next.',
+      'Post-launch we monitor performance, gather insights, and continuously improve — turning every release into a foundation for the next.',
     icon: LineChart,
-    accent: 'from-brand-cyan to-brand-blue',
+    highlights: ['Live telemetry', 'Continuous delivery', 'Scale playbooks'],
   },
 ];
 
+const AUTO_MS = 4800;
+
 export function HowWeWork() {
-  const sectionRef = useRef<HTMLDivElement>(null);
-  const gridRef = useRef<HTMLDivElement>(null);
-  const gridInView = useInView(gridRef, { once: true, margin: '-80px' });
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
 
-  // Vertical progress rail tied to scroll position over the section
-  const { scrollYProgress } = useScroll({
-    target: sectionRef,
-    offset: ['start 70%', 'end 30%'],
-  });
-  const railHeight = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
+  useEffect(() => {
+    if (paused) return;
+    const id = window.setInterval(() => {
+      setActive((i) => (i + 1) % STEPS.length);
+    }, AUTO_MS);
+    return () => window.clearInterval(id);
+  }, [paused]);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.12, delayChildren: 0.15 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 28, scale: 0.97 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      scale: 1,
-      transition: { duration: 0.7, ease: easingCurve.industrial },
-    },
-  };
+  const ActiveIcon = STEPS[active].icon;
 
   return (
     <section
-      ref={sectionRef}
       id="how-we-work"
-      className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden"
+      className="relative min-h-screen flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-16 lg:py-20 overflow-hidden"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
     >
-      {/* Ambient backdrop — matches Services section */}
+      {/* Ambient backdrop */}
       <div
         aria-hidden
-        className="absolute inset-0 opacity-60 pointer-events-none"
+        className="absolute inset-0 opacity-70 pointer-events-none"
         style={{
           background:
-            'radial-gradient(40% 30% at 80% 10%, rgba(0,194,255,0.06) 0%, transparent 70%), radial-gradient(40% 30% at 0% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)',
+            'radial-gradient(45% 35% at 85% 10%, rgba(0,194,255,0.08) 0%, transparent 70%), radial-gradient(45% 35% at 5% 90%, rgba(4,92,179,0.07) 0%, transparent 70%)',
         }}
       />
 
-      <div className="relative max-w-7xl mx-auto">
-        {/* =============== HEADER =============== */}
+      <div className="relative max-w-7xl mx-auto w-full">
+        {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
-          transition={motionConfig.default}
-          className="text-center max-w-3xl mx-auto mb-12 lg:mb-16"
+          transition={{ duration: 0.5, ease: easingCurve.industrial }}
+          className="text-center max-w-3xl mx-auto mb-10 lg:mb-12"
         >
-          <span className="inline-block text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-4">
+          <span className="inline-block text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-3">
             How We Work
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-brand-navy leading-[1.1] tracking-tight">
-            6 Easy Steps To{' '}
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-navy leading-[1.1] tracking-tight">
+            Six steps.{' '}
             <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-              Work With Us
+              One way we work.
             </span>
-            .
           </h2>
-          <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed">
-            From strategy and design to development, automation, and deployment — we
-            follow a transparent, agile, and collaborative workflow that ensures every
-            project is delivered with speed, precision, and long-term scalability.
+          <p className="mt-4 text-base text-slate-600 leading-relaxed">
+            A transparent, repeatable engineering workflow that turns vision into systems built to last.
           </p>
         </motion.div>
 
-        {/* =============== STEPS — TIMELINE LAYOUT =============== */}
-        <div ref={gridRef} className="relative">
-          {/* Center vertical rail (lg+) */}
-          <div
-            aria-hidden
-            className="hidden lg:block absolute left-1/2 top-0 bottom-0 -translate-x-1/2 w-px"
-            style={{
-              background:
-                'linear-gradient(to bottom, transparent 0%, rgba(4,92,179,0.18) 8%, rgba(0,194,255,0.30) 92%, transparent 100%)',
-            }}
-          />
-          {/* Animated scroll-progress fill on the rail */}
-          <motion.div
-            aria-hidden
-            className="hidden lg:block absolute left-1/2 top-0 -translate-x-1/2 w-[2px] rounded-full bg-gradient-to-b from-brand-blue via-brand-cyan to-brand-blue origin-top"
-            style={{ height: railHeight, boxShadow: '0 0 12px rgba(0,194,255,0.55)' }}
-          />
-
-          {/* Mobile: single column. Tablet: 2-column. Desktop: zig-zag along center rail */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate={gridInView ? 'visible' : 'hidden'}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6 lg:gap-0"
-          >
-            {STEPS.map((step, i) => {
-              const Icon = step.icon;
-              const isLeft = i % 2 === 0;
-              return (
-                <motion.div
-                  key={step.number}
-                  variants={itemVariants}
-                  className={[
-                    'relative lg:grid lg:grid-cols-2 lg:gap-12 lg:items-center',
-                    i !== 0 ? 'lg:-mt-6' : '',
-                  ].join(' ')}
-                >
-                  {/* Center node on rail */}
-                  <div
-                    aria-hidden
-                    className="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-10 items-center justify-center"
-                  >
-                    <motion.span
-                      className="block w-3 h-3 rounded-full bg-white border-2 border-brand-cyan shadow-[0_0_0_4px_rgba(0,194,255,0.18)]"
-                      animate={{
-                        boxShadow: [
-                          '0 0 0 4px rgba(0,194,255,0.20)',
-                          '0 0 0 12px rgba(0,194,255,0.06)',
-                          '0 0 0 4px rgba(0,194,255,0.20)',
-                        ],
-                      }}
-                      transition={{
-                        duration: 2.6,
-                        repeat: Infinity,
-                        ease: 'easeInOut',
-                        delay: i * 0.2,
-                      }}
-                    />
-                  </div>
-
-                  {/* Card column */}
-                  <div
-                    className={[
-                      'relative py-3 lg:py-12',
-                      isLeft ? 'lg:col-start-1' : 'lg:col-start-2',
-                    ].join(' ')}
-                  >
-                    {/* Connector arm from rail to card (desktop) */}
-                    <div
-                      aria-hidden
-                      className={[
-                        'hidden lg:block absolute top-1/2 -translate-y-1/2 h-px',
-                        isLeft
-                          ? 'right-0 left-auto w-12 bg-gradient-to-l from-brand-cyan/60 to-transparent'
-                          : 'left-0 right-auto w-12 bg-gradient-to-r from-brand-cyan/60 to-transparent',
-                      ].join(' ')}
-                      style={{
-                        [isLeft ? 'right' : 'left']: '-48px',
-                      } as React.CSSProperties}
-                    />
-
-                    <motion.div
-                      whileHover={{ y: -6 }}
-                      transition={{ duration: 0.4, ease: easingCurve.industrial }}
-                      className="group relative rounded-2xl shadow-[0_12px_32px_-12px_rgba(4,92,179,0.18),0_4px_12px_-4px_rgba(10,25,47,0.08)] hover:shadow-[0_24px_56px_-16px_rgba(4,92,179,0.30),0_8px_20px_-6px_rgba(0,194,255,0.20)] transition-shadow"
-                    >
-                      {/* Gradient border wrapper */}
-                      <div
-                        aria-hidden
-                        className="absolute inset-0 rounded-2xl bg-gradient-to-br from-brand-blue/40 via-slate-200 to-brand-cyan/40 group-hover:from-brand-blue/70 group-hover:via-brand-blue/30 group-hover:to-brand-cyan/70 transition-colors duration-500 pointer-events-none"
-                      />
-
-                      {/* Inner white card */}
-                      <div className="relative m-[1.5px] rounded-[15px] bg-white p-6 sm:p-7 lg:p-8 flex flex-col overflow-hidden">
-                      {/* Hover glow ribbon */}
-                      <div
-                        aria-hidden
-                        className="absolute top-0 right-0 w-64 h-64 rounded-full bg-gradient-to-br from-brand-blue/10 to-brand-cyan/15 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-                        style={{ transform: 'translate(40%, -40%)' }}
-                      />
-                      {/* Soft inner gradient wash for depth */}
-                      <div
-                        aria-hidden
-                        className="absolute inset-0 pointer-events-none opacity-60"
-                        style={{
-                          background:
-                            'radial-gradient(120% 80% at 0% 0%, rgba(4,92,179,0.04) 0%, transparent 55%), radial-gradient(100% 70% at 100% 100%, rgba(0,194,255,0.05) 0%, transparent 60%)',
-                        }}
-                      />
-                      {/* Diagonal sheen on hover */}
-                      <motion.div
-                        aria-hidden
-                        className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none"
-                        style={{
-                          background:
-                            'linear-gradient(135deg, transparent 30%, rgba(0,194,255,0.08) 50%, transparent 70%)',
-                        }}
-                      />
-
-                      <div className="relative flex items-start justify-between mb-5">
-                        {/* Icon tile with rotating ring */}
-                        <div className="relative">
-                          {/* Rotating dashed ring */}
-                          <motion.div
-                            aria-hidden
-                            className="absolute -inset-2 rounded-2xl"
-                            style={{
-                              background:
-                                'conic-gradient(from 0deg, rgba(4,92,179,0.35), rgba(0,194,255,0.35), rgba(4,92,179,0) 60%, rgba(4,92,179,0.35))',
-                              WebkitMask:
-                                'radial-gradient(farthest-side, transparent calc(100% - 2px), black calc(100% - 2px))',
-                              mask:
-                                'radial-gradient(farthest-side, transparent calc(100% - 2px), black calc(100% - 2px))',
-                            }}
-                            animate={{ rotate: 360 }}
-                            transition={{
-                              duration: 14,
-                              repeat: Infinity,
-                              ease: 'linear',
-                            }}
-                          />
-                          {/* Blur glow */}
-                          <div
-                            aria-hidden
-                            className="absolute inset-0 rounded-xl bg-brand-blue/20 blur-xl opacity-50 group-hover:opacity-100 transition-opacity"
-                          />
-                          <motion.div
-                            whileHover={{ scale: 1.08, rotate: -4 }}
-                            transition={{ type: 'spring', stiffness: 220, damping: 16 }}
-                            className={`relative w-14 h-14 rounded-xl bg-gradient-to-br ${step.accent} flex items-center justify-center shadow-[0_10px_24px_-6px_rgba(4,92,179,0.5)]`}
-                          >
-                            <Icon className="w-6 h-6 text-white" />
-                          </motion.div>
-                        </div>
-
-                        {/* Step number — massive, faint */}
-                        <motion.span
-                          initial={{ opacity: 0, x: 10 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          viewport={{ once: true }}
-                          transition={{
-                            delay: i * 0.08 + 0.3,
-                            duration: 0.6,
-                            ease: easingCurve.industrial,
-                          }}
-                          className="text-4xl sm:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-slate-200 to-slate-300 group-hover:from-brand-blue/30 group-hover:to-brand-cyan/40 transition-colors leading-none tracking-tight select-none"
-                        >
-                          {step.number}
-                        </motion.span>
-                      </div>
-
-                      <div className="relative flex flex-col flex-1">
-                        <h3 className="text-lg sm:text-xl font-bold text-brand-navy leading-tight tracking-tight mb-3 group-hover:text-brand-blue transition-colors">
-                          {step.title}
-                        </h3>
-                        <p className="text-sm text-slate-600 leading-relaxed">
-                          {step.description}
-                        </p>
-                      </div>
-
-                      {/* Bottom accent line — grows on hover */}
-                      <div
-                        aria-hidden
-                        className="relative mt-6 h-[2px] w-12 rounded-full bg-gradient-to-r from-brand-blue to-brand-cyan opacity-70 group-hover:w-24 transition-all duration-500"
-                      />
-
-                      {/* Corner micro-dots */}
-                      <div
-                        aria-hidden
-                        className="absolute top-3 right-3 flex gap-1 opacity-40 group-hover:opacity-100 transition-opacity"
-                      >
-                        <span className="w-1 h-1 rounded-full bg-brand-blue" />
-                        <span className="w-1 h-1 rounded-full bg-brand-cyan" />
-                        <span className="w-1 h-1 rounded-full bg-slate-300" />
-                      </div>
-                      </div>
-                    </motion.div>
-                  </div>
-
-                  {/* Empty opposite column on desktop preserves layout */}
-                  <div
-                    aria-hidden
-                    className={[
-                      'hidden lg:block',
-                      isLeft ? 'lg:col-start-2' : 'lg:col-start-1',
-                    ].join(' ')}
+        {/* Step Tabs Row */}
+        <div className="grid grid-cols-3 lg:grid-cols-6 gap-2 lg:gap-3 mb-8 lg:mb-10">
+          {STEPS.map((step, i) => {
+            const Icon = step.icon;
+            const isActive = i === active;
+            return (
+              <button
+                key={step.number}
+                onClick={() => setActive(i)}
+                className={`group relative rounded-xl p-3 lg:p-4 text-left border transition-all overflow-hidden ${
+                  isActive
+                    ? 'border-brand-blue/40 bg-white shadow-[0_10px_28px_-14px_rgba(4,92,179,0.32)]'
+                    : 'border-slate-200 bg-white/60 hover:border-brand-blue/20 hover:bg-white'
+                }`}
+              >
+                {isActive && (
+                  <motion.span
+                    layoutId="howActiveBar"
+                    className="absolute inset-x-0 bottom-0 h-[3px] bg-gradient-to-r from-brand-blue to-brand-cyan"
+                    transition={{ duration: 0.4, ease: easingCurve.industrial }}
                   />
-                </motion.div>
-              );
-            })}
-          </motion.div>
+                )}
+                <div className="flex items-center gap-2 mb-1.5">
+                  <span
+                    className={`flex items-center justify-center w-7 h-7 lg:w-8 lg:h-8 rounded-lg transition-colors ${
+                      isActive
+                        ? 'bg-gradient-to-br from-brand-blue to-brand-cyan text-white'
+                        : 'bg-slate-100 text-slate-500 group-hover:text-brand-blue'
+                    }`}
+                  >
+                    <Icon className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
+                  </span>
+                  <span
+                    className={`text-[10px] lg:text-xs font-bold tracking-[0.16em] ${
+                      isActive ? 'text-brand-blue' : 'text-slate-400'
+                    }`}
+                  >
+                    {step.number}
+                  </span>
+                </div>
+                <h3
+                  className={`text-xs lg:text-sm font-semibold leading-tight ${
+                    isActive ? 'text-brand-navy' : 'text-slate-600'
+                  }`}
+                >
+                  {step.title}
+                </h3>
+              </button>
+            );
+          })}
+        </div>
 
-          {/* End-of-rail flourish (desktop) */}
-          <motion.div
-            aria-hidden
-            initial={{ opacity: 0, scale: 0.5 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4, duration: 0.6, ease: easingCurve.industrial }}
-            className="hidden lg:flex absolute left-1/2 -bottom-2 -translate-x-1/2 items-center justify-center"
-          >
-            <div className="relative">
+        {/* Stage — split panel */}
+        <div className="relative grid lg:grid-cols-[1.05fr_1fr] gap-6 lg:gap-8 items-stretch">
+          {/* Left: Copy */}
+          <div className="relative rounded-2xl bg-white border border-slate-200 p-6 sm:p-8 lg:p-10 shadow-[0_18px_44px_-22px_rgba(4,92,179,0.28)] overflow-hidden">
+            <div
+              aria-hidden
+              className="absolute -top-12 -right-12 w-56 h-56 rounded-full bg-gradient-to-br from-brand-blue/15 to-brand-cyan/20 blur-3xl pointer-events-none"
+            />
+            <AnimatePresence mode="wait">
               <motion.div
-                className="absolute inset-0 rounded-full bg-brand-cyan/40 blur-xl"
-                animate={{ scale: [1, 1.3, 1], opacity: [0.4, 0.7, 0.4] }}
+                key={active}
+                initial={{ opacity: 0, y: 14 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.45, ease: easingCurve.industrial }}
+                className="relative"
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-brand-blue to-brand-cyan shadow-md shadow-brand-blue/30">
+                    <ActiveIcon className="w-5 h-5 text-white" />
+                  </span>
+                  <span className="text-xs font-bold uppercase tracking-[0.22em] text-brand-blue">
+                    Step {STEPS[active].number} of 06
+                  </span>
+                </div>
+                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-navy leading-tight tracking-tight mb-4">
+                  {STEPS[active].title}
+                </h3>
+                <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-6">
+                  {STEPS[active].description}
+                </p>
+                <div className="flex flex-wrap gap-2">
+                  {STEPS[active].highlights.map((h) => (
+                    <span
+                      key={h}
+                      className="px-3 py-1 text-xs font-semibold text-brand-blue bg-brand-blue/8 rounded-full"
+                    >
+                      {h}
+                    </span>
+                  ))}
+                </div>
+                <div className="mt-6 h-[2px] w-24 rounded-full bg-gradient-to-r from-brand-blue to-brand-cyan" />
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Right: Orbit visual */}
+          <div className="relative rounded-2xl bg-gradient-to-br from-brand-navy via-[#0a1c4a] to-brand-navy overflow-hidden min-h-[320px] lg:min-h-[420px] flex items-center justify-center">
+            {/* Ambient glow */}
+            <div
+              aria-hidden
+              className="absolute -top-16 -left-16 w-72 h-72 rounded-full bg-brand-blue/30 blur-3xl"
+            />
+            <div
+              aria-hidden
+              className="absolute -bottom-20 -right-16 w-72 h-72 rounded-full bg-brand-cyan/25 blur-3xl"
+            />
+
+            {/* Rotating rings */}
+            {[1, 2, 3].map((r, i) => (
+              <motion.div
+                key={r}
+                aria-hidden
+                className="absolute inset-0 m-auto rounded-full border border-white/10"
+                style={{
+                  width: `${42 + i * 18}%`,
+                  height: `${42 + i * 18}%`,
+                  borderStyle: i === 1 ? 'dashed' : 'solid',
+                }}
+                animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
+                transition={{ duration: 36 + i * 8, repeat: Infinity, ease: 'linear' }}
+              />
+            ))}
+
+            {/* Step dots on outer ring */}
+            <div className="absolute inset-0 m-auto" style={{ width: '78%', height: '78%' }}>
+              {STEPS.map((_, i) => {
+                const angle = (i / STEPS.length) * 360 - 90;
+                const rad = (angle * Math.PI) / 180;
+                const x = 50 + 50 * Math.cos(rad);
+                const y = 50 + 50 * Math.sin(rad);
+                const isActive = i === active;
+                return (
+                  <button
+                    key={i}
+                    onClick={() => setActive(i)}
+                    className="absolute -translate-x-1/2 -translate-y-1/2 group"
+                    style={{ left: `${x}%`, top: `${y}%` }}
+                    aria-label={`Go to step ${i + 1}`}
+                  >
+                    <span
+                      className={`flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full text-[10px] sm:text-xs font-bold transition-all ${
+                        isActive
+                          ? 'bg-gradient-to-br from-brand-blue to-brand-cyan text-white scale-125 shadow-[0_0_24px_rgba(0,194,255,0.6)]'
+                          : 'bg-white/10 text-white/70 hover:bg-white/20'
+                      }`}
+                    >
+                      {i + 1}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Center medallion */}
+            <div className="relative flex flex-col items-center justify-center">
+              <motion.div
+                aria-hidden
+                className="absolute inset-0 rounded-full bg-brand-cyan/40 blur-2xl"
+                animate={{ scale: [1, 1.18, 1], opacity: [0.45, 0.7, 0.45] }}
                 transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
               />
-              <div className="relative w-4 h-4 rounded-full bg-gradient-to-br from-brand-blue to-brand-cyan shadow-[0_0_20px_rgba(0,194,255,0.6)]" />
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={active}
+                  initial={{ scale: 0.7, opacity: 0, rotate: -20 }}
+                  animate={{ scale: 1, opacity: 1, rotate: 0 }}
+                  exit={{ scale: 0.7, opacity: 0, rotate: 20 }}
+                  transition={{ duration: 0.4, ease: easingCurve.industrial }}
+                  className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-brand-blue to-brand-cyan flex items-center justify-center shadow-[0_18px_44px_-12px_rgba(0,194,255,0.6)]"
+                >
+                  <ActiveIcon className="w-10 h-10 sm:w-12 sm:h-12 text-white" />
+                </motion.div>
+              </AnimatePresence>
+              <p className="relative mt-4 text-[10px] sm:text-xs font-bold uppercase tracking-[0.24em] text-white/60">
+                Currently
+              </p>
+              <p className="relative text-sm sm:text-base font-semibold text-white">
+                {STEPS[active].title}
+              </p>
             </div>
-          </motion.div>
+          </div>
         </div>
+
+        {/* Auto-advance hint */}
+        <p className="mt-6 text-center text-xs text-slate-400">
+          {paused ? 'Paused' : 'Auto-advancing'} · click any step to jump
+        </p>
       </div>
     </section>
   );

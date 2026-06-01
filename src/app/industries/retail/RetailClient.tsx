@@ -18,6 +18,7 @@ import {
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CTABand } from '@/components/section/CTABand';
+import { IndustryHero } from '@/components/industry-hero';
 import { easingCurve } from '@/lib/utils';
 
 const CHALLENGES = [
@@ -158,19 +159,26 @@ export function RetailClient() {
     <>
       <Header />
 
-      {/* Breadcrumb */}
-      <div className="bg-white border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-3 flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-brand-blue transition-colors">Home</Link>
-          <span>/</span>
-          <Link href="/industries" className="hover:text-brand-blue transition-colors">Industries</Link>
-          <span>/</span>
-          <span className="text-brand-navy font-medium">Retail & Digital Commerce</span>
-        </div>
-      </div>
+      <IndustryHero
+        breadcrumbName="Retail & Digital Commerce"
+        industry="Retail & Digital Commerce"
+        icon={ShoppingCart}
+        title={
+          <>
+            Commerce that holds up{' '}
+            <span className="bg-gradient-to-r from-brand-cyan via-white to-brand-cyan bg-clip-text text-transparent">
+              on the worst day of the year.
+            </span>
+          </>
+        }
+        subtitle="Headless storefronts, real-time inventory, OMS with audit trails. We engineer commerce platforms that survive Black Friday — and convert better the other 364 days too."
+        primary={{ label: 'Scope a Commerce Build', href: '#contact' }}
+        secondary={{ label: 'Read the case study', href: '#case-study' }}
+        stats={STATS}
+      />
 
-      {/* Hero — bright commerce emerald + slate */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-white via-emerald-50/40 to-white pt-20 pb-24 sm:pt-24 sm:pb-32">
+      {/* Hero — bright commerce emerald + slate (LEGACY — hidden) */}
+      <section className="hidden relative overflow-hidden bg-gradient-to-b from-white via-emerald-50/40 to-white pt-20 pb-24 sm:pt-24 sm:pb-32">
         <div
           aria-hidden
           className="absolute -top-32 -right-32 w-[520px] h-[520px] rounded-full blur-3xl opacity-50"

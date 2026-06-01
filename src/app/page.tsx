@@ -2,9 +2,7 @@ import { Header } from '@/components/header';
 import { HeroSection } from '@/components/hero-section';
 import { AboutSection } from '@/components/about-section';
 import { ServicesGrid } from '@/components/services-grid';
-import GlobalOffices from '@/components/GlobalOffices';
 import { TechStackSection } from '@/components/tech-stack-section';
-import { TeamSection } from '@/components/team-section';
 import { CaseStudies } from '@/components/case-studies';
 import { TestimonialsSection } from '@/components/testimonials-section';
 import { BlogSection } from '@/components/blog-section';
@@ -22,8 +20,6 @@ export default function Home() {
       <HeroSection />
       <AboutSection />
       <ServicesGrid />
-      <TeamSection />
-      <GlobalOffices />
       <TestimonialsSection />
       <CaseStudies />
       <TechStackSection />

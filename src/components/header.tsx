@@ -60,6 +60,7 @@ export function Header() {
   );
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isOverDark, setIsOverDark] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const headerRef = useRef<HTMLElement>(null);
 
@@ -93,6 +94,7 @@ export function Header() {
 
   // Detect when the sticky header overlaps a [data-theme="dark"] section.
   // Used to flip nav text/logo to white over the dark ProductsShowcase panels.
+  // Also tracks scroll position so the header can shrink past the hero.
   useEffect(() => {
     let frame = 0;
 
@@ -111,6 +113,9 @@ export function Header() {
         }
       }
       setIsOverDark(overDark);
+      // Shrink header once user scrolls past a small threshold.
+      // Returns to original size when scrolled back near the top (i.e. over hero).
+      setIsScrolled(window.scrollY > 80);
     };
 
     const onScroll = () => {
@@ -149,7 +154,11 @@ export function Header() {
         <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-brand-cyan/20 to-transparent" />
 
         <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="flex items-center justify-between h-16 lg:h-20">
+          <div
+            className={`flex items-center justify-between transition-[height] duration-300 ease-out ${
+              isScrolled ? 'h-12 lg:h-14' : 'h-16 lg:h-20'
+            }`}
+          >
             {/* Logo */}
             <Link href="/" className="flex items-center group" aria-label="Aayulogic — Home">
               <Image
@@ -158,9 +167,9 @@ export function Header() {
                 width={1623}
                 height={429}
                 priority
-                className={`h-10 sm:h-11 lg:h-12 w-auto group-hover:opacity-90 transition-[filter,opacity] duration-300 ${
-                  isOverDark && !activeMenu ? 'brightness-0 invert' : ''
-                }`}
+                className={`w-auto group-hover:opacity-90 transition-[filter,opacity,height] duration-300 ${
+                  isScrolled ? 'h-7 sm:h-8 lg:h-9' : 'h-10 sm:h-11 lg:h-12'
+                } ${isOverDark && !activeMenu ? 'brightness-0 invert' : ''}`}
               />
             </Link>
 
@@ -173,7 +182,9 @@ export function Header() {
                   onClick={() =>
                     setActiveMenu(activeMenu === item.key ? null : item.key)
                   }
-                  className={`flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-md transition-all ${
+                  className={`flex items-center gap-1 rounded-md transition-all ${
+                    isScrolled ? 'px-3 py-1.5 text-[13px]' : 'px-4 py-2 text-sm'
+                  } font-medium ${
                     activeMenu === item.key
                       ? 'text-brand-blue bg-brand-blue/5'
                       : isOverDark
@@ -183,9 +194,9 @@ export function Header() {
                 >
                   {item.label}
                   <ChevronDown
-                    className={`w-4 h-4 transition-transform ${
-                      activeMenu === item.key ? 'rotate-180' : ''
-                    }`}
+                    className={`transition-transform ${
+                      isScrolled ? 'w-3.5 h-3.5' : 'w-4 h-4'
+                    } ${activeMenu === item.key ? 'rotate-180' : ''}`}
                   />
                 </button>
               ))}
@@ -198,7 +209,9 @@ export function Header() {
                 whileHover={{ y: -3, scale: 1.02 }}
                 whileTap={{ scale: 0.96 }}
                 transition={{ duration: 0.3, ease: easingCurve.industrial }}
-                className="group relative px-8 py-3.5 text-sm font-bold rounded-xl overflow-hidden shadow-lg"
+                className={`group relative font-bold rounded-xl overflow-hidden shadow-lg transition-[padding,font-size] duration-300 ${
+                  isScrolled ? 'px-5 py-2 text-xs' : 'px-8 py-3.5 text-sm'
+                }`}
               >
                 {/* Premium glassmorphic gradient */}
                 <div className="absolute inset-0 bg-gradient-to-br from-brand-blue to-brand-cyan opacity-95 rounded-xl" />
@@ -220,7 +233,9 @@ export function Header() {
             {/* Mobile Hamburger — animated three-line, brand-tinted */}
             <button
               onClick={() => setMobileOpen(true)}
-              className={`lg:hidden group relative w-11 h-11 -mr-1 rounded-xl flex items-center justify-center transition-all ${
+              className={`lg:hidden group relative -mr-1 rounded-xl flex items-center justify-center transition-all ${
+                isScrolled ? 'w-9 h-9' : 'w-11 h-11'
+              } ${
                 isOverDark
                   ? 'text-white hover:bg-white/10'
                   : 'text-brand-navy hover:bg-slate-100'

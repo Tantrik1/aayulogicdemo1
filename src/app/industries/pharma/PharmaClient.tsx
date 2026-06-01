@@ -18,6 +18,7 @@ import {
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CTABand } from '@/components/section/CTABand';
+import { IndustryHero } from '@/components/industry-hero';
 import { easingCurve } from '@/lib/utils';
 
 const CHALLENGES = [
@@ -172,19 +173,26 @@ export function PharmaClient() {
     <>
       <Header />
 
-      {/* Breadcrumb */}
-      <div className="bg-white border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-3 flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-brand-blue transition-colors">Home</Link>
-          <span>/</span>
-          <Link href="/industries" className="hover:text-brand-blue transition-colors">Industries</Link>
-          <span>/</span>
-          <span className="text-brand-navy font-medium">Pharma & Life Sciences</span>
-        </div>
-      </div>
+      <IndustryHero
+        breadcrumbName="Pharma & Life Sciences"
+        industry="Pharma & Life Sciences"
+        icon={FlaskConical}
+        title={
+          <>
+            Validation as a{' '}
+            <span className="bg-gradient-to-r from-brand-cyan via-white to-brand-cyan bg-clip-text text-transparent">
+              build artifact, not a phase gate.
+            </span>
+          </>
+        }
+        subtitle="21 CFR Part 11 by default. GAMP 5 risk classification in every ADR. We ship GxP platforms — clinical trial systems, ELNs, field force CRMs — that pass FDA Form 483s without rework."
+        primary={{ label: 'Scope a GxP Build', href: '#contact' }}
+        secondary={{ label: 'Read the case study', href: '#case-study' }}
+        stats={STATS}
+      />
 
-      {/* Hero — laboratory violet */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0F0524] via-[#1E0B47] to-[#2A0F5F] text-white pt-24 pb-24 sm:pt-28 sm:pb-32">
+      {/* Hero — laboratory violet (LEGACY — hidden) */}
+      <section className="hidden relative overflow-hidden bg-gradient-to-br from-[#0F0524] via-[#1E0B47] to-[#2A0F5F] text-white pt-24 pb-24 sm:pt-28 sm:pb-32">
         {/* Molecular grid background */}
         <div
           aria-hidden

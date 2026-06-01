@@ -18,6 +18,7 @@ import {
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CTABand } from '@/components/section/CTABand';
+import { IndustryHero } from '@/components/industry-hero';
 import { easingCurve } from '@/lib/utils';
 
 const CHALLENGES = [
@@ -152,19 +153,26 @@ export function HealthcareClient() {
     <>
       <Header />
 
-      {/* Breadcrumb */}
-      <div className="bg-white border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-3 flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-brand-blue transition-colors">Home</Link>
-          <span>/</span>
-          <Link href="/industries" className="hover:text-brand-blue transition-colors">Industries</Link>
-          <span>/</span>
-          <span className="text-brand-navy font-medium">Healthcare & MedDev</span>
-        </div>
-      </div>
+      <IndustryHero
+        breadcrumbName="Healthcare & MedDev"
+        industry="Healthcare & MedDev"
+        icon={HeartPulse}
+        title={
+          <>
+            Built around{' '}
+            <span className="bg-gradient-to-r from-brand-cyan via-white to-brand-cyan bg-clip-text text-transparent">
+              the four minutes a clinician has.
+            </span>
+          </>
+        }
+        subtitle="HIPAA by default. FHIR-native by reflex. We ship clinical systems that auditors approve and clinicians actually use — from patient portals to connected devices to imaging pipelines."
+        primary={{ label: 'Scope a Clinical Build', href: '#contact' }}
+        secondary={{ label: 'Read the Meridian Case Study', href: '#case-study' }}
+        stats={STATS}
+      />
 
-      {/* Hero — calm clinical white-teal */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-white via-[#F4FBFB] to-[#E6F7F6] pt-20 pb-24 sm:pt-24 sm:pb-32">
+      {/* Hero — calm clinical white-teal (LEGACY — HIDDEN, kept for context) */}
+      <section className="hidden relative overflow-hidden bg-gradient-to-b from-white via-[#F4FBFB] to-[#E6F7F6] pt-20 pb-24 sm:pt-24 sm:pb-32">
         {/* Soft mesh */}
         <div
           aria-hidden

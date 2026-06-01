@@ -77,13 +77,12 @@ export default function ContactPage() {
           { value: '4', label: 'Continents' },
           { value: '15M+', label: 'Daily Txns' },
         ]}
-        primaryCta={{ label: 'Email Sales', href: 'mailto:projects@aayulogic.com' }}
-        secondaryCta={{ label: 'See Offices', href: '#offices' }}
+        primaryCta={{ label: 'Email Us', href: 'mailto:info@aayulogic.com' }}
+        secondaryCta={{ label: 'Start the conversation', href: '#contact-form' }}
       />
 
       <ContactFormSection />
       <DirectChannelsSection />
-      <OfficesQuickSection />
       <TrustBandSection />
 
       <Footer />
@@ -415,28 +414,10 @@ function SuccessState({ onReset }: { onReset: () => void }) {
 function DirectChannelsSection() {
   const CHANNELS = [
     {
-      title: 'General Inquiries',
-      email: 'hello@aayulogic.com',
-      description: 'For partnerships, press, and anything that doesn’t fit elsewhere.',
-      icon: MessageSquare,
-    },
-    {
-      title: 'New Projects',
-      email: 'projects@aayulogic.com',
-      description: 'Engagements, RFPs, and consulting briefs. Routed to delivery leadership.',
-      icon: Briefcase,
-    },
-    {
-      title: 'Careers',
-      email: 'careers@aayulogic.com',
-      description: 'Applications and warm pipeline. Read within 5 business days.',
-      icon: Users2,
-    },
-    {
-      title: 'Security',
-      email: 'security@aayulogic.com',
-      description: 'Responsible disclosure, security audits, and ISO 27001 inquiries.',
-      icon: Lock,
+      title: 'Email Us',
+      email: 'info@aayulogic.com',
+      description: 'One inbox. Real humans read every message and respond within one business day — Toronto business hours.',
+      icon: Mail,
     },
   ];
 
@@ -469,11 +450,11 @@ function DirectChannelsSection() {
             </span>
           </h2>
           <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed">
-            Four routes by intent. Emails go to the humans actually working on it — no ticketing, no auto-replies.
+            One inbox. Real humans read every message — no ticketing, no auto-replies. Response within one business day on Toronto hours.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
+        <div className="grid grid-cols-1 max-w-xl mx-auto gap-5 lg:gap-6">
           {CHANNELS.map((c, idx) => {
             const Icon = c.icon;
             return (

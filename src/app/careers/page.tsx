@@ -1,258 +1,326 @@
 'use client';
 
-import { useState } from 'react';
-import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
+import { useMemo, useState } from 'react';
+import { motion } from 'framer-motion';
 import {
   ArrowUpRight,
-  Coins,
-  HeartPulse,
-  Home,
-  GraduationCap,
-  Palmtree,
-  Laptop,
-  Plane,
-  CalendarCheck,
-  MapPin,
   Briefcase,
-  Clock,
+  ShieldCheck,
   Sparkles,
-  Users2,
+  Search,
+  Landmark,
+  Cpu,
+  Building2,
+  Plane,
+  GraduationCap,
   Globe2,
-  Code2,
+  Workflow,
   type LucideIcon,
 } from 'lucide-react';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
-import { PageHero } from '@/components/section/PageHero';
-import { CTABand } from '@/components/section/CTABand';
-import {
-  JOB_DEPARTMENTS,
-  JOB_POSTINGS,
-  CAREER_BENEFITS,
-  HIRING_PROCESS,
-} from '@/lib/constants';
 import { easingCurve, motionConfig } from '@/lib/utils';
 
-const BENEFIT_ICONS: Record<string, LucideIcon> = {
-  Coins,
-  HeartPulse,
-  Home,
-  GraduationCap,
-  Palmtree,
-  Laptop,
-  Plane,
-  CalendarCheck,
+const HRMS_BASE = 'https://hrms.realhrsoft.com/careers';
+
+type Role = {
+  title: string;
+  slug: string;
+  team: string;
+  type: string;
+  location: string;
+  tags: string[];
 };
+
+const ROLES: Role[] = [
+  {
+    title: 'Senior Backend Engineer',
+    slug: 'senior-backend-engineer',
+    team: 'Engineering',
+    type: 'Full-time',
+    location: 'Kathmandu',
+    tags: ['Python', 'Django', 'PostgreSQL'],
+  },
+  {
+    title: 'Frontend Engineer — Vue.js',
+    slug: 'frontend-engineer-vue',
+    team: 'Engineering',
+    type: 'Full-time',
+    location: 'Kathmandu',
+    tags: ['Vue.js', 'TypeScript', 'Vite'],
+  },
+  {
+    title: 'QA Engineer',
+    slug: 'qa-engineer',
+    team: 'Quality Assurance',
+    type: 'Full-time',
+    location: 'Kathmandu',
+    tags: ['Automation', 'CI', 'Test Pyramid'],
+  },
+  {
+    title: 'DevOps Engineer',
+    slug: 'devops-engineer',
+    team: 'Infrastructure',
+    type: 'Full-time',
+    location: 'Kathmandu',
+    tags: ['AWS', 'Docker', 'CI/CD'],
+  },
+  {
+    title: 'Business Development Manager',
+    slug: 'business-development-manager',
+    team: 'Growth — Canada & US',
+    type: 'Full-time',
+    location: 'Toronto',
+    tags: ['B2B', 'Enterprise', 'Sales'],
+  },
+  {
+    title: 'Business Partnerships Manager',
+    slug: 'business-partnerships-manager',
+    team: 'Partnerships — Global',
+    type: 'Full-time',
+    location: 'Remote / Toronto',
+    tags: ['Alliances', 'Channel', 'GTM'],
+  },
+];
+
+const TEAMS = Array.from(new Set(ROLES.map((r) => r.team)));
+
+const STATS = [
+  { value: 'Est. 2016', label: 'Hub established in Kathmandu' },
+  { value: '50+', label: 'Engineers on the team' },
+  { value: 'ISO', label: '9001 & 27001 certified' },
+  { value: '18+', label: 'Industries we have built for' },
+];
+
+const WHY: { number: string; title: string; body: string; icon: LucideIcon }[] = [
+  {
+    number: '01',
+    title: 'Real engineering work — not maintenance.',
+    body: 'You will not be maintaining legacy systems or doing support tickets. You will be designing and building enterprise software — the kind that runs at commercial banks and operates at scale across 18 industries.',
+    icon: Workflow,
+  },
+  {
+    number: '02',
+    title: 'ISO-certified from day one.',
+    body: 'Our processes are ISO 9001:2015 and ISO 27001:2022 certified. You will work to professional engineering standards from your first week — architecture reviews, documented processes, security protocols.',
+    icon: ShieldCheck,
+  },
+  {
+    number: '03',
+    title: 'A company that is growing deliberately.',
+    body: 'Canadian entity live. International expansion underway. If you want to grow with a company that is scaling deliberately — not chaotically — this is the right moment to join.',
+    icon: Sparkles,
+  },
+];
+
+const NEPAL_FACTS = [
+  { icon: Landmark, title: 'Stable majority government', body: 'First in almost seven decades. Political continuity that allows long-term planning.' },
+  { icon: Cpu, title: 'IT declared a strategic sector', body: 'Government policy now formally supports the technology ecosystem.' },
+  { icon: Building2, title: 'One-window company registration', body: 'Simplified business environment. International companies entering Nepal.' },
+  { icon: Plane, title: 'Digital nomad visa live', body: 'International professionals working from Kathmandu. A growing global talent network.' },
+];
+
+const TECH_STACK = ['Python', 'Django', 'Vue.js', 'Flutter', 'AWS', 'Docker', 'PostgreSQL', 'Redis'];
+
+function roleHref(slug: string) {
+  return `${HRMS_BASE}?role=${slug}`;
+}
 
 export default function CareersPage() {
   return (
     <>
       <Header />
-
-      <PageHero
-        eyebrow="Careers Hub"
-        title="Build What's Next,"
-        highlight="With Us"
-        subtitle="Join a 300-strong engineering organization shipping production systems across four continents. We hire seniors-only, pay for craft, and operate the platforms we ship."
-        stats={[
-          { value: '10+', label: 'Open Roles' },
-          { value: '4', label: 'Continents' },
-          { value: '300+', label: 'Engineers' },
-        ]}
-        primaryCta={{ label: 'View Open Roles', href: '#open-roles' }}
-        secondaryCta={{ label: 'How We Hire', href: '#hiring' }}
-      />
-
-      <AtGlanceSection />
-      <WhyJoinSection />
-      <TeamEnvironmentSection />
-      <OpenRolesSection />
-      <BenefitsSection />
-      <HiringProcessSection />
-
-      <CTABand
-        eyebrow="Don't See Your Role?"
-        title="We're always meeting exceptional engineers."
-        body="If you don't see a fit but believe you'd thrive here, send us a note. We keep warm pipelines and reach back when the right role opens."
-        primaryLabel="Send a Note"
-        primaryHref="mailto:careers@aayulogic.com"
-        secondaryLabel="Learn About Us"
-        secondaryHref="/about"
-      />
-
+      <Hero />
+      <WhyAayulogic />
+      <NepalRightNow />
+      <TheWork />
+      <CurrentOpenings />
+      <FinalCTA />
       <Footer />
     </>
   );
 }
 
 // =============================================================================
-//  AT A GLANCE — clean snapshot card right under the hero
+//  HERO
 // =============================================================================
 
-function AtGlanceSection() {
-  const GLANCE = [
-    {
-      label: 'Hiring bar',
-      value: 'Seniors only',
-      icon: Code2,
-    },
-    {
-      label: 'Work setup',
-      value: 'Remote-first',
-      icon: Home,
-    },
-    {
-      label: 'Visa sponsorship',
-      value: 'Yes — 3 offices',
-      icon: Plane,
-    },
-    {
-      label: 'Time to offer',
-      value: '< 4 weeks',
-      icon: Clock,
-    },
-  ];
-
+function Hero() {
   return (
-    <section className="relative -mt-12 sm:-mt-16 px-4 sm:px-6 lg:px-8 pb-12 sm:pb-16 z-10">
-      <div className="relative max-w-6xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.6, ease: easingCurve.industrial }}
-          className="rounded-2xl border border-slate-200 bg-white shadow-[0_30px_60px_-25px_rgba(10,25,47,0.2)] overflow-hidden"
-        >
-          <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-slate-100">
-            {GLANCE.map((g, idx) => {
-              const Icon = g.icon;
-              return (
-                <motion.div
-                  key={g.label}
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{
-                    duration: 0.4,
-                    delay: idx * 0.06,
-                    ease: easingCurve.industrial,
-                  }}
-                  className="flex items-center gap-4 p-5 sm:p-6"
-                >
-                  <div className="flex-shrink-0 w-11 h-11 rounded-xl bg-gradient-to-br from-brand-blue to-brand-cyan flex items-center justify-center shadow-md shadow-brand-blue/15">
-                    <Icon className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="min-w-0">
-                    <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400 mb-1">
-                      {g.label}
-                    </p>
-                    <p className="text-base sm:text-lg font-bold text-brand-navy leading-tight">
-                      {g.value}
-                    </p>
-                  </div>
-                </motion.div>
-              );
-            })}
+    <section className="relative overflow-hidden text-white">
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        preload="auto"
+        aria-hidden
+        className="absolute inset-0 w-full h-full object-cover"
+      >
+        <source src="/herobackground.mp4" type="video/mp4" />
+      </video>
+      <div
+        aria-hidden
+        className="absolute inset-0 bg-gradient-to-b from-brand-navy/90 via-brand-navy/80 to-[#0a1c4a]/95"
+      />
+      <div
+        aria-hidden
+        className="absolute -top-32 -right-32 w-[560px] h-[560px] rounded-full blur-3xl opacity-50"
+        style={{ background: 'radial-gradient(circle, rgba(0,194,255,0.35) 0%, transparent 70%)' }}
+      />
+
+      <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-24 pb-24 sm:pt-28 sm:pb-32">
+        <div className="grid lg:grid-cols-12 gap-12 items-center">
+          <div className="lg:col-span-7">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, ease: easingCurve.industrial }}
+              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/15 mb-6"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-brand-cyan" />
+              <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand-cyan">
+                Join Aayulogic
+              </span>
+            </motion.div>
+            <motion.h1
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.05, ease: easingCurve.industrial }}
+              className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight max-w-3xl"
+            >
+              We are building something real in{' '}
+              <span className="bg-gradient-to-r from-brand-cyan via-white to-brand-cyan bg-clip-text text-transparent">
+                Kathmandu.
+              </span>
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.12, ease: easingCurve.industrial }}
+              className="mt-6 text-base sm:text-lg text-slate-200/90 leading-relaxed max-w-2xl"
+            >
+              Not a support centre. Not a delivery outpost. An engineering hub that has built and operated enterprise software for commercial banks, developed platforms used by organisations across 18 industries, and earned ISO 9001:2015 and ISO 27001:2022 certification.
+            </motion.p>
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2, ease: easingCurve.industrial }}
+              className="mt-8 flex flex-wrap items-center gap-4"
+            >
+              <a
+                href="#open-roles"
+                className="group inline-flex items-center gap-2 px-6 py-3 text-sm font-bold rounded-xl bg-white text-brand-navy hover:bg-brand-cyan transition-colors shadow-lg"
+              >
+                View all open roles
+                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </a>
+              <a
+                href={HRMS_BASE}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group inline-flex items-center gap-2 px-6 py-3 text-sm font-bold rounded-xl border border-white/30 text-white hover:border-white hover:bg-white/10 transition-colors"
+              >
+                Apply via HRMS portal
+                <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </a>
+            </motion.div>
           </div>
-        </motion.div>
+
+          {/* Stats card */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: easingCurve.industrial }}
+            className="lg:col-span-5"
+          >
+            <div className="rounded-2xl border border-white/15 bg-white/5 backdrop-blur p-6">
+              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-cyan mb-4">
+                Where we stand
+              </p>
+              <div className="grid grid-cols-2 gap-px bg-white/10 rounded-xl overflow-hidden">
+                {STATS.map((s) => (
+                  <div key={s.label} className="bg-brand-navy/40 p-5 text-center">
+                    <div className="text-2xl sm:text-3xl font-bold text-white">{s.value}</div>
+                    <div className="text-[11px] text-white/60 mt-1 uppercase tracking-wider">
+                      {s.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-5 pt-5 border-t border-white/10">
+                <p className="text-xs font-semibold text-white/70 mb-3">Hiring right now</p>
+                <ul className="space-y-2">
+                  {ROLES.slice(0, 3).map((r) => (
+                    <li key={r.slug}>
+                      <a
+                        href={roleHref(r.slug)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="group flex items-center justify-between text-sm text-white/85 hover:text-white"
+                      >
+                        <span className="truncate">{r.title}</span>
+                        <ArrowUpRight className="w-3.5 h-3.5 text-brand-cyan group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </motion.div>
+        </div>
       </div>
     </section>
   );
 }
 
 // =============================================================================
-//  WHY JOIN — simpler four-reason layout
+//  WHY AAYULOGIC
 // =============================================================================
 
-function WhyJoinSection() {
-  const REASONS = [
-    {
-      title: 'Seniors-only hiring',
-      description:
-        'No bootcamp churn. You join a team of experienced engineers who pair, review, and push each other to ship better.',
-      icon: Code2,
-    },
-    {
-      title: 'Operate what you build',
-      description:
-        'You carry the pager for what you ship. Direct ownership end-to-end — no throw-it-over-the-wall culture.',
-      icon: Briefcase,
-    },
-    {
-      title: 'Real customers, real scale',
-      description:
-        '15M+ daily transactions across products serving hundreds of organizations. The work has weight from day one.',
-      icon: Users2,
-    },
-    {
-      title: 'Global mobility',
-      description:
-        'Spend quarters in another office. We sponsor visas and relocate engineers across our Toronto-Lalitpur-Brisbane-Louisville network.',
-      icon: Globe2,
-    },
-  ];
-
+function WhyAayulogic() {
   return (
-    <section className="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white">
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-60 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(40% 30% at 10% 10%, rgba(0,194,255,0.05) 0%, transparent 70%), radial-gradient(40% 30% at 95% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)',
-        }}
-      />
-
-      <div className="relative max-w-7xl mx-auto">
+    <section className="relative py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 border-b border-slate-100">
+      <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={motionConfig.default}
-          className="text-center max-w-3xl mx-auto mb-10 lg:mb-14"
+          className="max-w-3xl"
         >
-          <span className="inline-block text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-4">
+          <p className="text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-3">
             Why Aayulogic
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-brand-navy leading-[1.1] tracking-tight">
-            A career built on{' '}
-            <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-              craft and trust
-            </span>
-            .
-          </h2>
-          <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed">
-            Four reasons the senior engineers we hire stay — and bring their friends with them.
           </p>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-navy leading-tight">
+            Three honest reasons to work here.
+          </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
-          {REASONS.map((r, idx) => {
-            const Icon = r.icon;
+        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
+          {WHY.map((w, i) => {
+            const Icon = w.icon;
             return (
               <motion.div
-                key={r.title}
-                initial={{ opacity: 0, y: 20 }}
+                key={w.number}
+                initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-60px' }}
-                transition={{
-                  duration: 0.5,
-                  delay: idx * 0.06,
-                  ease: easingCurve.industrial,
-                }}
-                whileHover={{ y: -3 }}
-                className="group relative p-6 rounded-2xl border border-slate-200 bg-white hover:border-brand-blue/30 hover:shadow-[0_18px_40px_-15px_rgba(4,92,179,0.16)] transition-all"
+                transition={{ duration: 0.45, delay: i * 0.06, ease: easingCurve.industrial }}
+                className="group relative p-7 rounded-xl border border-slate-200 bg-white hover:border-brand-blue/30 hover:shadow-[0_18px_40px_-16px_rgba(4,92,179,0.18)] transition-all"
               >
-                <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-brand-blue to-brand-cyan flex items-center justify-center mb-4 shadow-md shadow-brand-blue/15">
-                  <Icon className="w-5 h-5 text-white" />
+                <div className="flex items-start justify-between mb-4">
+                  <div className="w-11 h-11 rounded-lg bg-gradient-to-br from-brand-blue to-brand-cyan flex items-center justify-center">
+                    <Icon className="w-5 h-5 text-white" />
+                  </div>
+                  <span className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-slate-200 to-slate-300">
+                    {w.number}
+                  </span>
                 </div>
-                <h3 className="text-base sm:text-lg font-bold text-brand-navy mb-2 leading-tight">
-                  {r.title}
+                <h3 className="text-base font-bold text-brand-navy mb-2 group-hover:text-brand-blue transition-colors">
+                  {w.title}
                 </h3>
-                <p className="text-sm text-slate-600 leading-relaxed">
-                  {r.description}
-                </p>
+                <p className="text-sm text-slate-600 leading-relaxed">{w.body}</p>
               </motion.div>
             );
           })}
@@ -263,409 +331,343 @@ function WhyJoinSection() {
 }
 
 // =============================================================================
-//  TEAM ENVIRONMENT (image with quote)
+//  NEPAL RIGHT NOW
 // =============================================================================
 
-function TeamEnvironmentSection() {
+function NepalRightNow() {
   return (
-    <section className="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
-      <div className="relative max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 32 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.7, ease: easingCurve.industrial }}
-          className="relative group"
-        >
-          <div className="relative rounded-2xl overflow-hidden border border-slate-200/80 shadow-[0_30px_60px_-20px_rgba(10,25,47,0.18)]">
-            <div className="relative aspect-[16/9] sm:aspect-[18/8] lg:aspect-[21/8] bg-brand-navy">
-              <Image
-                src="/team-image.jpg"
-                alt="Aayulogic engineers collaborating"
-                fill
-                sizes="(max-width: 1280px) 100vw, 1280px"
-                className="object-cover object-center transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
-              />
-
-              <div
-                aria-hidden
-                className="absolute inset-0"
-                style={{
-                  background:
-                    'linear-gradient(180deg, rgba(10,25,47,0.55) 0%, rgba(10,25,47,0.25) 35%, rgba(10,25,47,0.25) 60%, rgba(10,25,47,0.92) 100%)',
-                }}
-              />
-
-              <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-10 lg:p-14">
-                <div className="max-w-3xl">
-                  <Sparkles className="w-6 h-6 text-brand-cyan mb-4" />
-                  <p className="text-xl sm:text-2xl lg:text-3xl text-white font-bold leading-tight tracking-tight mb-4">
-                    &ldquo;Async writing, decision logs, and timezone-aware design from day one — that&apos;s how a team across four continents stays sharp.&rdquo;
-                  </p>
-                  <p className="text-sm text-brand-cyan font-bold uppercase tracking-[0.2em]">
-                    Engineering Culture · Aayulogic
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-// =============================================================================
-//  OPEN ROLES — cleaner role list
-// =============================================================================
-
-function OpenRolesSection() {
-  const [activeFilter, setActiveFilter] = useState('all');
-
-  const filteredJobs =
-    activeFilter === 'all'
-      ? JOB_POSTINGS
-      : JOB_POSTINGS.filter((j) => j.department === activeFilter);
-
-  const DEPT_LABEL: Record<string, string> = JOB_DEPARTMENTS.reduce(
-    (acc, d) => ({ ...acc, [d.key]: d.label }),
-    {}
-  );
-
-  return (
-    <section
-      id="open-roles"
-      className="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white"
-    >
+    <section className="relative bg-brand-navy text-white py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 overflow-hidden">
       <div
         aria-hidden
-        className="absolute inset-0 opacity-60 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(40% 30% at 80% 10%, rgba(0,194,255,0.06) 0%, transparent 70%), radial-gradient(40% 30% at 0% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)',
-        }}
+        className="absolute -top-40 -right-40 w-[520px] h-[520px] rounded-full blur-3xl opacity-40"
+        style={{ background: 'radial-gradient(circle, rgba(0,194,255,0.35) 0%, transparent 70%)' }}
       />
-
-      <div className="relative max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={motionConfig.default}
-          className="text-center max-w-3xl mx-auto mb-10 lg:mb-12"
-        >
-          <span className="inline-block text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-4">
-            Open Positions
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-brand-navy leading-[1.1] tracking-tight">
-            Find your{' '}
-            <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-              next chapter
-            </span>
-            .
-          </h2>
-          <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed">
-            {JOB_POSTINGS.length} roles currently open across engineering, product, and operations.
+      <div className="relative max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <p className="text-brand-cyan text-sm font-semibold uppercase tracking-[0.18em] mb-3">
+            Nepal Right Now
           </p>
-        </motion.div>
-
-        {/* Department filter tabs */}
-        <div className="flex flex-wrap justify-center gap-2 mb-10 lg:mb-12">
-          {JOB_DEPARTMENTS.map((dept) => {
-            const isActive = activeFilter === dept.key;
-            const count =
-              dept.key === 'all'
-                ? JOB_POSTINGS.length
-                : JOB_POSTINGS.filter((j) => j.department === dept.key).length;
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-5">
+            The country is at an inflection point. We have been here since 2016.
+          </h2>
+          <p className="text-base sm:text-lg text-white/70 leading-relaxed mb-4">
+            Nepal has a <strong className="text-white font-semibold">stable majority government</strong> — the first in almost seven decades. The government has formally declared IT a strategic economic sector.
+          </p>
+          <p className="text-base sm:text-lg text-white/70 leading-relaxed">
+            Engineers who build their careers in Kathmandu right now will have worked at the centre of Nepal&apos;s technology emergence — <strong className="text-white font-semibold">not arrived after it was already obvious.</strong>
+          </p>
+        </div>
+        <div className="space-y-3">
+          {NEPAL_FACTS.map((f) => {
+            const Icon = f.icon;
             return (
-              <button
-                key={dept.key}
-                onClick={() => setActiveFilter(dept.key)}
-                className={`px-5 py-2.5 rounded-full text-sm font-bold transition-all ${
-                  isActive
-                    ? 'bg-brand-navy text-white shadow-lg'
-                    : 'bg-white border border-slate-200 text-slate-600 hover:border-brand-blue/40 hover:text-brand-blue'
-                }`}
+              <div
+                key={f.title}
+                className="rounded-xl border-l-4 border-brand-cyan bg-white/5 backdrop-blur px-5 py-4"
               >
-                {dept.label}
-                <span
-                  className={`ml-2 text-xs ${
-                    isActive ? 'text-brand-cyan' : 'text-slate-400'
-                  }`}
-                >
-                  {count}
-                </span>
-              </button>
+                <div className="flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-lg bg-brand-cyan/15 flex items-center justify-center flex-shrink-0">
+                    <Icon className="w-4 h-4 text-brand-cyan" />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-semibold text-white mb-1">{f.title}</h4>
+                    <p className="text-sm text-white/60 leading-relaxed">{f.body}</p>
+                  </div>
+                </div>
+              </div>
             );
           })}
         </div>
-
-        {/* Jobs list — cleaner with department badge */}
-        <div className="space-y-3">
-          <AnimatePresence mode="popLayout">
-            {filteredJobs.map((job, idx) => (
-              <motion.a
-                key={job.title}
-                layout
-                initial={{ opacity: 0, y: 16 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -16 }}
-                transition={{
-                  duration: 0.4,
-                  delay: idx * 0.04,
-                  ease: easingCurve.industrial,
-                }}
-                href="mailto:careers@aayulogic.com"
-                className="group relative flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 p-5 sm:p-6 rounded-2xl border border-slate-200 bg-white hover:border-brand-blue/40 hover:shadow-[0_18px_36px_-12px_rgba(4,92,179,0.18)] transition-all"
-              >
-                <div className="flex-1 min-w-0">
-                  <div className="flex flex-wrap items-center gap-2 mb-2">
-                    <span className="inline-flex items-center px-2.5 py-1 rounded-full bg-brand-blue/10 text-[10px] font-bold uppercase tracking-[0.15em] text-brand-blue">
-                      {DEPT_LABEL[job.department] ?? job.department}
-                    </span>
-                    <span className="inline-flex items-center gap-1 text-[11px] font-bold uppercase tracking-[0.15em] text-slate-500">
-                      <Clock className="w-3 h-3" />
-                      {job.experience}
-                    </span>
-                  </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-brand-navy mb-2 group-hover:text-brand-blue transition-colors leading-tight">
-                    {job.title}
-                  </h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-3 line-clamp-2">
-                    {job.description}
-                  </p>
-                  <div className="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-slate-500">
-                    <span className="inline-flex items-center gap-1.5">
-                      <MapPin className="w-3.5 h-3.5 text-brand-blue" />
-                      {job.location}
-                    </span>
-                    <span className="inline-flex items-center gap-1.5">
-                      <Briefcase className="w-3.5 h-3.5 text-brand-blue" />
-                      {job.type}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3 sm:flex-shrink-0">
-                  <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-brand-blue">
-                    Apply
-                  </span>
-                  <span className="flex h-10 w-10 items-center justify-center rounded-full border border-brand-blue/15 text-brand-blue transition-all group-hover:border-brand-blue group-hover:bg-brand-blue group-hover:text-white">
-                    <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-px group-hover:translate-x-px" />
-                  </span>
-                </div>
-              </motion.a>
-            ))}
-          </AnimatePresence>
-        </div>
       </div>
     </section>
   );
 }
 
 // =============================================================================
-//  BENEFITS — grouped into 2 clear themes for easier scanning
+//  THE WORK
 // =============================================================================
 
-function BenefitsSection() {
-  const GROUPS = [
-    {
-      title: 'Compensation & Growth',
-      blurb: 'Pay for craft, invest in learning, reward longevity.',
-      keys: ['Coins', 'GraduationCap', 'Palmtree', 'CalendarCheck'],
-    },
-    {
-      title: 'Work & Wellbeing',
-      blurb: 'Flexibility, equipment, mobility, and real health cover.',
-      keys: ['Home', 'Laptop', 'HeartPulse', 'Plane'],
-    },
-  ];
-
-  const benefitsByKey: Record<string, (typeof CAREER_BENEFITS)[number]> =
-    CAREER_BENEFITS.reduce(
-      (acc, b) => ({ ...acc, [b.iconKey]: b }),
-      {} as Record<string, (typeof CAREER_BENEFITS)[number]>
-    );
-
+function TheWork() {
   return (
-    <section className="relative py-16 sm:py-20 lg:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden">
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-60 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(40% 30% at 10% 10%, rgba(0,194,255,0.05) 0%, transparent 70%), radial-gradient(40% 30% at 95% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)',
-        }}
-      />
-
-      <div className="relative max-w-7xl mx-auto">
+    <section className="relative bg-slate-50 py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 border-b border-slate-100">
+      <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
           transition={motionConfig.default}
-          className="text-center max-w-3xl mx-auto mb-12 lg:mb-14"
+          className="max-w-3xl mb-10"
         >
-          <span className="inline-block text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-4">
-            Benefits & Perks
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-brand-navy leading-[1.1] tracking-tight">
-            Compensation that{' '}
-            <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-              respects your craft
-            </span>
-            .
-          </h2>
-        </motion.div>
-
-        <div className="space-y-10 lg:space-y-12">
-          {GROUPS.map((group, groupIdx) => (
-            <motion.div
-              key={group.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{
-                duration: 0.5,
-                delay: groupIdx * 0.08,
-                ease: easingCurve.industrial,
-              }}
-            >
-              <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-6">
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-brand-navy leading-tight">
-                    {group.title}
-                  </h3>
-                  <p className="text-sm text-slate-600 mt-1">{group.blurb}</p>
-                </div>
-                <div className="h-px flex-1 sm:max-w-xs bg-gradient-to-r from-transparent via-slate-200 to-transparent" />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-5">
-                {group.keys.map((key) => {
-                  const b = benefitsByKey[key];
-                  if (!b) return null;
-                  const Icon = BENEFIT_ICONS[b.iconKey] ?? Sparkles;
-                  return (
-                    <motion.div
-                      key={b.title}
-                      whileHover={{ y: -3 }}
-                      transition={{
-                        duration: 0.3,
-                        ease: easingCurve.industrial,
-                      }}
-                      className="group relative p-5 rounded-xl border border-slate-200 bg-white/80 backdrop-blur hover:border-brand-blue/30 hover:bg-white hover:shadow-[0_18px_36px_-15px_rgba(4,92,179,0.18)] transition-all"
-                    >
-                      <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-brand-blue to-brand-cyan flex items-center justify-center mb-3 shadow-md shadow-brand-blue/15">
-                        <Icon className="w-5 h-5 text-white" />
-                      </div>
-                      <h4 className="text-sm sm:text-base font-bold text-brand-navy mb-1.5 leading-tight">
-                        {b.title}
-                      </h4>
-                      <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                        {b.description}
-                      </p>
-                    </motion.div>
-                  );
-                })}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// =============================================================================
-//  HIRING PROCESS
-// =============================================================================
-
-function HiringProcessSection() {
-  return (
-    <section
-      id="hiring"
-      data-theme="dark"
-      className="relative py-20 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden bg-brand-navy text-white"
-    >
-      <div
-        aria-hidden
-        className="absolute -top-20 -left-20 w-96 h-96 rounded-full blur-3xl opacity-40"
-        style={{
-          background: 'radial-gradient(circle, rgba(0,194,255,0.3) 0%, transparent 70%)',
-        }}
-      />
-      <div
-        aria-hidden
-        className="absolute -bottom-32 -right-20 w-[28rem] h-[28rem] rounded-full blur-3xl opacity-30"
-        style={{
-          background: 'radial-gradient(circle, rgba(4,92,179,0.5) 0%, transparent 70%)',
-        }}
-      />
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-[0.06]"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-        }}
-      />
-
-      <div className="relative max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={motionConfig.default}
-          className="text-center max-w-3xl mx-auto mb-12 lg:mb-16"
-        >
-          <span className="inline-block text-brand-cyan text-sm font-semibold uppercase tracking-[0.18em] mb-4">
-            How We Hire
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-[1.1] tracking-tight">
-            A process that{' '}
-            <span className="bg-gradient-to-r from-brand-cyan to-white bg-clip-text text-transparent">
-              respects your time
-            </span>
-            .
-          </h2>
-          <p className="mt-5 text-base sm:text-lg text-slate-300 leading-relaxed">
-            Four focused conversations, decision in under four weeks. No whiteboards, no trick questions, no ghosting.
+          <p className="text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-3">
+            The Work
           </p>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-navy leading-tight">
+            What engineering at Aayulogic actually looks like.
+          </h2>
         </motion.div>
 
-        <div className="relative grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
-          {HIRING_PROCESS.map((step, idx) => (
-            <motion.div
-              key={step.step}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-80px' }}
-              transition={{
-                duration: 0.5,
-                delay: idx * 0.08,
-                ease: easingCurve.industrial,
-              }}
-              className="group relative p-6 sm:p-7 rounded-2xl border border-white/10 bg-white/5 backdrop-blur hover:bg-white/10 hover:border-brand-cyan/30 transition-all"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <span className="text-3xl sm:text-4xl font-black tracking-tight text-brand-cyan">
-                  {step.step}
-                </span>
-                <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
-                  {step.duration}
-                </span>
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12">
+          <div className="rounded-xl border border-slate-200 overflow-hidden bg-white">
+            {[
+              {
+                label: 'Tech Stack',
+                value: (
+                  <div className="flex flex-wrap gap-1.5">
+                    {TECH_STACK.map((t) => (
+                      <span
+                        key={t}
+                        className="px-2 py-0.5 text-xs font-semibold text-brand-blue bg-brand-blue/8 rounded"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                ),
+              },
+              {
+                label: 'Project Types',
+                value: 'Enterprise platforms, custom software for regulated sectors, cloud infrastructure, mobile applications',
+              },
+              {
+                label: 'Team Structure',
+                value: 'Cross-functional — engineering, QA, DevOps. Clear ownership. Defined processes.',
+              },
+              {
+                label: 'Onboarding',
+                value: 'Structured process. ISO-certified from day one. Architecture review included.',
+              },
+              {
+                label: 'Standards',
+                value: 'ISO 9001:2015 and ISO 27001:2022 across all engagements',
+              },
+            ].map((row) => (
+              <div
+                key={row.label}
+                className="grid grid-cols-[140px_1fr] border-b border-slate-100 last:border-b-0"
+              >
+                <div className="px-4 py-3 text-xs font-semibold text-slate-500 uppercase tracking-wider bg-slate-50 border-r border-slate-100">
+                  {row.label}
+                </div>
+                <div className="px-4 py-3 text-sm text-slate-700 leading-relaxed">
+                  {typeof row.value === 'string' ? row.value : row.value}
+                </div>
               </div>
-              <h3 className="text-lg sm:text-xl font-bold text-white mb-3 leading-tight">
-                {step.title}
-              </h3>
-              <p className="text-sm text-slate-300 leading-relaxed">
-                {step.description}
-              </p>
-            </motion.div>
-          ))}
+            ))}
+          </div>
+
+          <div className="lg:sticky lg:top-32 self-start">
+            <p className="text-base text-slate-700 leading-relaxed mb-4">
+              The engineering work here is not abstract. It runs payroll for thousands of bank employees on fixed cycles. It processes compliance data for regulated financial institutions. It powers platforms serving national-scale traffic.
+            </p>
+            <p className="text-base text-slate-700 leading-relaxed mb-6">
+              Every engineer at Aayulogic works to the same standards we built for our most demanding clients — regardless of which project you are on.
+            </p>
+            <div className="flex flex-wrap gap-2">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-brand-blue bg-brand-blue/8 rounded-full">
+                <ShieldCheck className="w-3.5 h-3.5" />
+                ISO 9001:2015
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-brand-blue bg-brand-blue/8 rounded-full">
+                <ShieldCheck className="w-3.5 h-3.5" />
+                ISO 27001:2022
+              </span>
+              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-brand-blue bg-brand-blue/8 rounded-full">
+                <Globe2 className="w-3.5 h-3.5" />
+                Canadian Inc.
+              </span>
+            </div>
+          </div>
         </div>
+      </div>
+    </section>
+  );
+}
+
+// =============================================================================
+//  CURRENT OPENINGS — searchable, deeplinked
+// =============================================================================
+
+function CurrentOpenings() {
+  const [query, setQuery] = useState('');
+  const [activeTeam, setActiveTeam] = useState<string>('All');
+
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return ROLES.filter((r) => {
+      if (activeTeam !== 'All' && r.team !== activeTeam) return false;
+      if (!q) return true;
+      const hay = [r.title, r.team, r.location, ...r.tags].join(' ').toLowerCase();
+      return hay.includes(q);
+    });
+  }, [query, activeTeam]);
+
+  return (
+    <section id="open-roles" className="relative py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 border-b border-slate-100">
+      <div className="max-w-7xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-100px' }}
+          transition={motionConfig.default}
+          className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-8"
+        >
+          <div>
+            <p className="text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-3">
+              Current Openings
+            </p>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-navy leading-tight">
+              Open roles — Kathmandu hub.
+            </h2>
+          </div>
+          <a
+            href={HRMS_BASE}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-2 text-sm font-bold text-brand-blue hover:text-brand-navy"
+          >
+            See all on HRMS portal
+            <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+          </a>
+        </motion.div>
+
+        {/* Filters */}
+        <div className="flex flex-col lg:flex-row gap-3 mb-6">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search by role, team, location, or skill"
+              className="w-full pl-10 pr-4 py-3 rounded-xl border border-slate-200 bg-white text-sm focus:outline-none focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/15 transition-all"
+            />
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {['All', ...TEAMS].map((t) => (
+              <button
+                key={t}
+                onClick={() => setActiveTeam(t)}
+                className={`px-3 py-2 text-xs font-semibold rounded-lg transition-all ${
+                  activeTeam === t
+                    ? 'bg-brand-blue text-white'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Roles table */}
+        <div className="rounded-xl border border-slate-200 overflow-hidden bg-white">
+          {filtered.length === 0 ? (
+            <div className="p-12 text-center text-sm text-slate-500">
+              No roles match your search.{' '}
+              <a
+                href={HRMS_BASE}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-brand-blue font-semibold"
+              >
+                Browse all on HRMS →
+              </a>
+            </div>
+          ) : (
+            <div className="divide-y divide-slate-100">
+              {filtered.map((r) => (
+                <a
+                  key={r.slug}
+                  href={roleHref(r.slug)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group grid grid-cols-1 sm:grid-cols-[2fr_1.2fr_1fr_auto] gap-3 items-center p-5 hover:bg-slate-50 transition-colors"
+                >
+                  <div>
+                    <h3 className="text-base font-bold text-brand-navy group-hover:text-brand-blue transition-colors">
+                      {r.title}
+                    </h3>
+                    <div className="mt-1.5 flex flex-wrap gap-1">
+                      {r.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-1.5 py-0.5 text-[10px] font-semibold text-slate-500 bg-slate-100 rounded"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="text-sm text-slate-600">{r.team}</div>
+                  <div className="text-sm text-slate-500">
+                    {r.location} · {r.type}
+                  </div>
+                  <div>
+                    <span className="inline-flex items-center gap-1 px-3.5 py-1.5 text-xs font-bold text-white bg-brand-blue rounded-lg group-hover:bg-brand-navy transition-colors">
+                      Apply
+                      <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    </span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Don't see a fit */}
+        <div className="mt-6 p-6 rounded-xl bg-slate-50 border border-slate-200 grid sm:grid-cols-[1fr_auto] gap-4 items-center">
+          <div>
+            <h4 className="text-base font-bold text-brand-navy mb-1">
+              Don&apos;t see the right role?
+            </h4>
+            <p className="text-sm text-slate-600">
+              We are always interested in strong engineers. Submit a general application on our HRMS portal.
+            </p>
+          </div>
+          <a
+            href={HRMS_BASE}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group inline-flex items-center gap-2 px-5 py-2.5 text-sm font-bold rounded-lg bg-brand-navy text-white hover:bg-brand-blue transition-colors"
+          >
+            Submit CV
+            <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// =============================================================================
+//  FINAL CTA
+// =============================================================================
+
+function FinalCTA() {
+  return (
+    <section className="relative bg-brand-navy text-white py-20 sm:py-24 px-6 text-center overflow-hidden">
+      <div
+        aria-hidden
+        className="absolute -top-32 -left-32 w-[520px] h-[520px] rounded-full blur-3xl opacity-40"
+        style={{ background: 'radial-gradient(circle, rgba(0,194,255,0.35) 0%, transparent 70%)' }}
+      />
+      <div className="relative max-w-3xl mx-auto">
+        <Briefcase className="w-10 h-10 text-brand-cyan mx-auto mb-5" />
+        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-4">
+          Ready to do serious engineering work?
+        </h2>
+        <p className="text-base sm:text-lg text-white/70 leading-relaxed mb-8">
+          Send your CV and a short note about what you are working on.
+        </p>
+        <a
+          href={HRMS_BASE}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group inline-flex items-center gap-2 px-7 py-3.5 text-sm font-bold rounded-xl bg-gradient-to-r from-brand-blue to-brand-cyan text-white shadow-lg hover:shadow-xl transition-all"
+        >
+          Apply on HRMS portal
+          <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+        </a>
       </div>
     </section>
   );
