@@ -92,10 +92,20 @@ export function Header() {
   }, [mobileOpen]);
 
   // Detect when the sticky header overlaps a [data-theme="dark"] section.
-  // Used to flip nav text/logo to white over the dark ProductsShowcase panels.
+  // Used to flip nav text/logo to white over dark sections.
   // Also tracks scroll position so the header can shrink past the hero.
+  //
+  // Uses *hysteresis*: separate enter/exit thresholds prevent the navbar from
+  // toggling rapidly near the boundary, which causes the jitter/shake. We only
+  // shrink once the user has clearly committed to scrolling down, and only
+  // expand once they're clearly back near the top.
   useEffect(() => {
     let frame = 0;
+    // Track the current state in a ref so the rAF loop reads the latest value
+    // without re-binding listeners on every state change.
+    let currentlyScrolled = false;
+    const SHRINK_AT = 140; // scroll past this (downward) to shrink
+    const EXPAND_AT = 60; // scroll back above this to expand
 
     const check = () => {
       frame = 0;
@@ -112,9 +122,15 @@ export function Header() {
         }
       }
       setIsOverDark(overDark);
-      // Shrink header once user scrolls past a small threshold.
-      // Returns to original size when scrolled back near the top (i.e. over hero).
-      setIsScrolled(window.scrollY > 80);
+
+      const y = window.scrollY;
+      if (!currentlyScrolled && y > SHRINK_AT) {
+        currentlyScrolled = true;
+        setIsScrolled(true);
+      } else if (currentlyScrolled && y < EXPAND_AT) {
+        currentlyScrolled = false;
+        setIsScrolled(false);
+      }
     };
 
     const onScroll = () => {
@@ -154,9 +170,12 @@ export function Header() {
 
         <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
           <div
-            className={`flex items-center justify-between transition-[height] duration-300 ease-out ${
-              isScrolled ? 'h-12 lg:h-14' : 'h-16 lg:h-20'
-            }`}
+            className="flex items-center justify-between"
+            style={{
+              height: isScrolled ? 'var(--header-h-scrolled)' : 'var(--header-h)',
+              transition: 'height 380ms cubic-bezier(0.4, 0, 0.2, 1)',
+              willChange: 'height',
+            }}
           >
             {/* Logo */}
             <Link href="/" className="flex items-center group" aria-label="Aayulogic — Home">
@@ -166,9 +185,15 @@ export function Header() {
                 width={1623}
                 height={429}
                 priority
-                className={`w-auto group-hover:opacity-90 transition-[filter,opacity,height] duration-300 ${
-                  isScrolled ? 'h-7 sm:h-8 lg:h-9' : 'h-10 sm:h-11 lg:h-12'
-                } ${isOverDark && !activeMenu ? 'brightness-0 invert' : ''}`}
+                className={`w-auto group-hover:opacity-90 ${
+                  isOverDark && !activeMenu ? 'brightness-0 invert' : ''
+                }`}
+                style={{
+                  height: isScrolled ? 'var(--logo-h-scrolled)' : 'var(--logo-h)',
+                  transition:
+                    'height 380ms cubic-bezier(0.4, 0, 0.2, 1), filter 300ms ease, opacity 300ms ease',
+                  willChange: 'height',
+                }}
               />
             </Link>
 

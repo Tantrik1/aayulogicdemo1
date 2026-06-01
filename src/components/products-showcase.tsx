@@ -84,27 +84,9 @@ export function ProductsShowcase() {
       id="products-showcase"
       data-theme="dark"
       aria-label="Our products"
-      className="relative px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-32 overflow-hidden bg-transparent"
+      className="relative px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-32 overflow-hidden bg-cobalt-premium"
     >
-      {/* Dynamic Fading Video Overlay */}
-      <div
-        aria-hidden
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'linear-gradient(to bottom, #FFFFFF 0%, rgba(10,25,47,0.93) 12%, rgba(10,25,47,0.7) 50%, rgba(10,25,47,0.93) 88%, #FFFFFF 100%)'
-        }}
-      />
-
-      {/* Ambient backdrop — matches sibling sections */}
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-60 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(40% 30% at 80% 10%, rgba(0,194,255,0.2) 0%, transparent 70%), radial-gradient(40% 30% at 0% 90%, rgba(4,92,179,0.15) 0%, transparent 70%)',
-        }}
-      />
-
+      <div aria-hidden className="cobalt-grain" />
       <div className="relative max-w-7xl mx-auto">
         {/* =============== HEADER =============== */}
         <motion.div
@@ -119,12 +101,12 @@ export function ProductsShowcase() {
           </span>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-[1.1] tracking-tight">
             Real products serving{' '}
-            <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-brand-cyan to-white bg-clip-text text-transparent">
               millions of customers
             </span>
             .
           </h2>
-          <p className="mt-5 text-base sm:text-lg text-slate-350 leading-relaxed">
+          <p className="mt-5 text-base sm:text-lg text-white/80 leading-relaxed">
             Three platforms running in production every day — built, operated, and iterated by the same engineers who partner with you.
           </p>
         </motion.div>
@@ -166,7 +148,7 @@ function ProductCard({
       whileHover={{ y: -6 }}
       transition={{ duration: 0.35, ease: easingCurve.industrial }}
       href={product.href}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/10 bg-slate-900/40 p-7 backdrop-blur-sm transition-colors hover:border-brand-cyan/40 hover:bg-slate-900/60 hover:shadow-[0_20px_45px_-12px_rgba(0,194,255,0.25)] sm:p-8"
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/12 bg-brand-navy/65 backdrop-blur-md p-7 transition-all duration-300 hover:border-brand-cyan/45 hover:bg-brand-navy/75 hover:shadow-[0_30px_60px_-15px_rgba(0,194,255,0.3)] sm:p-8"
     >
       {/* Top luminous line on hover */}
       <span
@@ -217,16 +199,16 @@ function ProductCard({
       </h3>
 
       {/* Description */}
-      <p className="relative mb-6 text-sm leading-relaxed text-slate-350 sm:text-[15px]">
+      <p className="relative mb-6 text-sm leading-relaxed text-white/70 sm:text-[15px]">
         {product.description}
       </p>
 
       {/* Highlights */}
-      <ul className="relative mb-7 space-y-2 border-t border-white/5 pt-5">
+      <ul className="relative mb-7 space-y-2 border-t border-white/10 pt-5">
         {product.highlights.map((h) => (
           <li
             key={h}
-            className="flex items-center gap-2.5 text-[13px] text-slate-300"
+            className="flex items-center gap-2.5 text-[13px] text-white/75"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-brand-cyan" />
             {h}
@@ -235,7 +217,7 @@ function ProductCard({
       </ul>
 
       {/* CTA — sits at bottom */}
-      <div className="relative mt-auto flex items-center justify-between border-t border-white/5 pt-5">
+      <div className="relative mt-auto flex items-center justify-between border-t border-white/10 pt-5">
         <span className="text-[13px] font-bold uppercase tracking-[0.16em] text-brand-cyan transition-colors group-hover:text-white">
           Learn More
         </span>

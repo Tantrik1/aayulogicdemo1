@@ -43,77 +43,60 @@ export default function AboutPage() {
 }
 
 // =============================================================================
-//  HERO
+//  HERO — pure video, text + CTAs
 // =============================================================================
-
-const STATS = [
-  { value: '2016', label: 'Engineering hub established' },
-  { value: '9+', label: 'Years of operations' },
-  { value: 'ISO', label: '9001 & 27001 certified' },
-  { value: '50+', label: 'Engineering team' },
-];
 
 function Hero() {
   return (
-    <section className="relative bg-gradient-to-b from-slate-50 to-white border-b border-slate-100 pt-16 sm:pt-20 pb-20 sm:pb-24 px-6 sm:px-8 lg:px-12 overflow-hidden">
-      <div
-        aria-hidden
-        className="absolute -top-40 -right-40 w-[520px] h-[520px] rounded-full blur-3xl opacity-40"
-        style={{ background: 'radial-gradient(circle, rgba(0,194,255,0.18) 0%, transparent 70%)' }}
-      />
-      <div className="relative max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-end">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: easingCurve.industrial }}
-        >
-          <p className="text-xs text-slate-500 mb-4">
-            <Link href="/" className="hover:text-brand-blue">
-              Home
-            </Link>
-            <span className="mx-1.5">/</span>About
-          </p>
-          <p className="text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-3">
-            About Aayulogic
-          </p>
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-brand-navy leading-[1.05] tracking-tight">
-            A Canadian Engineering Company.{' '}
-            <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-              Nine Years in the Making.
-            </span>
-          </h1>
-          <p className="mt-6 text-base sm:text-lg text-slate-600 leading-relaxed max-w-xl">
-            Aayulogic Inc. is incorporated in Toronto, Canada, with an engineering hub in Kathmandu, Nepal — established in 2016. We build custom software, dedicated engineering teams, and enterprise software platforms for startups and growing companies in Canada and the US.
-          </p>
-        </motion.div>
+    <section className="relative w-full min-h-[80svh] flex flex-col items-center justify-center pt-28 sm:pt-32 lg:pt-36 pb-16 sm:pb-20 lg:pb-24 px-5 sm:px-6 lg:px-8 overflow-hidden bg-transparent">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: easingCurve.industrial }}
+        className="relative max-w-5xl mx-auto w-full text-center flex flex-col items-center gap-7"
+      >
+        <span className="inline-block text-[11px] sm:text-xs font-semibold uppercase tracking-[0.32em] text-white/85 px-4 py-1.5 rounded-full border border-white/25 bg-white/5 backdrop-blur-sm">
+          About Aayulogic
+        </span>
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.02] tracking-tight text-balance text-white">
+          A Canadian Engineering Company.{' '}
+          <span className="bg-gradient-to-r from-white via-brand-cyan to-white bg-clip-text text-transparent">
+            Nine Years in the Making.
+          </span>
+        </h1>
+        <p className="text-base sm:text-lg md:text-xl leading-relaxed max-w-3xl text-white/85">
+          Aayulogic Inc. is incorporated in Toronto, Canada, with an engineering hub in Kathmandu, Nepal —
+          established in 2016. We build custom software, dedicated engineering teams, and enterprise software
+          platforms for startups and growing companies in Canada and the US.
+        </p>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.15, ease: easingCurve.industrial }}
-          className="grid grid-cols-2 gap-px bg-slate-200 rounded-xl overflow-hidden border border-slate-200"
-        >
-          {STATS.map((s) => (
-            <div key={s.label} className="bg-white p-6 text-center">
-              <div className="text-3xl font-bold text-brand-navy">{s.value}</div>
-              <div className="text-xs text-slate-500 mt-1.5 uppercase tracking-wider">
-                {s.label}
-              </div>
-            </div>
-          ))}
-        </motion.div>
-      </div>
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
+          <Link
+            href="/contact"
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 text-white font-bold rounded-full bg-gradient-to-r from-brand-blue to-brand-cyan shadow-[0_15px_40px_-10px_rgba(0,194,255,0.5)] hover:shadow-[0_20px_50px_-10px_rgba(0,194,255,0.7)] transition-all"
+          >
+            Start a Conversation
+            <ArrowUpRight className="w-5 h-5" />
+          </Link>
+          <Link
+            href="/services"
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 font-bold rounded-full border-2 border-white/40 hover:border-white text-white bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all"
+          >
+            Explore Services
+          </Link>
+        </div>
+      </motion.div>
     </section>
   );
 }
 
 // =============================================================================
-//  WHO WE ARE
+//  WHO WE ARE — white
 // =============================================================================
 
 function WhoWeAre() {
   return (
-    <section className="relative py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 border-b border-slate-100">
+    <section className="relative bg-white py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12">
       <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -164,7 +147,7 @@ function WhoWeAre() {
 }
 
 // =============================================================================
-//  COMPANY STRUCTURE — facts table
+//  COMPANY STRUCTURE — video bg
 // =============================================================================
 
 const FACTS: { label: string; value: string; icon: LucideIcon }[] = [
@@ -179,8 +162,8 @@ const FACTS: { label: string; value: string; icon: LucideIcon }[] = [
 
 function CompanyStructure() {
   return (
-    <section className="relative bg-slate-50 py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 border-b border-slate-100">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 overflow-hidden bg-transparent">
+      <div className="relative max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -188,15 +171,15 @@ function CompanyStructure() {
           transition={motionConfig.default}
           className="max-w-3xl mb-10"
         >
-          <p className="text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-3">
+          <p className="text-brand-cyan text-sm font-semibold uppercase tracking-[0.18em] mb-3">
             Company Structure
           </p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-navy leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
             The facts, plainly stated.
           </h2>
         </motion.div>
 
-        <div className="rounded-xl border border-slate-200 overflow-hidden bg-white">
+        <div className="rounded-2xl border border-white/10 overflow-hidden bg-slate-900/40 backdrop-blur-sm">
           {FACTS.map((f, i) => {
             const Icon = f.icon;
             return (
@@ -206,15 +189,15 @@ function CompanyStructure() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '-40px' }}
                 transition={{ duration: 0.35, delay: i * 0.04, ease: easingCurve.industrial }}
-                className="grid grid-cols-1 sm:grid-cols-[260px_1fr] border-b border-slate-100 last:border-b-0"
+                className="grid grid-cols-1 sm:grid-cols-[280px_1fr] border-b border-white/10 last:border-b-0"
               >
-                <div className="flex items-center gap-3 px-5 py-4 bg-slate-50/80 border-b sm:border-b-0 sm:border-r border-slate-100">
-                  <Icon className="w-4 h-4 text-brand-blue flex-shrink-0" />
-                  <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                <div className="flex items-center gap-3 px-5 py-4 bg-slate-900/40 border-b sm:border-b-0 sm:border-r border-white/10">
+                  <Icon className="w-4 h-4 text-brand-cyan flex-shrink-0" />
+                  <span className="text-xs font-bold uppercase tracking-wider text-white/70">
                     {f.label}
                   </span>
                 </div>
-                <div className="px-5 py-4 text-sm sm:text-base text-slate-700">{f.value}</div>
+                <div className="px-5 py-4 text-sm sm:text-base text-white/90">{f.value}</div>
               </motion.div>
             );
           })}
@@ -225,17 +208,12 @@ function CompanyStructure() {
 }
 
 // =============================================================================
-//  THE MODEL — Two countries
+//  THE MODEL — white
 // =============================================================================
 
 function TheModel() {
   return (
-    <section className="relative bg-brand-navy text-white py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 overflow-hidden">
-      <div
-        aria-hidden
-        className="absolute -top-32 -right-32 w-[520px] h-[520px] rounded-full blur-3xl opacity-30"
-        style={{ background: 'radial-gradient(circle, rgba(0,194,255,0.4) 0%, transparent 70%)' }}
-      />
+    <section className="relative bg-white py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12">
       <div className="relative max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -244,37 +222,47 @@ function TheModel() {
           transition={motionConfig.default}
           className="max-w-3xl mb-10"
         >
-          <p className="text-brand-cyan text-sm font-semibold uppercase tracking-[0.18em] mb-3">
+          <p className="text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-3">
             The Model
           </p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-navy leading-tight">
             Two countries. One engineering standard.<br />Built over nine years.
           </h2>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-px bg-white/10 rounded-2xl overflow-hidden">
-          <div className="bg-brand-navy p-7 sm:p-8">
-            <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-cyan mb-3">
+        <div className="grid lg:grid-cols-2 gap-5">
+          <div className="rounded-2xl bg-gradient-to-br from-brand-navy to-slate-900 text-white p-7 sm:p-9 border border-slate-800 relative overflow-hidden">
+            <div
+              aria-hidden
+              className="absolute -top-16 -right-16 w-60 h-60 rounded-full blur-3xl opacity-40"
+              style={{ background: 'radial-gradient(circle, rgba(0,194,255,0.35) 0%, transparent 70%)' }}
+            />
+            <p className="relative text-[11px] font-bold uppercase tracking-[0.22em] text-brand-cyan mb-3">
               Canada — Toronto
             </p>
-            <h3 className="text-xl sm:text-2xl font-semibold mb-4">
+            <h3 className="relative text-xl sm:text-2xl font-semibold mb-4">
               Global Headquarters &amp; Commercial Oversight
             </h3>
-            <ul className="space-y-2.5 text-sm text-white/70 leading-relaxed">
+            <ul className="relative space-y-2.5 text-sm text-white/75 leading-relaxed">
               <li className="flex gap-2"><span className="text-brand-cyan">·</span> Canadian incorporation</li>
               <li className="flex gap-2"><span className="text-brand-cyan">·</span> Toronto-based point of contact for every engagement</li>
               <li className="flex gap-2"><span className="text-brand-cyan">·</span> IP ownership for all international markets</li>
               <li className="flex gap-2"><span className="text-brand-cyan">·</span> Western-standard governance and accountability</li>
             </ul>
           </div>
-          <div className="bg-brand-navy p-7 sm:p-8">
-            <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-cyan mb-3">
+          <div className="rounded-2xl bg-gradient-to-br from-brand-navy to-slate-900 text-white p-7 sm:p-9 border border-slate-800 relative overflow-hidden">
+            <div
+              aria-hidden
+              className="absolute -top-16 -right-16 w-60 h-60 rounded-full blur-3xl opacity-40"
+              style={{ background: 'radial-gradient(circle, rgba(0,194,255,0.35) 0%, transparent 70%)' }}
+            />
+            <p className="relative text-[11px] font-bold uppercase tracking-[0.22em] text-brand-cyan mb-3">
               Nepal — Kathmandu
             </p>
-            <h3 className="text-xl sm:text-2xl font-semibold mb-4">
+            <h3 className="relative text-xl sm:text-2xl font-semibold mb-4">
               Engineering Hub — Est. 2016
             </h3>
-            <ul className="space-y-2.5 text-sm text-white/70 leading-relaxed">
+            <ul className="relative space-y-2.5 text-sm text-white/75 leading-relaxed">
               <li className="flex gap-2"><span className="text-brand-cyan">·</span> 50+ engineers, operating continuously since 2016</li>
               <li className="flex gap-2"><span className="text-brand-cyan">·</span> ISO 9001:2015 &amp; ISO 27001:2022 certified</li>
               <li className="flex gap-2"><span className="text-brand-cyan">·</span> The same standards built for commercial banks</li>
@@ -283,13 +271,13 @@ function TheModel() {
           </div>
         </div>
 
-        <div className="mt-8 rounded-2xl bg-white/5 backdrop-blur p-6 sm:p-8 text-center leading-relaxed text-white/75">
+        <div className="mt-8 rounded-2xl bg-brand-light/50 border border-brand-blue/10 p-6 sm:p-8 text-center leading-relaxed text-slate-700">
           <p className="mb-3">
             Our engineering hub in Kathmandu was established in 2016. Nepal now has a stable majority government — the first in almost seven decades — and has formally declared IT a strategic economic sector.
           </p>
           <p>
             For Canadian clients: you get a Canadian company with Canadian accountability, and an engineering team operating under the same security and quality standards we built for regulated financial institutions.{' '}
-            <strong className="text-white font-semibold">That is not outsourcing. That is structured, certified engineering capability.</strong>
+            <strong className="text-brand-navy font-semibold">That is not outsourcing. That is structured, certified engineering capability.</strong>
           </p>
         </div>
       </div>
@@ -298,7 +286,7 @@ function TheModel() {
 }
 
 // =============================================================================
-//  TIMELINE — interactive one-screen horizontal stepper
+//  TIMELINE — video bg
 // =============================================================================
 
 type Milestone = {
@@ -356,8 +344,8 @@ function TimelineSection() {
   const m = TIMELINE[active];
 
   return (
-    <section className="relative bg-slate-50 py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 border-b border-slate-100 overflow-hidden">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 overflow-hidden bg-transparent">
+      <div className="relative max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -365,22 +353,21 @@ function TimelineSection() {
           transition={motionConfig.default}
           className="max-w-3xl mb-10"
         >
-          <p className="text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-3">
+          <p className="text-brand-cyan text-sm font-semibold uppercase tracking-[0.18em] mb-3">
             Company Timeline
           </p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-navy leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
             Nine years of building.{' '}
-            <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-brand-cyan to-white bg-clip-text text-transparent">
               Here is how it happened.
             </span>
           </h2>
         </motion.div>
 
-        {/* Year stepper — desktop horizontal, mobile chip row */}
         <div className="relative mb-10">
           <div
             aria-hidden
-            className="hidden lg:block absolute left-0 right-0 top-1/2 h-px bg-gradient-to-r from-brand-blue/15 via-brand-cyan/40 to-brand-blue/15 -translate-y-1/2"
+            className="hidden lg:block absolute left-0 right-0 top-1/2 h-px bg-gradient-to-r from-brand-cyan/15 via-brand-cyan/50 to-brand-cyan/15 -translate-y-1/2"
           />
           <div className="relative grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 lg:gap-3">
             {TIMELINE.map((t, i) => {
@@ -395,10 +382,10 @@ function TimelineSection() {
                   <span
                     className={`flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full border-2 transition-all ${
                       isActive
-                        ? 'bg-gradient-to-br from-brand-blue to-brand-cyan border-white shadow-[0_0_0_4px_rgba(0,194,255,0.18)] scale-110'
+                        ? 'bg-gradient-to-br from-brand-blue to-brand-cyan border-white shadow-[0_0_0_4px_rgba(0,194,255,0.25)] scale-110'
                         : isLast
-                          ? 'bg-white border-brand-cyan text-brand-cyan'
-                          : 'bg-white border-slate-300 text-slate-400 group-hover:border-brand-blue group-hover:text-brand-blue'
+                          ? 'bg-slate-900/60 border-brand-cyan text-brand-cyan'
+                          : 'bg-slate-900/40 border-white/30 text-white/60 group-hover:border-brand-cyan group-hover:text-brand-cyan'
                     }`}
                   >
                     {isActive ? (
@@ -409,7 +396,7 @@ function TimelineSection() {
                   </span>
                   <span
                     className={`text-[11px] lg:text-xs font-bold tracking-wider transition-colors ${
-                      isActive ? 'text-brand-blue' : 'text-slate-500 group-hover:text-brand-navy'
+                      isActive ? 'text-brand-cyan' : 'text-white/70 group-hover:text-white'
                     }`}
                   >
                     {t.year}
@@ -420,7 +407,6 @@ function TimelineSection() {
           </div>
         </div>
 
-        {/* Active milestone card */}
         <div className="relative">
           <AnimatePresence mode="wait">
             <motion.div
@@ -429,48 +415,47 @@ function TimelineSection() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.4, ease: easingCurve.industrial }}
-              className="relative rounded-2xl bg-white border border-slate-200 shadow-[0_18px_44px_-22px_rgba(4,92,179,0.22)] p-7 sm:p-10 overflow-hidden"
+              className="relative rounded-2xl bg-slate-900/50 backdrop-blur-sm border border-white/10 p-7 sm:p-10 overflow-hidden"
             >
               <div
                 aria-hidden
                 className="absolute -top-16 -right-16 w-60 h-60 rounded-full blur-3xl opacity-50"
                 style={{
-                  background: 'radial-gradient(circle, rgba(0,194,255,0.18) 0%, transparent 70%)',
+                  background: 'radial-gradient(circle, rgba(0,194,255,0.25) 0%, transparent 70%)',
                 }}
               />
-              <div className="relative grid lg:grid-cols-[180px_1fr] gap-6 lg:gap-10 items-start">
+              <div className="relative grid lg:grid-cols-[200px_1fr] gap-6 lg:gap-10 items-start">
                 <div>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-blue mb-2">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-cyan mb-2">
                     Milestone {active + 1} of {TIMELINE.length}
                   </p>
-                  <p className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-navy">
+                  <p className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
                     {m.year}
                   </p>
                 </div>
                 <div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-brand-navy leading-tight mb-3">
+                  <h3 className="text-xl sm:text-2xl font-bold text-white leading-tight mb-3">
                     {m.title}
                   </h3>
-                  <p className="text-base text-slate-600 leading-relaxed">{m.description}</p>
+                  <p className="text-base text-white/75 leading-relaxed">{m.description}</p>
                 </div>
               </div>
             </motion.div>
           </AnimatePresence>
 
-          {/* Prev / Next nav */}
           <div className="mt-5 flex items-center justify-between text-sm">
             <button
               onClick={() => setActive((i) => Math.max(0, i - 1))}
               disabled={active === 0}
-              className="inline-flex items-center gap-1.5 font-semibold text-slate-600 hover:text-brand-blue disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="inline-flex items-center gap-1.5 font-semibold text-white/70 hover:text-brand-cyan disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               ← Previous
             </button>
-            <span className="text-xs text-slate-400">Click any year above to jump</span>
+            <span className="text-xs text-white/50">Click any year above to jump</span>
             <button
               onClick={() => setActive((i) => Math.min(TIMELINE.length - 1, i + 1))}
               disabled={active === TIMELINE.length - 1}
-              className="inline-flex items-center gap-1.5 font-semibold text-slate-600 hover:text-brand-blue disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              className="inline-flex items-center gap-1.5 font-semibold text-white/70 hover:text-brand-cyan disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
               Next →
             </button>
@@ -482,7 +467,7 @@ function TimelineSection() {
 }
 
 // =============================================================================
-//  VALUES
+//  VALUES — white
 // =============================================================================
 
 const VALUES = [
@@ -505,7 +490,7 @@ const VALUES = [
 
 function Values() {
   return (
-    <section className="relative py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 border-b border-slate-100">
+    <section className="relative bg-white py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -530,7 +515,7 @@ function Values() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-60px' }}
               transition={{ duration: 0.45, delay: i * 0.06, ease: easingCurve.industrial }}
-              className="group relative p-7 rounded-xl border border-slate-200 bg-white hover:border-brand-blue/30 hover:shadow-[0_18px_40px_-16px_rgba(4,92,179,0.18)] transition-all"
+              className="group relative p-7 rounded-2xl border border-slate-200 bg-white hover:border-brand-blue/30 hover:shadow-[0_24px_50px_-20px_rgba(4,92,179,0.2)] transition-all"
             >
               <p className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-slate-200 to-slate-300 group-hover:from-brand-blue/30 group-hover:to-brand-cyan/40 transition-colors leading-none mb-4">
                 {v.number}
@@ -548,13 +533,13 @@ function Values() {
 }
 
 // =============================================================================
-//  CERTIFICATIONS
+//  CERTIFICATIONS — video bg
 // =============================================================================
 
 function Certifications() {
   return (
-    <section className="relative bg-slate-50 py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 border-b border-slate-100">
-      <div className="max-w-7xl mx-auto">
+    <section className="relative py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 overflow-hidden bg-transparent">
+      <div className="relative max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -562,10 +547,10 @@ function Certifications() {
           transition={motionConfig.default}
           className="max-w-3xl mb-10"
         >
-          <p className="text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-3">
+          <p className="text-brand-cyan text-sm font-semibold uppercase tracking-[0.18em] mb-3">
             Certifications
           </p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-navy leading-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
             Not marketing badges.<br />Operating standards.
           </h2>
         </motion.div>
@@ -591,21 +576,21 @@ function Certifications() {
             return (
               <div
                 key={c.badge}
-                className="p-7 rounded-xl border border-slate-200 bg-white"
+                className="p-7 sm:p-8 rounded-2xl border border-white/10 bg-slate-900/40 backdrop-blur-sm"
               >
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-brand-blue/10 mb-5">
-                  <Icon className="w-4 h-4 text-brand-blue" />
-                  <span className="text-sm font-bold text-brand-blue">{c.badge}</span>
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-brand-cyan/15 mb-5">
+                  <Icon className="w-4 h-4 text-brand-cyan" />
+                  <span className="text-sm font-bold text-brand-cyan">{c.badge}</span>
                 </div>
-                <h3 className="text-xl font-bold text-brand-navy mb-2">{c.title}</h3>
-                <p className="text-sm text-slate-600 leading-relaxed">{c.body}</p>
+                <h3 className="text-xl font-bold text-white mb-3">{c.title}</h3>
+                <p className="text-sm text-white/75 leading-relaxed">{c.body}</p>
               </div>
             );
           })}
         </div>
 
-        <div className="mt-6 p-4 rounded-lg bg-white border-l-4 border-brand-blue">
-          <p className="text-sm italic text-slate-600 leading-relaxed">
+        <div className="mt-6 p-5 rounded-xl bg-slate-900/50 backdrop-blur-sm border-l-4 border-brand-cyan">
+          <p className="text-sm italic text-white/80 leading-relaxed">
             These certifications are not marketing badges. They are operating standards we built because our clients demanded them — and we now apply them to every engagement regardless of industry.
           </p>
         </div>
@@ -615,31 +600,35 @@ function Certifications() {
 }
 
 // =============================================================================
-//  FINAL CTA
+//  FINAL CTA — white
 // =============================================================================
 
 function FinalCTA() {
   return (
-    <section className="relative bg-brand-navy text-white py-20 sm:py-24 px-6 text-center overflow-hidden">
-      <div
-        aria-hidden
-        className="absolute -top-32 -left-32 w-[520px] h-[520px] rounded-full blur-3xl opacity-30"
-        style={{ background: 'radial-gradient(circle, rgba(0,194,255,0.35) 0%, transparent 70%)' }}
-      />
-      <div className="relative max-w-3xl mx-auto">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-4">
-          See how we work.
-        </h2>
-        <p className="text-base sm:text-lg text-white/70 leading-relaxed mb-8">
-          Nine years of engineering operations. ISO-certified. Canadian accountability.
-        </p>
-        <Link
-          href="/contact"
-          className="group inline-flex items-center gap-2 px-7 py-3.5 text-sm font-bold rounded-xl bg-gradient-to-r from-brand-blue to-brand-cyan text-white shadow-lg hover:shadow-xl transition-all"
-        >
-          Start a conversation
-          <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-        </Link>
+    <section className="relative bg-white py-20 sm:py-28 px-6 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4">
+        <div className="relative rounded-2xl bg-brand-navy text-white overflow-hidden px-8 sm:px-14 py-14 sm:py-20 text-center">
+          <div
+            aria-hidden
+            className="absolute -top-32 -left-32 w-[520px] h-[520px] rounded-full blur-3xl opacity-30"
+            style={{ background: 'radial-gradient(circle, rgba(0,194,255,0.35) 0%, transparent 70%)' }}
+          />
+          <div className="relative max-w-3xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-4">
+              See how we work.
+            </h2>
+            <p className="text-base sm:text-lg text-white/75 leading-relaxed mb-8">
+              Nine years of engineering operations. ISO-certified. Canadian accountability.
+            </p>
+            <Link
+              href="/contact"
+              className="group inline-flex items-center gap-2 px-8 py-4 text-base font-bold rounded-full bg-gradient-to-r from-brand-blue to-brand-cyan text-white shadow-[0_15px_40px_-10px_rgba(0,194,255,0.5)] hover:shadow-[0_20px_50px_-10px_rgba(0,194,255,0.7)] transition-all"
+            >
+              Start a conversation
+              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </Link>
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -7,6 +7,21 @@ export interface ServiceFlowStage {
   detail: string;
 }
 
+export interface ServiceTechnicalPillar {
+  title: string;
+  body: string;
+}
+
+export interface ServiceDeliverable {
+  phase: string;
+  items: string[];
+}
+
+export interface ServiceFAQ {
+  q: string;
+  a: string;
+}
+
 export interface ServiceCategory {
   key: string;
   title: string;
@@ -18,6 +33,28 @@ export interface ServiceCategory {
   idealFor: string[];
   flowTitle: string;
   flowStages: ServiceFlowStage[];
+  whyItMatters?: {
+    eyebrow: string;
+    heading: string;
+    paragraphs: string[];
+  };
+  technicalApproach?: {
+    eyebrow: string;
+    heading: string;
+    pillars: ServiceTechnicalPillar[];
+  };
+  deliverables?: {
+    eyebrow: string;
+    heading: string;
+    blurb: string;
+    phases: ServiceDeliverable[];
+  };
+  outcomes?: {
+    eyebrow: string;
+    heading: string;
+    items: { metric: string; label: string; detail: string }[];
+  };
+  faqs?: ServiceFAQ[];
 }
 
 export const SERVICE_CATEGORIES: ServiceCategory[] = [
@@ -52,6 +89,112 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
       { title: "QA & Testing", detail: "Integrated into every sprint" },
       { title: "Deploy & Go-Live", detail: "Canadian oversight · We stay involved" },
       { title: "Support & Scale", detail: "Beyond handover · Your IP · Your system" }
+    ],
+    whyItMatters: {
+      eyebrow: "Why Custom Software",
+      heading: "Off-the-shelf software is built for the median customer. Your operation is not the median.",
+      paragraphs: [
+        "Generic software optimises for the broadest possible audience. The further your operation drifts from that median — through scale, regulation, workflow specificity, or competitive differentiation — the more your team works around the tool instead of the tool working for them.",
+        "Custom software inverts that relationship. The system models your operation, not the other way around. Workflows match how your people actually work. Data flows match how decisions actually get made. Integrations match the systems you actually run.",
+        "We do not build custom software to replicate what off-the-shelf already does well. We build it where the operational specificity, the integration complexity, or the regulatory constraints make a generic system structurally wrong."
+      ]
+    },
+    technicalApproach: {
+      eyebrow: "Technical Approach",
+      heading: "How we engineer custom systems that hold up under operational load.",
+      pillars: [
+        {
+          title: "Domain-driven design first",
+          body: "Before we choose frameworks, we model the operational domain — entities, workflows, invariants, edge cases. The architecture follows the domain, not the other way around. This is what prevents the system from drifting into incoherence after two years of feature additions."
+        },
+        {
+          title: "Boring technology by default",
+          body: "We choose production-proven stacks for production systems — PostgreSQL, Node.js, Python, Go, AWS. Novelty belongs in research, not in systems your business depends on. Predictability of operations beats novelty of architecture, every time."
+        },
+        {
+          title: "Modular monolith, then services",
+          body: "We start with a clean modular monolith for most systems. Microservices are extracted only where the boundaries are clear and the operational overhead is justified. Premature distribution is the most expensive architectural mistake we see at clients."
+        },
+        {
+          title: "Observability from day one",
+          body: "Structured logging, metrics, traces, and audit trails are part of the definition of done — not bolted on after launch. If we cannot see what the system is doing in production, we have not finished building it."
+        },
+        {
+          title: "Security designed in",
+          body: "ISO 27001 controls — IAM, secrets management, threat modelling, audit logs — are designed into the system, not retrofitted. Security review is part of every architecture review, every sprint, every release."
+        },
+        {
+          title: "Documented architectural decisions",
+          body: "Every meaningful architectural decision is recorded as an Architecture Decision Record. The next engineer to touch the codebase — yours or ours — understands why the system is the way it is, not just what it does."
+        }
+      ]
+    },
+    deliverables: {
+      eyebrow: "Deliverables",
+      heading: "What you receive at each phase — concrete, documented, transferable.",
+      blurb: "Custom software is more than running code. The artefacts we hand over let your team operate, evolve, and audit the system long after our engagement ends.",
+      phases: [
+        {
+          phase: "Architecture Phase (Week 1–2)",
+          items: [
+            "System architecture document with C4 diagrams",
+            "Domain model and data dictionary",
+            "Integration map for every external system",
+            "Technology selection memo with trade-offs documented",
+            "Risk register with mitigations",
+            "Sprint-by-sprint delivery roadmap"
+          ]
+        },
+        {
+          phase: "Build Phase (per sprint)",
+          items: [
+            "Working software shipped to staging every sprint",
+            "Code in your version control, your IP from day one",
+            "Test coverage report and quality metrics",
+            "Sprint demo and engineering retrospective",
+            "Updated documentation reflecting actual implementation"
+          ]
+        },
+        {
+          phase: "Launch & Beyond",
+          items: [
+            "Production deployment with zero-downtime cutover",
+            "Operational runbooks for every critical workflow",
+            "Monitoring dashboards and alerting configured",
+            "Disaster recovery plan and tested restore procedure",
+            "Knowledge transfer sessions for your operating team",
+            "Post-launch support and ongoing scale partnership"
+          ]
+        }
+      ]
+    },
+    outcomes: {
+      eyebrow: "Outcomes",
+      heading: "What custom software delivers when it is engineered correctly.",
+      items: [
+        { metric: "100%", label: "IP ownership", detail: "Every line of code, every diagram, every credential — transferred to you at delivery." },
+        { metric: "0", label: "Vendor lock-in", detail: "Standard stacks, documented architecture, your version control. Any competent engineering team can take over." },
+        { metric: "9001+27001", label: "ISO-aligned controls", detail: "Quality and security controls built into the SDLC — auditable from day one." },
+        { metric: "1 BD", label: "Response SLA", detail: "Engineering response within one business day, every business day, for the lifetime of the engagement." }
+      ]
+    },
+    faqs: [
+      {
+        q: "How is custom software different from low-code or off-the-shelf with customisation?",
+        a: "Off-the-shelf systems are constrained by the vendor's roadmap and data model. Low-code platforms are constrained by what the platform exposes. Custom software has no such ceiling — the system is exactly what your operation requires, and it evolves at the pace your business evolves, not the vendor's release calendar."
+      },
+      {
+        q: "How long does a typical custom software engagement take?",
+        a: "A first production release is typically 4 to 9 months from kickoff, depending on scope, integration complexity, and regulatory requirements. The two-week planning phase produces a milestone-based roadmap with realistic dates — we do not commit to timelines we cannot defend."
+      },
+      {
+        q: "Do you support the system after launch?",
+        a: "Yes. We stay involved through deployment and beyond — that is when the real operational issues surface. Most engagements transition into a long-term support and scale partnership, with SLAs and engineering capacity sized to your actual operational needs."
+      },
+      {
+        q: "Who owns the code and the IP?",
+        a: "You do, completely. From day one, the code sits in your version control. At delivery, IP is formally assigned with no patent encumbrances, no license restrictions, and full source — including build pipelines, infrastructure-as-code, and documentation."
+      }
     ]
   },
   {
@@ -84,6 +227,109 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
       { title: "Senior Engineers (2–4)", detail: "Matched to your stack · Know your roadmap" },
       { title: "QA Engineer", detail: "Integrated · Not contracted separately" },
       { title: "Time zone advantage", detail: "Assign at 5pm Toronto → reviewed by 9am" }
+    ],
+    whyItMatters: {
+      eyebrow: "Why Dedicated Teams",
+      heading: "Project work ends. Product work compounds.",
+      paragraphs: [
+        "Most engineering vendors are structured for projects — scoped, time-boxed, transactional. That model breaks down when what you actually need is sustained engineering capacity against an evolving roadmap.",
+        "A dedicated team is institutional memory in code form. The same engineers learn your system, your customers, your edge cases, and your decision-making. Every quarter, they get faster at delivering — because they are not relearning context, they are extending it.",
+        "We do not run a staffing desk. We do not place freelancers. We build engineering teams matched to your stack and your roadmap, embedded in our Kathmandu hub under ISO 9001 and ISO 27001 controls, with a Canadian point of contact who owns the relationship."
+      ]
+    },
+    technicalApproach: {
+      eyebrow: "How the Team Operates",
+      heading: "An engineering pod that operates as an extension of your organisation.",
+      pillars: [
+        {
+          title: "Stack-matched on day one",
+          body: "We match the team to your stack — not the other way around. If you run TypeScript on AWS with Postgres, that is who joins. We do not retrain engineers on your dime, and we do not ship engineers learning your stack as they go."
+        },
+        {
+          title: "Senior-heavy composition",
+          body: "Every team has senior engineers at the core. No bench warmers, no junior-only pods, no anonymous developers. The people who join your roadmap are the people who stay on your roadmap."
+        },
+        {
+          title: "Embedded in your rituals",
+          body: "Standups, sprint planning, retros, code review — the team participates in your engineering rituals the same way an in-house team would. Your tooling, your processes, your definition of done."
+        },
+        {
+          title: "Engineering lead owns architecture",
+          body: "Every team has a dedicated engineering lead who owns architectural decisions, code review standards, and codebase health. The lead is your single technical point of accountability on the engineering side."
+        },
+        {
+          title: "Canadian commercial oversight",
+          body: "A Toronto-based point of contact owns the commercial relationship — contract, scope evolution, escalation, financials. You get Canadian accountability without paying for Canadian engineering hours."
+        },
+        {
+          title: "Time-zone advantage by design",
+          body: "Kathmandu time runs about 10 hours ahead of Toronto. Work you assign at end-of-day Toronto is in review by 9am Toronto the next morning. That cadence compounds into a 1.5x effective working day if you structure for it — and we will help you structure for it."
+        }
+      ]
+    },
+    deliverables: {
+      eyebrow: "What Your Team Delivers",
+      heading: "Continuous output, transparent operations, compounding institutional knowledge.",
+      blurb: "A dedicated team is not a deliverable in the project sense. It is operational capacity. These are the outputs your team produces as part of the standing engagement.",
+      phases: [
+        {
+          phase: "Every Sprint",
+          items: [
+            "Shipped features or system improvements to staging",
+            "Sprint demo with your stakeholders",
+            "Engineering retro and continuous-improvement actions",
+            "Updated test coverage and quality metrics",
+            "Documented architecture decisions when relevant"
+          ]
+        },
+        {
+          phase: "Every Quarter",
+          items: [
+            "Roadmap review and re-prioritisation with your product team",
+            "Codebase health audit — tech debt, dependencies, security posture",
+            "Team performance review with the engineering lead",
+            "Operating cost review and capacity planning"
+          ]
+        },
+        {
+          phase: "Throughout the Engagement",
+          items: [
+            "Direct access to engineers via your collaboration tools",
+            "Canadian commercial oversight on contract, scope, and escalation",
+            "ISO 9001 / 27001 controls applied across the SDLC",
+            "Full visibility into work-in-progress, code, and operations",
+            "All work product belongs to you — code, docs, infrastructure"
+          ]
+        }
+      ]
+    },
+    outcomes: {
+      eyebrow: "Outcomes",
+      heading: "What a dedicated team unlocks once it is running.",
+      items: [
+        { metric: "6–36mo", label: "Engagement length", detail: "Built for compounding partnerships, not transactional sprints. Most teams stay multi-year." },
+        { metric: "<14d", label: "Time to first commit", detail: "Stack-matched senior engineers reach productive contribution faster than internal hires." },
+        { metric: "1.5x", label: "Effective working day", detail: "Time-zone overlap with North America enables overnight delivery cycles when you structure for it." },
+        { metric: "0", label: "Recruiting overhead", detail: "No reqs, no sourcing, no interviews, no benefits administration — we operate the team for you." }
+      ]
+    },
+    faqs: [
+      {
+        q: "How is this different from staff augmentation?",
+        a: "Staff augmentation places individuals into your team. A dedicated team is a complete engineering pod we operate — with a lead, senior engineers, QA, and engineering management — accountable to your roadmap. You get institutional memory, not interchangeable resources."
+      },
+      {
+        q: "Can the team work in our time zone?",
+        a: "We optimise for overlap, not full alignment. The Kathmandu hub provides 3–5 hours of working overlap with North America, plus a Canadian point of contact for synchronous escalation. Most clients find the offset advantage outweighs the overlap cost once they restructure handoffs."
+      },
+      {
+        q: "What if we need to scale the team up or down?",
+        a: "Scaling is part of how we structure the engagement. You can add or reduce capacity with reasonable notice — typically 30–60 days depending on role. We do not lock you into a fixed headcount, and we do not run pressure-sell on adding people you do not need."
+      },
+      {
+        q: "Who manages the team day-to-day?",
+        a: "The engineering lead, who is part of our team but operates as your technical point of accountability. They run sprint cadence, code review standards, and team performance. You get a direct line to them, and a direct line to your Canadian commercial owner above that."
+      }
     ]
   },
   {
@@ -118,6 +364,113 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
       { title: "Database Layer", detail: "PostgreSQL · Redis · Performance-tested" },
       { title: "Monitoring & Alerting", detail: "Catch problems before your clients do" },
       { title: "Security Hardening", detail: "ISO 27001:2022 standard · Every engagement" }
+    ],
+    whyItMatters: {
+      eyebrow: "Why Cloud & DevOps",
+      heading: "Infrastructure is the difference between systems that scale and systems that break.",
+      paragraphs: [
+        "Application bugs cause incidents. Infrastructure problems cause outages. The difference matters — an outage takes the whole product offline, breaks customer trust, and leaves no margin for a fix.",
+        "Most engineering teams accumulate infrastructure technical debt invisibly. Manual deployments. Drifted configurations. Untested backups. Monitoring that alerts on the wrong things. The system runs — until the day it does not.",
+        "We design and operate infrastructure for engineering teams whose deployment pipeline is becoming a bottleneck, whose cloud bill is growing faster than the product, or whose monitoring is reactive instead of proactive. We run this same infrastructure for our own platform, processing payroll on fixed cycles for thousands of employees. We know what breaks because we have seen it break."
+      ]
+    },
+    technicalApproach: {
+      eyebrow: "Technical Approach",
+      heading: "How we build infrastructure that engineering teams trust.",
+      pillars: [
+        {
+          title: "Infrastructure-as-code, always",
+          body: "Every environment — dev, staging, production — is defined in Terraform or equivalent. No clicking through consoles. Drift is detected, not discovered during an incident. Reproducible from scratch in under an hour."
+        },
+        {
+          title: "Immutable, versioned deployments",
+          body: "Application releases are immutable container images. Deployments are versioned and rollback-able. The state of production at any moment is a known artefact, not the accumulated result of months of incremental changes."
+        },
+        {
+          title: "Observability over alerts",
+          body: "Structured logs, RED metrics, distributed tracing, audit trails — built into the platform, not bolted on. Alerts fire on symptoms users feel, not on technical noise. On-call gets paged for problems, not for warnings."
+        },
+        {
+          title: "Cost as a first-class metric",
+          body: "Cloud cost is tracked per environment, per service, per feature. We surface the cost of every architectural decision before it ships, not in the next month's invoice. FinOps discipline is part of how we operate, not a separate practice."
+        },
+        {
+          title: "Security baked into the pipeline",
+          body: "Secrets in a vault, never in environment variables. Container scanning in CI. IAM scoped to least privilege by default. Audit logs everywhere. ISO 27001:2022 controls applied to every pipeline we build."
+        },
+        {
+          title: "Incident response, rehearsed",
+          body: "Runbooks for every critical workflow. Disaster recovery procedures tested on a schedule, not assumed to work. Post-incident reviews focused on system improvement, not blame. Reliability is a habit, not a hope."
+        }
+      ]
+    },
+    deliverables: {
+      eyebrow: "Deliverables",
+      heading: "What you receive across the engagement.",
+      blurb: "Cloud and DevOps work produces operational artefacts. These are the durable outputs your team operates against after we have built the platform.",
+      phases: [
+        {
+          phase: "Audit Phase (Week 1–3)",
+          items: [
+            "Current-state infrastructure assessment",
+            "Architecture review with documented findings",
+            "Cost analysis with optimisation opportunities flagged",
+            "Security posture review against ISO 27001 controls",
+            "Risk register with prioritised remediations",
+            "Target-state architecture with migration plan"
+          ]
+        },
+        {
+          phase: "Build Phase",
+          items: [
+            "Terraform or equivalent IaC for every environment",
+            "CI/CD pipelines for every service",
+            "Containerised application stack with image registry",
+            "Database platform with automated backups and tested restores",
+            "Observability stack — logs, metrics, traces, dashboards",
+            "Secrets management and IAM policies",
+            "Runbooks and operational documentation"
+          ]
+        },
+        {
+          phase: "Operate Phase",
+          items: [
+            "24/7 monitoring with on-call coverage as scoped",
+            "Incident response with documented post-mortems",
+            "Quarterly capacity and cost reviews",
+            "Security audit support and compliance attestations",
+            "Continuous platform improvements and dependency updates"
+          ]
+        }
+      ]
+    },
+    outcomes: {
+      eyebrow: "Outcomes",
+      heading: "What well-engineered infrastructure unlocks.",
+      items: [
+        { metric: "99.9%+", label: "Production uptime", detail: "Reliability designed in, monitored continuously, and rehearsed through incident drills." },
+        { metric: "Minutes", label: "Deploy cycle time", detail: "From merge to production — automated, repeatable, rollback-able." },
+        { metric: "20–40%", label: "Typical cost reduction", detail: "FinOps discipline applied to right-sizing, reserved capacity, and architectural review." },
+        { metric: "ISO 27001", label: "Security baseline", detail: "Controls applied to every pipeline, every environment, every credential." }
+      ]
+    },
+    faqs: [
+      {
+        q: "Which cloud platforms do you support?",
+        a: "AWS is our deepest expertise — we run our own platform there. We also support Azure and GCP for engagements where the existing footprint or compliance requirements call for it. We are platform-realistic, not platform-religious."
+      },
+      {
+        q: "Can you take over an existing infrastructure mess?",
+        a: "Yes — most engagements start that way. We begin with an audit, document the current state honestly, and produce a migration plan with realistic risk and timeline. We do not rebuild for the sake of rebuilding; we change what materially improves reliability, security, or cost."
+      },
+      {
+        q: "Do you provide on-call coverage?",
+        a: "Yes, as scoped. On-call coverage is a defined service line — escalation paths, response SLAs, and post-incident review processes are written into the engagement. We do not offer ad-hoc emergency response without a standing relationship."
+      },
+      {
+        q: "How do you handle disaster recovery?",
+        a: "Every production system gets a documented DR plan, tested backups, and a rehearsed restore procedure. Untested backups are not backups — we run restore drills on a schedule appropriate to your RTO and RPO targets."
+      }
     ]
   }
 ];

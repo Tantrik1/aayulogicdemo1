@@ -3,8 +3,6 @@ import { HeroSection } from '@/components/hero-section';
 import { AboutSection } from '@/components/about-section';
 import { ServicesGrid } from '@/components/services-grid';
 import { TechStackSection } from '@/components/tech-stack-section';
-import { CaseStudies } from '@/components/case-studies';
-import { TestimonialsSection } from '@/components/testimonials-section';
 import { BlogSection } from '@/components/blog-section';
 import { HowWeWork } from '@/components/how-we-work';
 import { ProductsShowcase } from '@/components/products-showcase';
@@ -20,13 +18,11 @@ export default function Home() {
       <HeroSection />
       <AboutSection />
       <ServicesGrid />
-      <TestimonialsSection />
-      <CaseStudies />
       <TechStackSection />
       <ProductsShowcase />
-      <BlogSection />
-      <HowWeWork />
       <IndustriesWeServe />
+      <HowWeWork />
+      <BlogSection />
       <WhyChooseUs />
       <DigitalTransformCTA />
       <Footer />

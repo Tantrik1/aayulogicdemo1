@@ -1,7 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import {
   Compass,
   PenTool,
@@ -9,15 +8,15 @@ import {
   Workflow,
   Rocket,
   LineChart,
+  type LucideIcon,
 } from 'lucide-react';
-import { easingCurve } from '@/lib/utils';
+import { easingCurve, motionConfig } from '@/lib/utils';
 
 type Step = {
   number: string;
   title: string;
   description: string;
-  icon: React.ComponentType<{ className?: string }>;
-  highlights: string[];
+  icon: LucideIcon;
 };
 
 const STEPS: Step[] = [
@@ -25,309 +24,262 @@ const STEPS: Step[] = [
     number: '01',
     title: 'Discovery & Strategy',
     description:
-      'We start by understanding your business, users, and goals — translating vision into a clear technical roadmap with measurable outcomes.',
+      'We understand your business, users, and goals — translating vision into a clear technical roadmap.',
     icon: Compass,
-    highlights: ['Stakeholder interviews', 'Outcome KPIs', 'Roadmap'],
   },
   {
     number: '02',
     title: 'Design & Architecture',
     description:
-      'Wireframes, system design, and prototypes built collaboratively — scalable architecture before a single line of code is written.',
+      'Wireframes, system design, and prototypes. Scalable architecture before a single line of code.',
     icon: PenTool,
-    highlights: ['System design', 'UI prototypes', 'Scope sign-off'],
   },
   {
     number: '03',
     title: 'Development',
     description:
-      'Engineers ship in agile sprints with code reviews, version control, and continuous integration — building reliable, maintainable systems.',
+      'Agile sprints with code reviews, version control, and continuous integration on every PR.',
     icon: Code2,
-    highlights: ['Agile sprints', 'Code reviews', 'CI on every PR'],
   },
   {
     number: '04',
     title: 'Automation & QA',
     description:
-      'Automated testing and quality gates ensure every release is verified, secure, and ready for production at scale.',
+      'Automated testing and quality gates verify every release for production-grade reliability.',
     icon: Workflow,
-    highlights: ['Test pyramid', 'Security checks', 'Quality gates'],
   },
   {
     number: '05',
     title: 'Deployment & Launch',
     description:
-      'Zero-downtime strategies, monitoring, and rollback plans — your launch is smooth, predictable, and instrumented from day one.',
+      'Zero-downtime strategies, monitoring, and rollback plans instrumented from day one.',
     icon: Rocket,
-    highlights: ['Zero-downtime', 'Observability', 'Rollback plan'],
   },
   {
     number: '06',
     title: 'Iterate & Scale',
     description:
-      'Post-launch we monitor performance, gather insights, and continuously improve — turning every release into a foundation for the next.',
+      'Live telemetry and continuous delivery — every release becomes the foundation for the next.',
     icon: LineChart,
-    highlights: ['Live telemetry', 'Continuous delivery', 'Scale playbooks'],
   },
 ];
 
-const AUTO_MS = 4800;
-
 export function HowWeWork() {
-  const [active, setActive] = useState(0);
-  const [paused, setPaused] = useState(false);
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.12, delayChildren: 0.1 },
+    },
+  };
 
-  useEffect(() => {
-    if (paused) return;
-    const id = window.setInterval(() => {
-      setActive((i) => (i + 1) % STEPS.length);
-    }, AUTO_MS);
-    return () => window.clearInterval(id);
-  }, [paused]);
-
-  const ActiveIcon = STEPS[active].icon;
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20, scale: 0.94 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: { duration: 0.55, ease: easingCurve.industrial },
+    },
+  };
 
   return (
     <section
       id="how-we-work"
       data-theme="dark"
-      className="relative min-h-screen flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-16 lg:py-20 overflow-hidden bg-transparent"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
+      className="relative px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-32 overflow-hidden bg-cobalt-premium"
     >
-      {/* Dynamic Fading Video Overlay */}
-      <div
-        aria-hidden
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'linear-gradient(to bottom, #FFFFFF 0%, rgba(10,25,47,0.93) 12%, rgba(10,25,47,0.7) 50%, rgba(10,25,47,0.93) 88%, #FFFFFF 100%)'
-        }}
-      />
-
-      {/* Ambient backdrop */}
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-70 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(45% 35% at 85% 10%, rgba(0,194,255,0.15) 0%, transparent 70%), radial-gradient(45% 35% at 5% 90%, rgba(4,92,179,0.12) 0%, transparent 70%)',
-        }}
-      />
-
-      <div className="relative max-w-7xl mx-auto w-full">
+      <div aria-hidden className="cobalt-grain" />
+      <div className="relative max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 16 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-100px' }}
-          transition={{ duration: 0.5, ease: easingCurve.industrial }}
-          className="text-center max-w-3xl mx-auto mb-10 lg:mb-12"
+          transition={motionConfig.default}
+          className="text-center max-w-3xl mx-auto mb-16 lg:mb-20"
         >
-          <span className="inline-block text-brand-cyan text-sm font-semibold uppercase tracking-[0.18em] mb-3">
+          <span className="inline-block text-brand-cyan text-sm font-semibold uppercase tracking-[0.18em] mb-4">
             How We Work
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-[1.1] tracking-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-[1.1] tracking-tight">
             Six steps.{' '}
-            <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-brand-cyan to-white bg-clip-text text-transparent">
               One way we work.
             </span>
           </h2>
-          <p className="mt-4 text-base text-slate-350 leading-relaxed">
+          <p className="mt-5 text-base sm:text-lg text-white/80 leading-relaxed">
             A transparent, repeatable engineering workflow that turns vision into systems built to last.
           </p>
         </motion.div>
 
-        {/* Step Tabs Row */}
-        <div className="grid grid-cols-3 lg:grid-cols-6 gap-2 lg:gap-3 mb-8 lg:mb-10">
-          {STEPS.map((step, i) => {
-            const Icon = step.icon;
-            const isActive = i === active;
-            return (
-              <button
-                key={step.number}
-                onClick={() => setActive(i)}
-                className={`group relative rounded-xl p-3 lg:p-4 text-left border transition-all overflow-hidden ${
-                  isActive
-                    ? 'border-brand-cyan/40 bg-slate-900 shadow-[0_10px_28px_-14px_rgba(0,194,255,0.4)]'
-                    : 'border-white/10 bg-slate-900/40 text-slate-300 hover:border-brand-cyan/25 hover:bg-slate-900/60 hover:text-white'
-                }`}
-              >
-                {isActive && (
-                  <motion.span
-                    layoutId="howActiveBar"
-                    className="absolute inset-x-0 bottom-0 h-[3px] bg-gradient-to-r from-brand-blue to-brand-cyan"
-                    transition={{ duration: 0.4, ease: easingCurve.industrial }}
-                  />
-                )}
-                <div className="flex items-center gap-2 mb-1.5">
-                  <span
-                    className={`flex items-center justify-center w-7 h-7 lg:w-8 lg:h-8 rounded-lg transition-colors ${
-                      isActive
-                        ? 'bg-gradient-to-br from-brand-blue to-brand-cyan text-white'
-                        : 'bg-slate-950/50 text-slate-400 group-hover:text-brand-cyan'
-                    }`}
-                  >
-                    <Icon className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
-                  </span>
-                  <span
-                    className={`text-[10px] lg:text-xs font-bold tracking-[0.16em] ${
-                      isActive ? 'text-brand-cyan' : 'text-slate-400'
-                    }`}
-                  >
-                    {step.number}
-                  </span>
-                </div>
-                <h3
-                  className={`text-xs lg:text-sm font-semibold leading-tight ${
-                    isActive ? 'text-white' : 'text-slate-300'
+        {/* =================== ZIGZAG FLOW =================== */}
+        {/* Desktop: horizontal wave with SVG connector. Tablet/Mobile: vertical timeline. */}
+
+        {/* ---- Desktop (lg+) horizontal zigzag ---- */}
+        <div className="hidden lg:block relative">
+          {/* SVG wave path connecting all nodes */}
+          <svg
+            className="absolute inset-0 w-full h-full pointer-events-none"
+            viewBox="0 0 1200 460"
+            preserveAspectRatio="none"
+            aria-hidden
+          >
+            <defs>
+              <linearGradient id="flowGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#00C2FF" stopOpacity="0.2" />
+                <stop offset="50%" stopColor="#00C2FF" stopOpacity="0.7" />
+                <stop offset="100%" stopColor="#00C2FF" stopOpacity="0.2" />
+              </linearGradient>
+            </defs>
+            {/* S-wave path: weaves through 6 node positions */}
+            <motion.path
+              d="M 100 130 Q 200 130 300 230 T 500 230 Q 600 230 700 130 T 900 130 Q 1000 130 1100 230"
+              fill="none"
+              stroke="url(#flowGradient)"
+              strokeWidth="2"
+              strokeDasharray="6 8"
+              initial={{ pathLength: 0, opacity: 0 }}
+              whileInView={{ pathLength: 1, opacity: 1 }}
+              viewport={{ once: true, margin: '-100px' }}
+              transition={{ duration: 1.6, ease: easingCurve.industrial, delay: 0.4 }}
+            />
+          </svg>
+
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-80px' }}
+            className="relative grid grid-cols-6 gap-4 min-h-[460px]"
+          >
+            {STEPS.map((step, idx) => {
+              const isTop = idx % 2 === 0;
+              return (
+                <motion.div
+                  key={step.number}
+                  variants={itemVariants}
+                  className={`relative flex flex-col items-center ${
+                    isTop ? 'justify-start pt-2' : 'justify-end pb-2'
                   }`}
                 >
-                  {step.title}
-                </h3>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Stage — split panel */}
-        <div className="relative grid lg:grid-cols-[1.05fr_1fr] gap-6 lg:gap-8 items-stretch">
-          {/* Left: Copy */}
-          <div className="relative rounded-2xl bg-slate-900/60 border border-white/10 p-6 sm:p-8 lg:p-10 shadow-[0_18px_44px_-22px_rgba(0,0,0,0.6)] overflow-hidden backdrop-blur-sm">
-            <div
-              aria-hidden
-              className="absolute -top-12 -right-12 w-56 h-56 rounded-full bg-gradient-to-br from-brand-blue/10 to-brand-cyan/15 blur-3xl pointer-events-none"
-            />
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={active}
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.45, ease: easingCurve.industrial }}
-                className="relative"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-brand-blue to-brand-cyan shadow-md shadow-brand-blue/30">
-                    <ActiveIcon className="w-5 h-5 text-white" />
-                  </span>
-                  <span className="text-xs font-bold uppercase tracking-[0.22em] text-brand-cyan">
-                    Step {STEPS[active].number} of 06
-                  </span>
-                </div>
-                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight tracking-tight mb-4">
-                  {STEPS[active].title}
-                </h3>
-                <p className="text-sm sm:text-base text-slate-300 leading-relaxed mb-6">
-                  {STEPS[active].description}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {STEPS[active].highlights.map((h) => (
-                    <span
-                      key={h}
-                      className="px-3 py-1 text-xs font-semibold text-brand-cyan bg-brand-cyan/10 rounded-full"
-                    >
-                      {h}
-                    </span>
-                  ))}
-                </div>
-                <div className="mt-6 h-[2px] w-24 rounded-full bg-gradient-to-r from-brand-blue to-brand-cyan" />
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* Right: Orbit visual */}
-          <div className="relative rounded-2xl bg-gradient-to-br from-brand-navy via-[#0a1c4a] to-brand-navy overflow-hidden min-h-[320px] lg:min-h-[420px] flex items-center justify-center">
-            {/* Ambient glow */}
-            <div
-              aria-hidden
-              className="absolute -top-16 -left-16 w-72 h-72 rounded-full bg-brand-blue/30 blur-3xl"
-            />
-            <div
-              aria-hidden
-              className="absolute -bottom-20 -right-16 w-72 h-72 rounded-full bg-brand-cyan/25 blur-3xl"
-            />
-
-            {/* Rotating rings */}
-            {[1, 2, 3].map((r, i) => (
-              <motion.div
-                key={r}
-                aria-hidden
-                className="absolute inset-0 m-auto rounded-full border border-white/10"
-                style={{
-                  width: `${42 + i * 18}%`,
-                  height: `${42 + i * 18}%`,
-                  borderStyle: i === 1 ? 'dashed' : 'solid',
-                }}
-                animate={{ rotate: i % 2 === 0 ? 360 : -360 }}
-                transition={{ duration: 36 + i * 8, repeat: Infinity, ease: 'linear' }}
-              />
-            ))}
-
-            {/* Step dots on outer ring */}
-            <div className="absolute inset-0 m-auto" style={{ width: '78%', height: '78%' }}>
-              {STEPS.map((_, i) => {
-                const angle = (i / STEPS.length) * 360 - 90;
-                const rad = (angle * Math.PI) / 180;
-                const x = 50 + 50 * Math.cos(rad);
-                const y = 50 + 50 * Math.sin(rad);
-                const isActive = i === active;
-                return (
-                  <button
-                    key={i}
-                    onClick={() => setActive(i)}
-                    className="absolute -translate-x-1/2 -translate-y-1/2 group"
-                    style={{ left: `${x}%`, top: `${y}%` }}
-                    aria-label={`Go to step ${i + 1}`}
-                  >
-                    <span
-                      className={`flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full text-[10px] sm:text-xs font-bold transition-all ${
-                        isActive
-                          ? 'bg-gradient-to-br from-brand-blue to-brand-cyan text-white scale-125 shadow-[0_0_24px_rgba(0,194,255,0.6)]'
-                          : 'bg-white/10 text-white/70 hover:bg-white/20'
-                      }`}
-                    >
-                      {i + 1}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Center medallion */}
-            <div className="relative flex flex-col items-center justify-center">
-              <motion.div
-                aria-hidden
-                className="absolute inset-0 rounded-full bg-brand-cyan/40 blur-2xl"
-                animate={{ scale: [1, 1.18, 1], opacity: [0.45, 0.7, 0.45] }}
-                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
-              />
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={active}
-                  initial={{ scale: 0.7, opacity: 0, rotate: -20 }}
-                  animate={{ scale: 1, opacity: 1, rotate: 0 }}
-                  exit={{ scale: 0.7, opacity: 0, rotate: 20 }}
-                  transition={{ duration: 0.4, ease: easingCurve.industrial }}
-                  className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-brand-blue to-brand-cyan flex items-center justify-center shadow-[0_18px_44px_-12px_rgba(0,194,255,0.6)]"
-                >
-                  <ActiveIcon className="w-10 h-10 sm:w-12 sm:h-12 text-white" />
+                  {isTop ? (
+                    <>
+                      <IconNode icon={step.icon} />
+                      <StepText step={step} className="mt-5 text-center" />
+                    </>
+                  ) : (
+                    <>
+                      <StepText step={step} className="mb-5 text-center" />
+                      <IconNode icon={step.icon} />
+                    </>
+                  )}
                 </motion.div>
-              </AnimatePresence>
-              <p className="relative mt-4 text-[10px] sm:text-xs font-bold uppercase tracking-[0.24em] text-white/60">
-                Currently
-              </p>
-              <p className="relative text-sm sm:text-base font-semibold text-white">
-                {STEPS[active].title}
-              </p>
-            </div>
-          </div>
+              );
+            })}
+          </motion.div>
         </div>
 
-        {/* Auto-advance hint */}
-        <p className="mt-6 text-center text-xs text-slate-500">
-          {paused ? 'Paused' : 'Auto-advancing'} · click any step to jump
-        </p>
+        {/* ---- Tablet/Mobile vertical timeline ---- */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: '-80px' }}
+          className="lg:hidden relative"
+        >
+          {/* Vertical dashed spine */}
+          <div
+            aria-hidden
+            className="absolute left-[36px] sm:left-[44px] top-0 bottom-0 w-px border-l-2 border-dashed border-brand-cyan/35"
+          />
+
+          <div className="space-y-8 sm:space-y-10">
+            {STEPS.map((step) => (
+              <motion.div
+                key={step.number}
+                variants={itemVariants}
+                className="relative flex items-start gap-5 sm:gap-7"
+              >
+                <IconNode icon={step.icon} size="md" />
+                <StepText step={step} className="flex-1 pt-3" />
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
+  );
+}
+
+// =============================================================================
+//  Sub-components
+// =============================================================================
+
+function IconNode({
+  icon: Icon,
+  size = 'lg',
+}: {
+  icon: LucideIcon;
+  size?: 'md' | 'lg';
+}) {
+  const dim =
+    size === 'lg'
+      ? 'w-[72px] h-[72px] lg:w-[88px] lg:h-[88px]'
+      : 'w-[72px] h-[72px] sm:w-[88px] sm:h-[88px]';
+  const iconDim =
+    size === 'lg' ? 'w-7 h-7 lg:w-9 lg:h-9' : 'w-7 h-7 sm:w-9 sm:h-9';
+
+  return (
+    <div className={`relative flex-shrink-0 ${dim}`}>
+      {/* Outer cyan ring with subtle glow */}
+      <div
+        aria-hidden
+        className="absolute inset-0 rounded-full"
+        style={{
+          background: 'conic-gradient(from 0deg, #00C2FF, #045CB3, #00C2FF)',
+        }}
+      />
+      {/* Inner padding ring */}
+      <div className="absolute inset-[3px] rounded-full bg-brand-navy" />
+      {/* Inner gradient core */}
+      <div className="absolute inset-[6px] rounded-full bg-gradient-to-br from-brand-blue/40 via-brand-navy to-brand-navy flex items-center justify-center shadow-[0_15px_35px_-10px_rgba(0,194,255,0.5)]">
+        <Icon className={`${iconDim} text-brand-cyan`} strokeWidth={1.75} />
+      </div>
+      {/* Outer ambient glow */}
+      <div
+        aria-hidden
+        className="absolute -inset-2 rounded-full blur-xl opacity-50 -z-10"
+        style={{
+          background:
+            'radial-gradient(circle, rgba(0,194,255,0.45) 0%, transparent 70%)',
+        }}
+      />
+    </div>
+  );
+}
+
+function StepText({
+  step,
+  className = '',
+}: {
+  step: Step;
+  className?: string;
+}) {
+  return (
+    <div className={className}>
+      <p
+        className="font-black text-transparent bg-clip-text bg-gradient-to-br from-brand-cyan to-white leading-none mb-1"
+        style={{ fontSize: 'clamp(1.5rem, 2vw, 2rem)', letterSpacing: '-0.02em' }}
+      >
+        {step.number}
+      </p>
+      <h3 className="text-sm sm:text-base font-bold text-white mb-2 leading-tight">
+        {step.title}
+      </h3>
+      <p className="text-xs sm:text-[13px] text-white/70 leading-relaxed max-w-[240px]">
+        {step.description}
+      </p>
+    </div>
   );
 }
