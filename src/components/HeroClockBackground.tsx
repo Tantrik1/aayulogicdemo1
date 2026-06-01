@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
 export function HeroClockBackground() {
@@ -12,6 +12,10 @@ export function HeroClockBackground() {
   const [tiltX, setTiltX] = useState(0);
   const [tiltY, setTiltY] = useState(0);
 
+  const lastSecRef = useRef(0);
+  const lastMinRef = useRef(0);
+  const lastHourStepRef = useRef(0);
+
   // Mount exclusively on client to avoid Next.js SSR hydration mismatch
   useEffect(() => {
     setMounted(true);
@@ -21,29 +25,53 @@ export function HeroClockBackground() {
   useEffect(() => {
     if (!mounted) return;
 
-    const startTime = Date.now();
-    const now = new Date();
-    // Calculate initial accumulated seconds to prevent wrap-around reverse rotation glitch
-    const initialSecs = now.getSeconds() + now.getMinutes() * 60 + (now.getHours() % 12) * 3600;
+    const d = new Date();
+    const s = d.getSeconds();
+    const m = d.getMinutes();
+    const h = d.getHours();
+    
+    // Initialize angles exactly to system time positions
+    setSecAngle(s * 6);
+    setMinAngle(m * 6);
+    const initialHourStep = (h % 12) * 30 + Math.floor(m / 12) * 6;
+    setHourAngle(initialHourStep);
+    
+    lastSecRef.current = s;
+    lastMinRef.current = m;
+    lastHourStepRef.current = initialHourStep;
 
     const updateAngles = () => {
-      const current = Date.now();
-      const elapsedSeconds = Math.floor((current - startTime) / 1000);
-      const totalSecs = initialSecs + elapsedSeconds;
+      const now = new Date();
+      const currentS = now.getSeconds();
+      const currentM = now.getMinutes();
+      const currentH = now.getHours();
 
-      const d = new Date();
-      const s = d.getSeconds();
-      const m = d.getMinutes();
-      const h = d.getHours();
+      // Second hand: ticks smoothly forward by 6 degrees every second (monotonically increasing)
+      if (currentS !== lastSecRef.current) {
+        let diffSec = currentS - lastSecRef.current;
+        if (diffSec < 0) diffSec += 60;
+        setSecAngle(prev => prev + diffSec * 6);
+        lastSecRef.current = currentS;
+      }
 
-      // Seconds hand rotates continuously clockwise (monotonically increasing)
-      setSecAngle(totalSecs * 6);
-      // Minutes and Hours rotate based on exact current times
-      setMinAngle(m * 6 + s * 0.1);
-      setHourAngle((h % 12) * 30 + m * 0.5);
+      // Minute hand: moves exactly 1 step (6 degrees) when the second hand completes one full circle
+      if (currentM !== lastMinRef.current) {
+        let diffMin = currentM - lastMinRef.current;
+        if (diffMin < 0) diffMin += 60;
+        setMinAngle(prev => prev + diffMin * 6);
+        lastMinRef.current = currentM;
+      }
+
+      // Hour hand: moves in discrete steps (6 degrees each) every 12 minutes (5 steps per hour)
+      const currentHourStep = (currentH % 12) * 30 + Math.floor(currentM / 12) * 6;
+      if (currentHourStep !== lastHourStepRef.current) {
+        let diffHourStep = currentHourStep - lastHourStepRef.current;
+        if (diffHourStep < 0) diffHourStep += 360;
+        setHourAngle(prev => prev + diffHourStep);
+        lastHourStepRef.current = currentHourStep;
+      }
     };
 
-    updateAngles();
     const interval = setInterval(updateAngles, 100);
     return () => clearInterval(interval);
   }, [mounted]);
@@ -140,9 +168,18 @@ export function HeroClockBackground() {
           aria-hidden
         >
           <defs>
-            {/* Soft Glow filter */}
+            {/* Soft Glow filter (for nodes & axle cap) */}
             <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
               <feGaussianBlur stdDeviation="3" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            
+            {/* High-intensity Glow filter */}
+            <filter id="strongGlow" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="6" result="blur" />
               <feMerge>
                 <feMergeNode in="blur" />
                 <feMergeNode in="SourceGraphic" />
@@ -161,50 +198,6 @@ export function HeroClockBackground() {
             <line x1="400" y1="15" x2="400" y2="785" stroke="rgba(0, 229, 255, 0.2)" strokeWidth="1.5" strokeDasharray="4, 8" />
             <line x1="15" y1="400" x2="785" y2="400" stroke="rgba(0, 229, 255, 0.2)" strokeWidth="1.5" strokeDasharray="4, 8" />
           </g>
-
-          {/* ========================================== */}
-          {/*           ROTATING CYBERNETIC DETAILS      */}
-          {/* ========================================== */}
-
-          {/* Outer Ring: Rotating HUD Marks (Clockwise) */}
-          <motion.g
-            animate={{ rotate: 360 }}
-            transition={{ duration: 240, repeat: Infinity, ease: 'linear' }}
-            style={{ transformOrigin: 'center' }}
-            className="opacity-25"
-          >
-            <circle
-              cx="400"
-              cy="400"
-              r="350"
-              fill="none"
-              stroke="rgba(0, 229, 255, 0.4)"
-              strokeWidth="4"
-              strokeDasharray="2, 24"
-            />
-          </motion.g>
-
-          {/* Inner Ring: Continuous Radar Sweep */}
-          <motion.g
-            animate={{ rotate: 360 }}
-            transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
-            style={{ transformOrigin: 'center' }}
-            className="opacity-15"
-          >
-            <path
-              d="M400,400 L400,140 A260,260 0 0,1 584,215 Z"
-              fill="rgba(0, 229, 255, 0.05)"
-            />
-            <line
-              x1="400"
-              y1="400"
-              x2="400"
-              y2="140"
-              stroke="rgba(0, 229, 255, 0.4)"
-              strokeWidth="1.5"
-              filter="url(#glow)"
-            />
-          </motion.g>
 
           {/* ========================================== */}
           {/*      60 DIAL MARKINGS (REFERENCE ALIGNED)    */}
@@ -275,16 +268,18 @@ export function HeroClockBackground() {
           {/* ========================================== */}
 
           {/* 
-            BUG SOLUTION 1: Standard linearGradients fail on perfectly straight 
-            vertical lines with zero bounding width. We replaced gradients with 
-            solid, high-contrast, beautiful cyber-brand colors.
- 
-            BUG SOLUTION 2: Direct CSS transformOrigin on SVG groups can be buggy 
-            in standard browsers. By passing transformOrigin: 'center' in style,
-            Framer Motion forces pin-point, wobble-free rotation.
- 
-            BUG SOLUTION 3: Opposing transparent lines are retained to maintain
-            perfect geometric symmetry and prevent rendering shifts.
+            BUG SOLUTION: Zero-width elements (like perfectly vertical lines) have
+            their bounding box collapsed to 0 in Chrome/WebKit. Applying standard 
+            SVG filters (like url(#glow)) scales relative to the bounding box, 
+            clipping the hands to exactly 0px, making them COMPLETELY INVISIBLE!
+            
+            By replacing `<line>` elements with solid `<rect>` elements having
+            precise width and height, their bounding boxes are always non-zero,
+            making them 100% visible and extremely crisp in all browsers.
+            
+            By using symmetrical balancing transparent `<rect>` elements below the
+            center, we keep the group bounding box perfectly symmetrical around the
+            center of rotation (400, 400). This guarantees wobble-free, pin-point rotation.
           */}
 
           {/* 1. HOUR HAND (Solid White, Bold) */}
@@ -294,25 +289,22 @@ export function HeroClockBackground() {
             style={{ transformOrigin: 'center' }}
             className="opacity-90"
           >
-            {/* Visible Hour Hand */}
-            <line
-              x1="400"
-              y1="400"
-              x2="400"
-              y2="245"
-              stroke="#FFFFFF"
-              strokeWidth="9"
-              strokeLinecap="round"
-              filter="url(#glow)"
+            {/* Visible Hour Hand (Solid Crisp White Rect) */}
+            <rect
+              x={400 - 4.5}
+              y={245}
+              width={9}
+              height={155}
+              rx={4.5}
+              fill="#FFFFFF"
             />
-            {/* Symmetrical Balancing Vector (Invisible) */}
-            <line
-              x1="400"
-              y1="400"
-              x2="400"
-              y2="555"
-              stroke="transparent"
-              strokeWidth="9"
+            {/* Symmetrical Balancing Vector (Invisible Rect) */}
+            <rect
+              x={400 - 4.5}
+              y={400}
+              width={9}
+              height={155}
+              fill="transparent"
             />
           </motion.g>
 
@@ -323,16 +315,14 @@ export function HeroClockBackground() {
             style={{ transformOrigin: 'center' }}
             className="opacity-90"
           >
-            {/* Visible Minute Hand */}
-            <line
-              x1="400"
-              y1="400"
-              x2="400"
-              y2="170"
-              stroke="#00E5FF"
-              strokeWidth="6"
-              strokeLinecap="round"
-              filter="url(#glow)"
+            {/* Visible Minute Hand (Solid Clean Cyan Rect) */}
+            <rect
+              x={400 - 3}
+              y={170}
+              width={6}
+              height={230}
+              rx={3}
+              fill="#00E5FF"
             />
             {/* Open circle at the tip as in reference image */}
             <circle
@@ -344,14 +334,21 @@ export function HeroClockBackground() {
               strokeWidth="3.5"
               filter="url(#glow)"
             />
-            {/* Symmetrical Balancing Vector (Invisible) */}
-            <line
-              x1="400"
-              y1="400"
-              x2="400"
-              y2="630"
+            {/* Symmetrical Balancing Vector (Invisible Rect + Circle) */}
+            <rect
+              x={400 - 3}
+              y={400}
+              width={6}
+              height={230}
+              fill="transparent"
+            />
+            <circle
+              cx="400"
+              cy="605"
+              r="11"
+              fill="none"
               stroke="transparent"
-              strokeWidth="6"
+              strokeWidth="3.5"
             />
           </motion.g>
 
@@ -362,16 +359,14 @@ export function HeroClockBackground() {
             style={{ transformOrigin: 'center' }}
             className="opacity-95"
           >
-            {/* Visible thin neon-orange hand */}
-            <line
-              x1="400"
-              y1="400"
-              x2="400"
-              y2="115"
-              stroke="#FF3D00"
-              strokeWidth="3.5"
-              strokeLinecap="round"
-              filter="url(#glow)"
+            {/* Visible thin neon-orange rect */}
+            <rect
+              x={400 - 1.75}
+              y={115}
+              width={3.5}
+              height={285}
+              rx={1.75}
+              fill="#FF3D00"
             />
             {/* Open circle as in reference image */}
             <circle
@@ -383,14 +378,21 @@ export function HeroClockBackground() {
               strokeWidth="2.5"
               filter="url(#glow)"
             />
-            {/* Symmetrical Balancing Vector (Invisible) */}
-            <line
-              x1="400"
-              y1="400"
-              x2="400"
-              y2="685"
+            {/* Symmetrical Balancing Vector (Invisible Rect + Circle) */}
+            <rect
+              x={400 - 1.75}
+              y={400}
+              width={3.5}
+              height={285}
+              fill="transparent"
+            />
+            <circle
+              cx="400"
+              cy="655"
+              r="9.5"
+              fill="none"
               stroke="transparent"
-              strokeWidth="3.5"
+              strokeWidth="2.5"
             />
           </motion.g>
 
