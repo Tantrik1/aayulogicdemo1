@@ -86,23 +86,40 @@ export function HeroClockBackground() {
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, [mounted]);
 
-  // Render nothing during server-side pre-rendering to prevent hydration mismatches
   if (!mounted) {
     return null;
   }
 
-  // Pre-calculate exact polar coordinates for the 12 hour indicators (Reference watch face)
-  const ticks = Array.from({ length: 12 }, (_, i) => {
-    const h = i + 1;
-    const isMajor = h % 3 === 0; // 12, 3, 6, 9 are major nodes
-    const angle = (h * 30 - 90) * Math.PI / 180;
-    const radius = 260; // Tick circle boundary
-    return {
-      h,
-      cx: 400 + radius * Math.cos(angle),
-      cy: 400 + radius * Math.sin(angle),
-      r: isMajor ? 12 : 6,
-    };
+  // Precompute 60 exact chronological markings around the dial face
+  // Consists of 12 solid hour dots and 48 minute/second radial tick lines
+  const dialTicks = Array.from({ length: 60 }, (_, i) => {
+    const angle = (i * 6 - 90) * Math.PI / 180;
+    const isHour = i % 5 === 0;
+    const isMajorHour = i % 15 === 0; // 12, 3, 6, 9
+    const radiusOuter = 260; // outer alignment boundaries
+
+    if (isHour) {
+      return {
+        type: 'dot',
+        h: i / 5 + 1,
+        cx: 400 + radiusOuter * Math.cos(angle),
+        cy: 400 + radiusOuter * Math.sin(angle),
+        r: isMajorHour ? 11 : 6.5,
+        color: isMajorHour ? '#00E5FF' : 'rgba(0, 229, 255, 0.7)',
+        key: `dot-${i}`,
+      };
+    } else {
+      const radiusInner = 250; // Inner tick limit (makes 10px long lines)
+      return {
+        type: 'line',
+        x1: 400 + radiusInner * Math.cos(angle),
+        y1: 400 + radiusInner * Math.sin(angle),
+        x2: 400 + radiusOuter * Math.cos(angle),
+        y2: 400 + radiusOuter * Math.sin(angle),
+        color: 'rgba(0, 229, 255, 0.35)',
+        key: `line-${i}`,
+      };
+    }
   });
 
   return (
@@ -115,11 +132,11 @@ export function HeroClockBackground() {
         animate={{ rotateX: tiltX, rotateY: tiltY }}
         transition={{ type: 'spring', stiffness: 75, damping: 20 }}
         style={{ transformStyle: 'preserve-3d' }}
-        className="w-[36rem] h-[36rem] sm:w-[54rem] sm:h-[54rem] lg:w-[68rem] lg:h-[68rem] relative flex items-center justify-center opacity-[0.16]"
+        className="w-[36rem] h-[36rem] sm:w-[54rem] sm:h-[54rem] lg:w-[68rem] lg:h-[68rem] relative flex items-center justify-center opacity-100"
       >
         <svg
           viewBox="0 0 800 800"
-          className="w-full h-full text-brand-cyan filter drop-shadow-[0_0_20px_rgba(0,229,255,0.12)]"
+          className="w-full h-full text-brand-cyan filter drop-shadow-[0_0_20px_rgba(0,229,255,0.15)]"
           aria-hidden
         >
           <defs>
@@ -143,29 +160,28 @@ export function HeroClockBackground() {
 
             {/* Premium linear gradients */}
             <linearGradient id="hourGrad" x1="0" x2="0" y1="1" y2="0">
-              <stop offset="0%" stopColor="#0078FF" stopOpacity="0.2" />
+              <stop offset="0%" stopColor="#0078FF" stopOpacity="0.3" />
               <stop offset="100%" stopColor="#00E5FF" stopOpacity="0.95" />
             </linearGradient>
             <linearGradient id="minGrad" x1="0" x2="0" y1="1" y2="0">
-              <stop offset="0%" stopColor="#0052FF" stopOpacity="0.2" />
+              <stop offset="0%" stopColor="#0052FF" stopOpacity="0.3" />
               <stop offset="100%" stopColor="#00E5FF" stopOpacity="0.95" />
             </linearGradient>
           </defs>
 
           {/* ========================================== */}
-          {/*          BACKGROUND COORDINATE SYSTEM      */}
+          {/*          BACKGROUND DECORATIVE GRID        */}
           {/* ========================================== */}
           
-          {/* Concentric grids */}
-          <circle cx="400" cy="400" r="390" fill="none" stroke="rgba(0, 229, 255, 0.02)" strokeWidth="1" />
-          <circle cx="400" cy="400" r="380" fill="none" stroke="rgba(0, 229, 255, 0.03)" strokeWidth="1.5" />
-          <circle cx="400" cy="400" r="180" fill="none" stroke="rgba(0, 229, 255, 0.03)" strokeWidth="1" />
-          
-          {/* Axis lines */}
-          <line x1="400" y1="15" x2="400" y2="785" stroke="rgba(0, 229, 255, 0.02)" strokeWidth="1.5" strokeDasharray="4, 8" />
-          <line x1="15" y1="400" x2="785" y2="400" stroke="rgba(0, 229, 255, 0.02)" strokeWidth="1.5" strokeDasharray="4, 8" />
+          <g className="opacity-15">
+            <circle cx="400" cy="400" r="390" fill="none" stroke="rgba(0, 229, 255, 0.2)" strokeWidth="1" />
+            <circle cx="400" cy="400" r="380" fill="none" stroke="rgba(0, 229, 255, 0.3)" strokeWidth="1.5" />
+            <circle cx="400" cy="400" r="180" fill="none" stroke="rgba(0, 229, 255, 0.3)" strokeWidth="1" />
+            <line x1="400" y1="15" x2="400" y2="785" stroke="rgba(0, 229, 255, 0.2)" strokeWidth="1.5" strokeDasharray="4, 8" />
+            <line x1="15" y1="400" x2="785" y2="400" stroke="rgba(0, 229, 255, 0.2)" strokeWidth="1.5" strokeDasharray="4, 8" />
+          </g>
 
-          {/* RIPPLE WAVE PULSING ON EVERY TICK */}
+          {/* RIPPLE WAVE PULSING ON EVERY SECOND TICK */}
           <AnimatePresence initial={false}>
             <motion.circle
               key={secAngle}
@@ -174,51 +190,35 @@ export function HeroClockBackground() {
               r="260"
               fill="none"
               stroke="#00E5FF"
-              strokeWidth="2"
+              strokeWidth="2.5"
               filter="url(#strongGlow)"
-              initial={{ scale: 0.35, opacity: 0.7 }}
+              initial={{ scale: 0.35, opacity: 0.8 }}
               animate={{ scale: 1.4, opacity: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.95, ease: 'easeOut' }}
+              className="opacity-20"
             />
           </AnimatePresence>
 
           {/* ========================================== */}
-          {/*           ROTATING CYBERNETIC RINGS        */}
+          {/*           ROTATING CYBERNETIC DETAILS      */}
           {/* ========================================== */}
 
-          {/* Outer Ring: Rotating Gear & Compass Bearings (Clockwise) */}
+          {/* Outer Ring: Rotating HUD Marks (Clockwise) */}
           <motion.g
             animate={{ rotate: 360 }}
             transition={{ duration: 240, repeat: Infinity, ease: 'linear' }}
             style={{ transformOrigin: '400px 400px' }}
+            className="opacity-25"
           >
-            {/* Concentric tick marks */}
             <circle
               cx="400"
               cy="400"
               r="350"
               fill="none"
-              stroke="rgba(0, 229, 255, 0.06)"
+              stroke="rgba(0, 229, 255, 0.4)"
               strokeWidth="4"
-              strokeDasharray="2, 16"
-            />
-          </motion.g>
-
-          {/* Middle Ring: Slowly Rotating HUD Degrees (Counter-Clockwise) */}
-          <motion.g
-            animate={{ rotate: -360 }}
-            transition={{ duration: 180, repeat: Infinity, ease: 'linear' }}
-            style={{ transformOrigin: '400px 400px' }}
-          >
-            <circle
-              cx="400"
-              cy="400"
-              r="310"
-              fill="none"
-              stroke="rgba(0, 229, 255, 0.03)"
-              strokeWidth="1.5"
-              strokeDasharray="40, 40"
+              strokeDasharray="2, 24"
             />
           </motion.g>
 
@@ -227,69 +227,89 @@ export function HeroClockBackground() {
             animate={{ rotate: 360 }}
             transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
             style={{ transformOrigin: '400px 400px' }}
+            className="opacity-15"
           >
-            {/* Glowing sweep trail */}
             <path
               d="M400,400 L400,140 A260,260 0 0,1 584,215 Z"
-              fill="rgba(0, 229, 255, 0.012)"
+              fill="rgba(0, 229, 255, 0.05)"
             />
             <line
               x1="400"
               y1="400"
               x2="400"
               y2="140"
-              stroke="rgba(0, 229, 255, 0.12)"
+              stroke="rgba(0, 229, 255, 0.4)"
               strokeWidth="1.5"
               filter="url(#glow)"
             />
           </motion.g>
 
           {/* ========================================== */}
-          {/*      12 DIAL TICKS (REFERENCE ALIGNED)     */}
+          {/*      60 DIAL MARKINGS (REFERENCE CODES)    */}
           {/* ========================================== */}
-          {ticks.map((t) => (
-            <circle
-              key={t.h}
-              cx={t.cx}
-              cy={t.cy}
-              r={t.r}
-              fill={t.h % 3 === 0 ? 'rgba(0, 229, 255, 0.85)' : 'rgba(0, 229, 255, 0.35)'}
-              filter={t.h % 3 === 0 ? 'url(#glow)' : ''}
-            />
-          ))}
+          
+          <g className="opacity-40">
+            {dialTicks.map((t) => {
+              if (t.type === 'dot') {
+                return (
+                  <circle
+                    key={t.key}
+                    cx={t.cx}
+                    cy={t.cy}
+                    r={t.r}
+                    fill={t.color}
+                    filter="url(#glow)"
+                  />
+                );
+              } else {
+                return (
+                  <line
+                    key={t.key}
+                    x1={t.x1}
+                    y1={t.y1}
+                    x2={t.x2}
+                    y2={t.y2}
+                    stroke={t.color}
+                    strokeWidth="1.5"
+                  />
+                );
+              }
+            })}
+          </g>
 
           {/* ========================================== */}
           {/*          DYNAMIC MONOSPACE DIGITAL READOUT */}
           {/* ========================================== */}
           
-          <text
-            x="400"
-            y="575"
-            fill="rgba(0, 229, 255, 0.45)"
-            fontSize="18"
-            fontFamily="monospace"
-            fontWeight="bold"
-            letterSpacing="6"
-            textAnchor="middle"
-            filter="url(#glow)"
-          >
-            {digitalTime}
-          </text>
-          
-          <text
-            x="400"
-            y="600"
-            fill="rgba(0, 229, 255, 0.18)"
-            fontSize="9"
-            fontFamily="monospace"
-            letterSpacing="3"
-            textAnchor="middle"
-          >
-            UTC OVERLAP SYSTEM
-          </text>
+          <g className="opacity-30">
+            <text
+              x="400"
+              y="575"
+              fill="rgba(0, 229, 255, 0.75)"
+              fontSize="18"
+              fontFamily="monospace"
+              fontWeight="bold"
+              letterSpacing="6"
+              textAnchor="middle"
+              filter="url(#glow)"
+            >
+              {digitalTime}
+            </text>
+            <text
+              x="400"
+              y="600"
+              fill="rgba(0, 229, 255, 0.4)"
+              fontSize="9"
+              fontFamily="monospace"
+              letterSpacing="3"
+              textAnchor="middle"
+            >
+              UTC OVERLAP SYSTEM
+            </text>
+          </g>
 
           {/* ========================================== */}
-          {/*      PERFECTLY BALANCED THREE HANDS        */}
+          {/*      SOLID CONTRAST THREE HANDS            */}
           {/* ========================================== */}
 
           {/* 
@@ -299,20 +319,21 @@ export function HeroClockBackground() {
             perfect wobbyless transform-origin rotation.
           */}
 
-          {/* 1. HOUR HAND */}
+          {/* 1. HOUR HAND (Thick, Solid, Gradient) */}
           <motion.g
             animate={{ rotate: hourAngle }}
             transition={{ type: 'spring', stiffness: 90, damping: 15 }}
             style={{ transformOrigin: '400px 400px' }}
+            className="opacity-80"
           >
-            {/* Visible Hour Hand (Medium length, solid, gradient) */}
+            {/* Visible Hour Hand */}
             <line
               x1="400"
               y1="400"
               x2="400"
-              y2="240"
+              y2="245"
               stroke="url(#hourGrad)"
-              strokeWidth="8"
+              strokeWidth="9"
               strokeLinecap="round"
               filter="url(#glow)"
             />
@@ -321,37 +342,38 @@ export function HeroClockBackground() {
               x1="400"
               y1="400"
               x2="400"
-              y2="560"
+              y2="555"
               stroke="transparent"
-              strokeWidth="8"
+              strokeWidth="9"
             />
           </motion.g>
 
-          {/* 2. MINUTE HAND */}
+          {/* 2. MINUTE HAND (Longer, Solid, Gradient, Circle tip) */}
           <motion.g
             animate={{ rotate: minAngle }}
             transition={{ type: 'spring', stiffness: 100, damping: 15 }}
             style={{ transformOrigin: '400px 400px' }}
+            className="opacity-85"
           >
-            {/* Visible Minute Hand (Long, solid, gradient) */}
+            {/* Visible Minute Hand */}
             <line
               x1="400"
               y1="400"
               x2="400"
               y2="170"
               stroke="url(#minGrad)"
-              strokeWidth="5"
+              strokeWidth="6"
               strokeLinecap="round"
               filter="url(#glow)"
             />
             {/* Open circle at the tip as in reference image */}
             <circle
               cx="400"
-              cy="190"
-              r="10"
+              cy="195"
+              r="11"
               fill="none"
               stroke="#00E5FF"
-              strokeWidth="3"
+              strokeWidth="3.5"
               filter="url(#glow)"
             />
             {/* Symmetrical Balancing Vector (Invisible) */}
@@ -361,35 +383,36 @@ export function HeroClockBackground() {
               x2="400"
               y2="630"
               stroke="transparent"
-              strokeWidth="5"
+              strokeWidth="6"
             />
           </motion.g>
 
-          {/* 3. SECONDS HAND (Spring Snap Recoil Ticking) */}
+          {/* 3. SECONDS HAND (Spring Recoil Snap, Glowing Neon) */}
           <motion.g
             animate={{ rotate: secAngle }}
             transition={{ type: 'spring', stiffness: 220, damping: 13 }}
             style={{ transformOrigin: '400px 400px' }}
+            className="opacity-90"
           >
             {/* Visible thin neon-cyan hand */}
             <line
               x1="400"
               y1="400"
               x2="400"
-              y2="120"
+              y2="115"
               stroke="#00E5FF"
-              strokeWidth="2.5"
+              strokeWidth="3"
               strokeLinecap="round"
               filter="url(#glow)"
             />
             {/* Open circle as in reference image */}
             <circle
               cx="400"
-              cy="150"
-              r="8"
+              cy="145"
+              r="9.5"
               fill="none"
               stroke="#00E5FF"
-              strokeWidth="2"
+              strokeWidth="2.5"
               filter="url(#glow)"
             />
             {/* Symmetrical Balancing Vector (Invisible) */}
@@ -397,9 +420,9 @@ export function HeroClockBackground() {
               x1="400"
               y1="400"
               x2="400"
-              y2="680"
+              y2="685"
               stroke="transparent"
-              strokeWidth="2.5"
+              strokeWidth="3"
             />
           </motion.g>
 
@@ -407,9 +430,11 @@ export function HeroClockBackground() {
           {/*                 CENTER AXLE CAP            */}
           {/* ========================================== */}
           
-          <circle cx="400" cy="400" r="18" fill="#0A0D14" stroke="#00E5FF" strokeWidth="3" filter="url(#glow)" />
-          <circle cx="400" cy="400" r="8" fill="#00E5FF" />
-          <circle cx="400" cy="400" r="3" fill="#FFFFFF" />
+          <g className="opacity-95">
+            <circle cx="400" cy="400" r="18" fill="#0A0D14" stroke="#00E5FF" strokeWidth="3.5" filter="url(#glow)" />
+            <circle cx="400" cy="400" r="8.5" fill="#00E5FF" />
+            <circle cx="400" cy="400" r="3" fill="#FFFFFF" />
+          </g>
         </svg>
       </motion.div>
     </div>
