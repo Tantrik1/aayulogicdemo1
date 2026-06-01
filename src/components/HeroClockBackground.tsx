@@ -191,12 +191,23 @@ export function HeroClockBackground() {
           {/*          BACKGROUND DECORATIVE GRID        */}
           {/* ========================================== */}
           
-          <g className="opacity-15">
-            <circle cx="400" cy="400" r="390" fill="none" stroke="rgba(0, 229, 255, 0.2)" strokeWidth="1" />
-            <circle cx="400" cy="400" r="380" fill="none" stroke="rgba(0, 229, 255, 0.3)" strokeWidth="1.5" />
+          <g className="opacity-10">
             <circle cx="400" cy="400" r="180" fill="none" stroke="rgba(0, 229, 255, 0.3)" strokeWidth="1" />
-            <line x1="400" y1="15" x2="400" y2="785" stroke="rgba(0, 229, 255, 0.2)" strokeWidth="1.5" strokeDasharray="4, 8" />
-            <line x1="15" y1="400" x2="785" y2="400" stroke="rgba(0, 229, 255, 0.2)" strokeWidth="1.5" strokeDasharray="4, 8" />
+            <line x1="400" y1="120" x2="400" y2="680" stroke="rgba(0, 229, 255, 0.2)" strokeWidth="1.5" strokeDasharray="4, 8" />
+            <line x1="120" y1="400" x2="680" y2="400" stroke="rgba(0, 229, 255, 0.2)" strokeWidth="1.5" strokeDasharray="4, 8" />
+          </g>
+
+          {/* Sleek, glowing cyan bezel serving as the outer edge of the clock dial */}
+          <g className="opacity-35">
+            <circle 
+              cx="400" 
+              cy="400" 
+              r="275" 
+              fill="none" 
+              stroke="#00E5FF" 
+              strokeWidth="2.5" 
+              filter="url(#glow)" 
+            />
           </g>
 
           {/* ========================================== */}
