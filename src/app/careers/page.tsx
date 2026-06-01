@@ -12,7 +12,6 @@ import {
   Cpu,
   Building2,
   Plane,
-  GraduationCap,
   Globe2,
   Workflow,
   type LucideIcon,
@@ -146,8 +145,14 @@ export default function CareersPage() {
 // =============================================================================
 
 function Hero() {
+  const theme = 'dark';
+
   return (
-    <section className="relative overflow-hidden text-white">
+    <section
+      data-theme={theme}
+      className="relative overflow-hidden pt-28 pb-24 sm:pt-32 sm:pb-36 transition-all duration-500 text-white bg-slate-950/80 backdrop-blur-[1px]"
+    >
+
       <video
         autoPlay
         muted
@@ -159,27 +164,42 @@ function Hero() {
       >
         <source src="/herobackground.mp4" type="video/mp4" />
       </video>
+
+      {/* Dynamic theme overlays for legibility */}
       <div
         aria-hidden
-        className="absolute inset-0 bg-gradient-to-b from-brand-navy/90 via-brand-navy/80 to-[#0a1c4a]/95"
+        className={`absolute inset-0 transition-colors duration-500 ${
+          theme === 'dark'
+            ? 'bg-gradient-to-b from-slate-950/90 via-slate-950/80 to-[#0a1c4a]/95'
+            : 'bg-gradient-to-b from-white/95 via-white/80 to-slate-50/90'
+        }`}
       />
       <div
         aria-hidden
-        className="absolute -top-32 -right-32 w-[560px] h-[560px] rounded-full blur-3xl opacity-50"
-        style={{ background: 'radial-gradient(circle, rgba(0,194,255,0.35) 0%, transparent 70%)' }}
+        className="absolute -top-32 -right-32 w-[560px] h-[560px] rounded-full blur-3xl opacity-50 pointer-events-none"
+        style={{
+          background:
+            theme === 'dark'
+              ? 'radial-gradient(circle, rgba(0,194,255,0.35) 0%, transparent 70%)'
+              : 'radial-gradient(circle, rgba(4,92,179,0.15) 0%, transparent 70%)',
+        }}
       />
 
-      <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-24 pb-24 sm:pt-28 sm:pb-32">
+      <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 pt-12">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7">
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, ease: easingCurve.industrial }}
-              className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/15 mb-6"
+              className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border mb-6 backdrop-blur transition-all ${
+                theme === 'dark'
+                  ? 'bg-white/10 border-white/15 text-brand-cyan'
+                  : 'bg-brand-blue/8 border-brand-blue/20 text-brand-blue'
+              }`}
             >
-              <Sparkles className="w-3.5 h-3.5 text-brand-cyan" />
-              <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand-cyan">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span className="text-[11px] font-bold uppercase tracking-[0.18em]">
                 Join Aayulogic
               </span>
             </motion.div>
@@ -190,7 +210,18 @@ function Hero() {
               className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight max-w-3xl"
             >
               We are building something real in{' '}
-              <span className="bg-gradient-to-r from-brand-cyan via-white to-brand-cyan bg-clip-text text-transparent">
+              <span
+                className="inline-block"
+                style={{
+                  backgroundImage:
+                    theme === 'dark'
+                      ? 'linear-gradient(110deg, #00C2FF 0%, #FFFFFF 100%)'
+                      : 'linear-gradient(110deg, #045CB3 0%, #00C2FF 100%)',
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
                 Kathmandu.
               </span>
             </motion.h1>
@@ -198,7 +229,9 @@ function Hero() {
               initial={{ opacity: 0, y: 16 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.12, ease: easingCurve.industrial }}
-              className="mt-6 text-base sm:text-lg text-slate-200/90 leading-relaxed max-w-2xl"
+              className={`mt-6 text-base sm:text-lg leading-relaxed max-w-2xl transition-colors duration-350 ${
+                theme === 'dark' ? 'text-slate-200/90' : 'text-slate-700'
+              }`}
             >
               Not a support centre. Not a delivery outpost. An engineering hub that has built and operated enterprise software for commercial banks, developed platforms used by organisations across 18 industries, and earned ISO 9001:2015 and ISO 27001:2022 certification.
             </motion.p>
@@ -210,7 +243,11 @@ function Hero() {
             >
               <a
                 href="#open-roles"
-                className="group inline-flex items-center gap-2 px-6 py-3 text-sm font-bold rounded-xl bg-white text-brand-navy hover:bg-brand-cyan transition-colors shadow-lg"
+                className={`group inline-flex items-center gap-2 px-6 py-3 text-sm font-bold rounded-xl transition-all shadow-md ${
+                  theme === 'dark'
+                    ? 'bg-white text-brand-navy hover:bg-brand-cyan hover:shadow-lg'
+                    : 'bg-brand-blue text-white hover:bg-brand-blue/90 hover:shadow-lg'
+                }`}
               >
                 View all open roles
                 <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -219,7 +256,11 @@ function Hero() {
                 href={HRMS_BASE}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group inline-flex items-center gap-2 px-6 py-3 text-sm font-bold rounded-xl border border-white/30 text-white hover:border-white hover:bg-white/10 transition-colors"
+                className={`group inline-flex items-center gap-2 px-6 py-3 text-sm font-bold rounded-xl border transition-all ${
+                  theme === 'dark'
+                    ? 'border-white/30 text-white hover:border-white hover:bg-white/10'
+                    : 'border-brand-blue/40 text-brand-navy hover:border-brand-blue hover:bg-brand-blue/5'
+                }`}
               >
                 Apply via HRMS portal
                 <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -234,22 +275,45 @@ function Hero() {
             transition={{ duration: 0.6, delay: 0.2, ease: easingCurve.industrial }}
             className="lg:col-span-5"
           >
-            <div className="rounded-2xl border border-white/15 bg-white/5 backdrop-blur p-6">
-              <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-cyan mb-4">
+            <div className={`rounded-2xl border backdrop-blur p-6 transition-all duration-500 ${
+              theme === 'dark'
+                ? 'border-white/15 bg-white/5 shadow-2xl'
+                : 'border-brand-blue/15 bg-white/80 shadow-lg'
+            }`}>
+              <p className={`text-[10px] font-bold uppercase tracking-[0.22em] mb-4 ${
+                theme === 'dark' ? 'text-brand-cyan' : 'text-brand-blue'
+              }`}>
                 Where we stand
               </p>
-              <div className="grid grid-cols-2 gap-px bg-white/10 rounded-xl overflow-hidden">
+              <div className={`grid grid-cols-2 gap-px rounded-xl overflow-hidden ${
+                theme === 'dark' ? 'bg-white/10' : 'bg-brand-blue/10'
+              }`}>
                 {STATS.map((s) => (
-                  <div key={s.label} className="bg-brand-navy/40 p-5 text-center">
-                    <div className="text-2xl sm:text-3xl font-bold text-white">{s.value}</div>
-                    <div className="text-[11px] text-white/60 mt-1 uppercase tracking-wider">
+                  <div
+                    key={s.label}
+                    className={`p-5 text-center transition-all ${
+                      theme === 'dark' ? 'bg-slate-950/40 text-white' : 'bg-slate-50/60 text-brand-navy'
+                    }`}
+                  >
+                    <div className="text-2xl sm:text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-brand-blue to-brand-cyan">
+                      {s.value}
+                    </div>
+                    <div className={`text-[11px] mt-1 uppercase tracking-wider ${
+                      theme === 'dark' ? 'text-white/60' : 'text-slate-500'
+                    }`}>
                       {s.label}
                     </div>
                   </div>
                 ))}
               </div>
-              <div className="mt-5 pt-5 border-t border-white/10">
-                <p className="text-xs font-semibold text-white/70 mb-3">Hiring right now</p>
+              <div className={`mt-5 pt-5 border-t ${
+                theme === 'dark' ? 'border-white/10' : 'border-slate-100'
+              }`}>
+                <p className={`text-xs font-semibold mb-3 ${
+                  theme === 'dark' ? 'text-white/70' : 'text-slate-600'
+                }`}>
+                  Hiring right now
+                </p>
                 <ul className="space-y-2">
                   {ROLES.slice(0, 3).map((r) => (
                     <li key={r.slug}>
@@ -257,10 +321,14 @@ function Hero() {
                         href={roleHref(r.slug)}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group flex items-center justify-between text-sm text-white/85 hover:text-white"
+                        className={`group flex items-center justify-between text-sm transition-colors ${
+                          theme === 'dark' ? 'text-white/85 hover:text-white' : 'text-slate-700 hover:text-brand-blue'
+                        }`}
                       >
                         <span className="truncate">{r.title}</span>
-                        <ArrowUpRight className="w-3.5 h-3.5 text-brand-cyan group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                        <ArrowUpRight className={`w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5 ${
+                          theme === 'dark' ? 'text-brand-cyan' : 'text-brand-blue'
+                        }`} />
                       </a>
                     </li>
                   ))}

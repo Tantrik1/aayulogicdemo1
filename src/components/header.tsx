@@ -20,6 +20,7 @@ import {
   CalendarCheck,
   ShieldCheck,
   Globe2,
+  Users2,
   type LucideIcon,
 } from 'lucide-react';
 import {
@@ -51,13 +52,11 @@ const SERVICE_ICON_MAP: Record<string, LucideIcon> = {
   ShoppingBag,
   Cpu,
   Building2,
+  Users2,
 };
 
 export function Header() {
   const [activeMenu, setActiveMenu] = useState<NavKey | null>(null);
-  const [activeServiceTab, setActiveServiceTab] = useState<string>(
-    SERVICE_CATEGORIES[0].key,
-  );
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isOverDark, setIsOverDark] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -276,12 +275,7 @@ export function Header() {
                 {/* Subtle accent gradient */}
                 <div className="absolute inset-0 bg-gradient-to-b from-brand-cyan/5 via-transparent to-transparent pointer-events-none" />
                 <div className="relative">
-                  {activeMenu === 'services' && (
-                    <ServicesPanel
-                      activeTab={activeServiceTab}
-                      onTabChange={setActiveServiceTab}
-                    />
-                  )}
+                  {activeMenu === 'services' && <ServicesPanel />}
                   {activeMenu === 'products' && <ProductsPanel />}
                   {activeMenu === 'industries' && <IndustriesPanel />}
                   {activeMenu === 'talent' && <TalentPanel />}
@@ -304,105 +298,69 @@ export function Header() {
 }
 
 // =============================================================================
-//  Services Panel (Vertical Tabs)
+//  Services Panel
 // =============================================================================
 
-function ServicesPanel({
-  activeTab,
-  onTabChange,
-}: {
-  activeTab: string;
-  onTabChange: (key: string) => void;
-}) {
-  const active = SERVICE_CATEGORIES.find((c) => c.key === activeTab) ?? SERVICE_CATEGORIES[0];
-  const ActiveIcon = SERVICE_ICON_MAP[active.iconKey] ?? Sparkles;
-
+function ServicesPanel() {
   return (
-    <div className="grid grid-cols-12 gap-8">
-      {/* Left Vertical Tabs */}
-      <div className="col-span-3 border-r border-slate-200 pr-6">
-        <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400 mb-4">
-          Capabilities
-        </p>
-        <div className="space-y-1">
-          {SERVICE_CATEGORIES.map((cat) => {
-            const Icon = SERVICE_ICON_MAP[cat.iconKey] ?? Sparkles;
-            const isActive = cat.key === active.key;
-            return (
-              <button
-                key={cat.key}
-                onMouseEnter={() => onTabChange(cat.key)}
-                onClick={() => onTabChange(cat.key)}
-                className={`w-full text-left flex items-center gap-3 px-3 py-2.5 rounded-md text-sm transition-all ${
-                  isActive
-                    ? 'bg-brand-blue/8 text-brand-blue font-semibold'
-                    : 'text-brand-navy hover:bg-slate-50 hover:text-brand-blue'
-                }`}
-              >
-                <Icon
-                  className={`w-4 h-4 flex-shrink-0 ${
-                    isActive ? 'text-brand-blue' : 'text-slate-400'
-                  }`}
-                />
-                <span className="flex-1 leading-tight">{cat.title}</span>
-                {isActive && <ChevronRight className="w-4 h-4 text-brand-blue" />}
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-      {/* Right Dynamic Content */}
-      <div className="col-span-9">
-        <motion.div
-          key={active.key}
-          initial={{ opacity: 0, x: 8 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.25, ease: easingCurve.industrial }}
-        >
-          {/* Overview header */}
-          <div className="flex items-start gap-4 pb-5 mb-6 border-b border-slate-200">
-            <div className="w-12 h-12 rounded-md bg-gradient-to-br from-brand-blue to-brand-system-blue flex items-center justify-center flex-shrink-0">
-              <ActiveIcon className="w-6 h-6 text-white" />
-            </div>
-            <div className="flex-1">
-              <h3 className="text-lg font-bold text-brand-navy mb-1">{active.title}</h3>
-              <p className="text-sm text-slate-600">{active.tagline}</p>
-            </div>
+    <div>
+      <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400 mb-5">
+        Our Services
+      </p>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {SERVICE_CATEGORIES.map((cat) => {
+          const Icon = SERVICE_ICON_MAP[cat.iconKey] || Code2;
+          return (
             <Link
-              href={`/services/${active.key}`}
-              className="hidden sm:flex items-center gap-1 text-xs font-semibold text-brand-blue hover:text-brand-navy"
+              key={cat.key}
+              href={`/services/${cat.key}`}
+              className="group relative flex flex-col p-6 rounded-xl overflow-hidden bg-white/70 border border-brand-blue/15 hover:border-brand-cyan/50 backdrop-blur hover:bg-white/90 hover:-translate-y-1 hover:shadow-[0_25px_50px_-15px_rgba(4,92,179,0.2)] transition-all duration-300"
             >
-              Overview <ArrowUpRight className="w-3.5 h-3.5" />
+              {/* Corner accent glow */}
+              <span
+                aria-hidden
+                className="pointer-events-none absolute -top-12 -right-12 w-32 h-32 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                style={{
+                  background:
+                    'radial-gradient(circle, rgba(0,194,255,0.15) 0%, transparent 70%)',
+                }}
+              />
+
+              {/* Icon */}
+              <div className="w-10 h-10 rounded-lg bg-brand-blue/8 flex items-center justify-center mb-4 group-hover:bg-gradient-to-br group-hover:from-brand-blue group-hover:to-brand-cyan transition-colors">
+                <Icon className="w-5 h-5 text-brand-blue group-hover:text-white transition-colors" />
+              </div>
+
+              {/* Title */}
+              <h3 className="text-base font-bold text-brand-navy mb-2 group-hover:text-brand-blue transition-colors">
+                {cat.title}
+              </h3>
+
+              {/* Tagline */}
+              <p className="text-xs text-slate-500 leading-relaxed mb-4 flex-1">
+                {cat.tagline}
+              </p>
+
+              {/* Bullet points (first 3 items from whatsIncluded) */}
+              <ul className="space-y-1.5 mb-5 border-t border-slate-100 pt-4">
+                {cat.whatsIncluded.slice(0, 3).map((item) => (
+                  <li key={item} className="flex items-center gap-2 text-[11px] text-slate-500">
+                    <span className="w-1 h-1 rounded-full bg-brand-cyan flex-shrink-0" />
+                    <span className="truncate">{item}</span>
+                  </li>
+                ))}
+              </ul>
+
+              {/* Footer */}
+              <div className="pt-3 border-t border-slate-55">
+                <span className="inline-flex items-center gap-1 text-xs font-semibold text-brand-blue group-hover:gap-1.5 transition-all">
+                  Learn More
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </span>
+              </div>
             </Link>
-          </div>
-
-          {/* Service items grid */}
-          <div className="grid grid-cols-2 xl:grid-cols-3 gap-3">
-            {active.items.map((item) => (
-              <Link
-                key={item.title}
-                href={`/services/${active.key}/${item.slug}`}
-                className="group relative p-4 rounded-lg border border-brand-blue/10 hover:border-brand-cyan/40 bg-white/50 hover:bg-white/70 backdrop-blur transition-all overflow-hidden"
-              >
-                {/* Hover glow */}
-                <div className="absolute -inset-px rounded-lg bg-gradient-to-br from-brand-blue/5 via-brand-cyan/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-
-                <div className="relative">
-                  <div className="flex items-start justify-between gap-2 mb-1">
-                    <h4 className="text-sm font-semibold text-brand-navy group-hover:text-brand-blue transition-colors">
-                      {item.title}
-                    </h4>
-                    <ArrowUpRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-brand-blue group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all flex-shrink-0" />
-                  </div>
-                  <p className="text-xs text-slate-500 leading-relaxed line-clamp-2">
-                    {item.description}
-                  </p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </motion.div>
+          );
+        })}
       </div>
     </div>
   );
@@ -659,12 +617,10 @@ function SpotlightPanel({
 
 function MobileDrawer({ onClose }: { onClose: () => void }) {
   const [expanded, setExpanded] = useState<NavKey | null>(null);
-  const [serviceSub, setServiceSub] = useState<string | null>(null);
   const [productSub, setProductSub] = useState<string | null>(null);
 
   const toggle = (key: NavKey) => {
     setExpanded(expanded === key ? null : key);
-    setServiceSub(null);
     setProductSub(null);
   };
 
@@ -800,63 +756,20 @@ function MobileDrawer({ onClose }: { onClose: () => void }) {
                           {item.key === 'services' &&
                             SERVICE_CATEGORIES.map((cat) => {
                               const Icon = SERVICE_ICON_MAP[cat.iconKey] ?? Sparkles;
-                              const isSubOpen = serviceSub === cat.key;
                               return (
-                                <div key={cat.key}>
-                                  <button
-                                    onClick={() =>
-                                      setServiceSub(isSubOpen ? null : cat.key)
-                                    }
-                                    className="w-full flex items-center justify-between py-2.5 px-3 rounded-lg hover:bg-slate-50 transition-colors"
-                                  >
-                                    <span className="flex items-center gap-2.5 text-sm font-semibold text-brand-navy">
-                                      <span className="w-7 h-7 rounded-md bg-gradient-to-br from-brand-blue/10 to-brand-cyan/10 flex items-center justify-center">
-                                        <Icon className="w-3.5 h-3.5 text-brand-blue" />
-                                      </span>
-                                      {cat.title}
-                                    </span>
-                                    <ChevronDown
-                                      className={`w-3.5 h-3.5 text-slate-400 transition-transform duration-300 ${
-                                        isSubOpen ? 'rotate-180 text-brand-blue' : ''
-                                      }`}
-                                    />
-                                  </button>
-                                  <AnimatePresence initial={false}>
-                                    {isSubOpen && (
-                                      <motion.div
-                                        initial={{ height: 0, opacity: 0 }}
-                                        animate={{ height: 'auto', opacity: 1 }}
-                                        exit={{ height: 0, opacity: 0 }}
-                                        transition={{
-                                          duration: 0.25,
-                                          ease: easingCurve.industrial,
-                                        }}
-                                        className="overflow-hidden"
-                                      >
-                                        <div className="ml-6 pl-3 border-l border-brand-blue/15 py-1 space-y-0.5">
-                                          <Link
-                                            href={`/services/${cat.key}`}
-                                            onClick={onClose}
-                                            className="flex items-center justify-between py-1.5 px-2 rounded text-xs font-semibold text-brand-blue hover:bg-brand-blue/5 transition-colors"
-                                          >
-                                            View all {cat.title}
-                                            <ArrowUpRight className="w-3 h-3" />
-                                          </Link>
-                                          {cat.items.map((it) => (
-                                            <Link
-                                              key={it.title}
-                                              href={`/services/${cat.key}/${it.slug}`}
-                                              onClick={onClose}
-                                              className="block py-1.5 px-2 rounded text-xs text-slate-600 hover:text-brand-blue hover:bg-slate-50 transition-colors"
-                                            >
-                                              {it.title}
-                                            </Link>
-                                          ))}
-                                        </div>
-                                      </motion.div>
-                                    )}
-                                  </AnimatePresence>
-                                </div>
+                                <Link
+                                  key={cat.key}
+                                  href={`/services/${cat.key}`}
+                                  onClick={onClose}
+                                  className="w-full flex items-center gap-2.5 py-2.5 px-3 rounded-lg hover:bg-slate-50 transition-colors"
+                                >
+                                  <span className="w-7 h-7 rounded-md bg-gradient-to-br from-brand-blue/10 to-brand-cyan/10 flex items-center justify-center">
+                                    <Icon className="w-3.5 h-3.5 text-brand-blue" />
+                                  </span>
+                                  <span className="text-sm font-semibold text-brand-navy">
+                                    {cat.title}
+                                  </span>
+                                </Link>
                               );
                             })}
 

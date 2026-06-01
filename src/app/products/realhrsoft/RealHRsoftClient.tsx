@@ -82,54 +82,6 @@ const MODULES = [
   { name: 'Analytics', items: ['HR Dashboards', 'Headcount Trends', 'DEI Reports'] },
 ];
 
-const PRICING_TIERS = [
-  {
-    name: 'Starter',
-    price: '$4',
-    cadence: '/user/month',
-    description: 'For teams under 100 employees getting started with structured HR.',
-    features: [
-      'Core HRIS',
-      'Attendance & Leave',
-      'Up to 100 employees',
-      'Email support',
-    ],
-    highlighted: false,
-    cta: 'Start Trial',
-  },
-  {
-    name: 'Growth',
-    price: '$9',
-    cadence: '/user/month',
-    description: 'For scaling teams that need performance and analytics layered in.',
-    features: [
-      'Everything in Starter',
-      'Performance Management',
-      'Recruitment Module',
-      'Analytics Dashboards',
-      'Priority Support',
-    ],
-    highlighted: true,
-    cta: 'Most Popular',
-  },
-  {
-    name: 'Enterprise',
-    price: 'Custom',
-    cadence: '',
-    description: 'Multi-country teams with compliance, SSO, and custom integrations.',
-    features: [
-      'Everything in Growth',
-      'Multi-Country Payroll',
-      'SSO + SCIM',
-      'Dedicated CSM',
-      'Single-Tenant Option',
-      '99.9% Uptime SLA',
-    ],
-    highlighted: false,
-    cta: 'Talk to Sales',
-  },
-];
-
 const TESTIMONIAL = {
   quote:
     "We replaced two SaaS vendors with one Aayulogic-built platform and cut OpEx by 41%. Roadmap clarity from week one.",
@@ -137,8 +89,6 @@ const TESTIMONIAL = {
   role: 'COO',
   company: 'Verdant Logistics',
 };
-
-const TRUST_LOGOS = ['microsoft', 'google', 'aws', 'salesforce', 'oracle', 'stripe'];
 
 export function RealHRsoftClient() {
   return (
@@ -230,21 +180,21 @@ export function RealHRsoftClient() {
               transition={{ duration: 0.5, delay: 0.2, ease: easingCurve.industrial }}
               className="mt-8 flex flex-wrap items-center gap-4"
             >
-              <a
-                href="#contact"
+              <Link
+                href="/contact"
                 className="group relative inline-flex items-center gap-2 px-7 py-3.5 text-sm font-bold rounded-xl text-white overflow-hidden shadow-lg shadow-brand-blue/20"
               >
                 <span className="absolute inset-0 bg-gradient-to-br from-brand-blue to-brand-cyan opacity-95 rounded-xl" />
                 <span className="relative">Book a Demo</span>
                 <ArrowUpRight className="relative w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </a>
-              <a
-                href="#pricing"
+              </Link>
+              <Link
+                href="/contact"
                 className="group inline-flex items-center gap-2 px-7 py-3.5 text-sm font-bold rounded-xl bg-white border border-brand-blue/20 text-brand-navy hover:border-brand-blue/40 transition-all"
               >
-                See Pricing
+                Contact Sales
                 <ArrowUpRight className="w-4 h-4 text-brand-blue group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </a>
+              </Link>
             </motion.div>
 
             <motion.div
@@ -293,100 +243,20 @@ export function RealHRsoftClient() {
                   </div>
                 </div>
 
-                {/* Mock dashboard */}
-                <div className="p-6">
-                  <div className="flex items-center justify-between mb-5">
-                    <div>
-                      <div className="text-[10px] font-bold uppercase tracking-[0.18em] text-slate-400 mb-1">
-                        People Overview
-                      </div>
-                      <div className="text-base font-bold text-brand-navy">
-                        Q2 — Headcount Trends
-                      </div>
-                    </div>
-                    <div className="px-2 py-1 rounded-md bg-emerald-500/10 text-[10px] font-bold text-emerald-600 uppercase tracking-wider">
-                      + 12% MoM
-                    </div>
-                  </div>
-
-                  {/* Stat row */}
-                  <div className="grid grid-cols-3 gap-3 mb-5">
-                    {[
-                      { label: 'Active', value: '1,284' },
-                      { label: 'New Hires', value: '47' },
-                      { label: 'Attrition', value: '3.2%' },
-                    ].map((s) => (
-                      <div
-                        key={s.label}
-                        className="p-3 rounded-lg bg-brand-light/50 border border-brand-blue/8"
-                      >
-                        <div className="text-lg font-bold text-brand-navy">
-                          {s.value}
-                        </div>
-                        <div className="text-[10px] font-medium text-slate-500 uppercase tracking-wider">
-                          {s.label}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Mock chart bars */}
-                  <div className="flex items-end justify-between gap-1.5 h-24 mb-4 px-1">
-                    {[40, 55, 48, 62, 70, 65, 78, 85, 80, 92, 88, 95].map((h, i) => (
-                      <div
-                        key={i}
-                        className="flex-1 rounded-t bg-gradient-to-t from-brand-blue to-brand-cyan"
-                        style={{ height: `${h}%` }}
-                      />
-                    ))}
-                  </div>
-
-                  {/* Mock activity */}
-                  <div className="space-y-2 pt-4 border-t border-slate-100">
-                    {[
-                      { name: 'Sarah Chen', action: 'Promoted to Sr. Manager', time: '2m' },
-                      { name: 'Marcus Kim', action: 'Completed onboarding', time: '14m' },
-                      { name: 'Priya Sharma', action: 'PTO approved', time: '1h' },
-                    ].map((a) => (
-                      <div key={a.name} className="flex items-center gap-3">
-                        <div className="w-7 h-7 rounded-full bg-gradient-to-br from-brand-blue to-brand-cyan flex items-center justify-center text-[10px] font-bold text-white">
-                          {a.name.split(' ').map((p) => p[0]).join('')}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="text-xs font-semibold text-brand-navy truncate">
-                            {a.name}
-                          </div>
-                          <div className="text-[10px] text-slate-500 truncate">
-                            {a.action}
-                          </div>
-                        </div>
-                        <div className="text-[10px] text-slate-400">{a.time}</div>
-                      </div>
-                    ))}
-                  </div>
+                {/* Real screenshot mockup */}
+                <div className="relative aspect-[16/10] w-full bg-slate-50">
+                  <Image
+                    src="/realhrsoft_dashboard.png"
+                    alt="RealHRsoft Dashboard Interface"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    priority
+                    className="object-cover"
+                  />
                 </div>
               </div>
             </div>
           </motion.div>
-        </div>
-      </section>
-
-      {/* Trust logos */}
-      <section className="relative py-12 bg-white border-y border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <p className="text-center text-[10px] font-bold uppercase tracking-[0.22em] text-slate-400 mb-6">
-            Trusted by teams at
-          </p>
-          <div className="flex items-center justify-center gap-8 sm:gap-12 flex-wrap opacity-60">
-            {TRUST_LOGOS.map((logo) => (
-              <div
-                key={logo}
-                className="text-xs font-bold uppercase tracking-wider text-slate-500"
-              >
-                {logo}
-              </div>
-            ))}
-          </div>
         </div>
       </section>
 
@@ -497,106 +367,55 @@ export function RealHRsoftClient() {
         </div>
       </section>
 
-      {/* Pricing */}
-      <section id="pricing" className="relative py-20 sm:py-28 bg-brand-light/40">
+      {/* Other Products Cross-linking */}
+      <section className="relative py-20 sm:py-24 bg-white border-t border-slate-100">
         <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <div className="max-w-3xl mx-auto text-center mb-14">
+          <div className="max-w-3xl mb-12">
             <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-blue mb-3">
-              Pricing
+              Integrations &amp; Suite
             </p>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-navy tracking-tight">
-              Predictable per-user pricing.
+            <h2 className="text-3xl sm:text-4xl font-bold text-brand-navy tracking-tight">
+              Other products in our SaaS Suite
             </h2>
-            <p className="mt-5 text-base text-slate-600">
-              No setup fees. No platform fees. Cancel anytime in the first 30 days.
+            <p className="mt-4 text-slate-600">
+              RealHRsoft integrates natively with our communication and learning systems to provide a unified enterprise experience.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 max-w-5xl mx-auto">
-            {PRICING_TIERS.map((tier) => (
-              <div
-                key={tier.name}
-                className={`relative p-7 rounded-2xl flex flex-col ${
-                  tier.highlighted
-                    ? 'bg-brand-navy text-white shadow-2xl shadow-brand-blue/20 scale-105 z-10'
-                    : 'bg-white border border-brand-blue/12'
-                }`}
-              >
-                {tier.highlighted && (
-                  <div
-                    aria-hidden
-                    className="absolute -top-20 -right-20 w-60 h-60 rounded-full blur-3xl opacity-50"
-                    style={{
-                      background:
-                        'radial-gradient(circle, rgba(0,194,255,0.35) 0%, transparent 70%)',
-                    }}
-                  />
-                )}
-                <div className="relative">
-                  <h3
-                    className={`text-sm font-bold uppercase tracking-[0.18em] mb-3 ${
-                      tier.highlighted ? 'text-brand-cyan' : 'text-brand-blue'
-                    }`}
-                  >
-                    {tier.name}
-                  </h3>
-                  <div className="mb-2 flex items-baseline gap-1">
-                    <span
-                      className={`text-4xl font-bold ${
-                        tier.highlighted ? 'text-white' : 'text-brand-navy'
-                      }`}
-                    >
-                      {tier.price}
-                    </span>
-                    <span
-                      className={`text-sm ${
-                        tier.highlighted ? 'text-slate-300' : 'text-slate-500'
-                      }`}
-                    >
-                      {tier.cadence}
-                    </span>
-                  </div>
-                  <p
-                    className={`text-sm leading-relaxed mb-6 ${
-                      tier.highlighted ? 'text-slate-300' : 'text-slate-600'
-                    }`}
-                  >
-                    {tier.description}
-                  </p>
-                  <ul className="space-y-2.5 mb-7 flex-1">
-                    {tier.features.map((f) => (
-                      <li
-                        key={f}
-                        className="flex items-start gap-2 text-sm"
-                      >
-                        <CheckCircle2
-                          className={`w-4 h-4 flex-shrink-0 mt-0.5 ${
-                            tier.highlighted ? 'text-brand-cyan' : 'text-brand-blue'
-                          }`}
-                        />
-                        <span
-                          className={
-                            tier.highlighted ? 'text-slate-200' : 'text-slate-700'
-                          }
-                        >
-                          {f}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                  <a
-                    href="#contact"
-                    className={`block w-full text-center px-5 py-3 rounded-lg text-sm font-bold transition-colors ${
-                      tier.highlighted
-                        ? 'bg-white text-brand-navy hover:bg-brand-cyan'
-                        : 'bg-brand-navy text-white hover:bg-brand-blue'
-                    }`}
-                  >
-                    {tier.cta}
-                  </a>
-                </div>
+          <div className="grid md:grid-cols-2 gap-8">
+            <Link
+              href="/products/realchat"
+              className="group p-6 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-white hover:border-brand-blue/30 hover:shadow-lg transition-all flex flex-col justify-between"
+            >
+              <div>
+                <h3 className="text-lg font-bold text-brand-navy mb-2 group-hover:text-brand-blue transition-colors">
+                  Real Chat
+                </h3>
+                <p className="text-sm text-slate-500 leading-relaxed mb-6">
+                  Secure team communication and collaboration workspace built for privacy and compliance-sensitive organizations.
+                </p>
               </div>
-            ))}
+              <span className="text-xs font-semibold text-brand-blue flex items-center gap-1">
+                Explore Real Chat <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </span>
+            </Link>
+
+            <Link
+              href="/products/reallearn"
+              className="group p-6 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-white hover:border-brand-blue/30 hover:shadow-lg transition-all flex flex-col justify-between"
+            >
+              <div>
+                <h3 className="text-lg font-bold text-brand-navy mb-2 group-hover:text-brand-blue transition-colors">
+                  Real Learn
+                </h3>
+                <p className="text-sm text-slate-500 leading-relaxed mb-6">
+                  Enterprise LMS for onboarding, continuous professional development, and compliance certification training.
+                </p>
+              </div>
+              <span className="text-xs font-semibold text-brand-blue flex items-center gap-1">
+                Explore Real Learn <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+              </span>
+            </Link>
           </div>
         </div>
       </section>

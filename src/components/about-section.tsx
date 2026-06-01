@@ -5,10 +5,6 @@ import { motion } from 'framer-motion';
 import {
   ShieldCheck,
   Lock,
-  Users2,
-  Code2,
-  ShieldAlert,
-  ArrowUpRight,
   MapPin,
   BadgeCheck,
 } from 'lucide-react';
@@ -45,35 +41,7 @@ const CERTIFICATIONS: TrustItem[] = [
   },
 ];
 
-const PARTNERS: TrustItem[] = [
-  {
-    logo: '/mero-job-jobaxle-1024x126.png',
-    alt: 'Merojob and JobAxle',
-    name: 'Merojob × JobAxle',
-    role: 'Recruitment Partners',
-    desc: 'Sourcing top IT and HR talent across Nepal — feeding the engineering pipeline that powers our delivery.',
-    icon: Users2,
-    kind: 'partner',
-  },
-  {
-    logo: '/awecode.svg',
-    alt: 'Awecode',
-    name: 'Awecode Pvt. Ltd.',
-    role: 'Software Development Partner',
-    desc: 'Extended resource pool for urgent or large-scale projects — surge capacity without compromising standards.',
-    icon: Code2,
-    kind: 'partner',
-  },
-  {
-    logo: '/Greentick-Logo.png',
-    alt: 'Greentick Nepal',
-    name: 'Greentick Nepal Pvt. Ltd.',
-    role: 'Cybersecurity Partner',
-    desc: 'Trusted cybersecurity solutions — penetration testing, threat assessment and continuous security posture.',
-    icon: ShieldAlert,
-    kind: 'partner',
-  },
-];
+
 
 export function AboutSection() {
   const containerVariants = {

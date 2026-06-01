@@ -27,8 +27,8 @@ export default function ProductsPage() {
         title="Software that runs"
         highlight="real businesses."
         subtitle="Three production-hardened SaaS products serving 500+ enterprises. HR intelligence, secure team comms, and structured learning — built by the same engineers behind your platform."
-        primaryCta={{ label: 'Book a Demo', href: '#contact' }}
-        secondaryCta={{ label: 'See Pricing', href: '#pricing' }}
+        primaryCta={{ label: 'Book a Demo', href: '/contact' }}
+        secondaryCta={{ label: 'Contact Sales', href: '/contact' }}
         stats={[
           { label: 'Active customers', value: '500+' },
           { label: 'End users', value: '120K+' },

@@ -169,14 +169,14 @@ export default async function ProductDetailPage({
               {product.description}
             </p>
             <div className="mt-9 flex flex-wrap items-center gap-4">
-              <a
-                href="#contact"
+              <Link
+                href="/contact"
                 className="group relative inline-flex items-center gap-2 px-7 py-3.5 text-sm font-bold rounded-xl text-white overflow-hidden shadow-lg shadow-brand-blue/20"
               >
                 <span className="absolute inset-0 bg-gradient-to-br from-brand-blue to-brand-cyan opacity-95 rounded-xl" />
                 <span className="relative">Book a Demo</span>
                 <ArrowUpRight className="relative w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-              </a>
+              </Link>
               <a
                 href="#features"
                 className="group inline-flex items-center gap-2 px-7 py-3.5 text-sm font-bold rounded-xl bg-white border border-brand-blue/20 text-brand-navy hover:border-brand-blue/40 transition-all"
@@ -189,16 +189,28 @@ export default async function ProductDetailPage({
 
           {/* Visual */}
           <div className="lg:col-span-5">
-            <div className="relative aspect-square rounded-2xl bg-gradient-to-br from-brand-blue/8 via-brand-cyan/8 to-transparent border border-brand-blue/15 flex items-center justify-center overflow-hidden">
-              <div
-                aria-hidden
-                className="absolute -top-20 -right-20 w-60 h-60 rounded-full blur-3xl opacity-60"
-                style={{
-                  background:
-                    'radial-gradient(circle, rgba(0,194,255,0.35) 0%, transparent 70%)',
-                }}
-              />
-              <Icon className="relative w-40 h-40 text-brand-blue/30" strokeWidth={1} />
+            <div className="relative aspect-[16/10] w-full rounded-2xl bg-white border border-brand-blue/15 shadow-xl overflow-hidden">
+              {/* Mock app chrome */}
+              <div className="px-3 py-1.5 border-b border-slate-100 flex items-center gap-1.5 bg-brand-light/40">
+                <div className="flex gap-1 bg-transparent">
+                  <div className="w-1.5 h-1.5 rounded-full bg-red-400" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-amber-400" />
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                </div>
+                <div className="ml-2 text-[9px] font-medium text-slate-400">
+                  {slug === 'realchat' ? 'app.realchat.com' : 'learn.reallearn.com'}
+                </div>
+              </div>
+              <div className="relative aspect-[16/10] w-full bg-slate-50">
+                <Image
+                  src={slug === 'realchat' ? '/realchat_app.png' : '/reallearn_dashboard.png'}
+                  alt={`${product.title} Dashboard Interface`}
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 40vw"
+                  priority
+                  className="object-cover"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -266,6 +278,42 @@ export default async function ProductDetailPage({
               </li>
             ))}
           </ul>
+        </div>
+      </section>
+
+      {/* Other Products Cross-linking */}
+      <section className="relative py-20 sm:py-24 bg-white border-t border-slate-100">
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
+          <div className="max-w-3xl mb-12">
+            <p className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-blue mb-3">
+              Suite Integrations
+            </p>
+            <h2 className="text-3xl sm:text-4xl font-bold text-brand-navy tracking-tight">
+              Other products in our SaaS Suite
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-8">
+            {PRODUCTS.filter((p) => p.slug !== slug).map((otherProduct) => (
+              <Link
+                key={otherProduct.slug}
+                href={otherProduct.slug === 'realhrsoft' ? '/products/realhrsoft' : `/products/${otherProduct.slug}`}
+                className="group p-6 rounded-2xl border border-slate-200 bg-slate-50/50 hover:bg-white hover:border-brand-blue/30 hover:shadow-lg transition-all flex flex-col justify-between"
+              >
+                <div>
+                  <h3 className="text-lg font-bold text-brand-navy mb-2 group-hover:text-brand-blue transition-colors">
+                    {otherProduct.title}
+                  </h3>
+                  <p className="text-sm text-slate-500 leading-relaxed mb-6">
+                    {otherProduct.description}
+                  </p>
+                </div>
+                <span className="text-xs font-semibold text-brand-blue flex items-center gap-1">
+                  Explore {otherProduct.title} <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </span>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 

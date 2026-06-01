@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   Landmark,
@@ -11,7 +10,6 @@ import {
   TrendingUp,
   Layers,
   GitBranch,
-  ArrowUpRight,
   Sparkles,
 } from 'lucide-react';
 import { Header } from '@/components/header';

@@ -17,11 +17,12 @@ export interface IndustryHeroProps {
   secondary?: CTA;
   stats?: Stat[];
   breadcrumbName?: string;
+  theme?: 'light' | 'dark';
 }
 
 /**
  * Shared hero for every industry page — full-bleed background video,
- * dark overlay for legibility, fixed typography rhythm. Industry-specific
+ * dark or light overlay for legibility, fixed typography rhythm. Industry-specific
  * eyebrow / title / subtitle / CTAs / stats are passed in via props so the
  * silhouette of every industry hero stays identical.
  */
@@ -34,29 +35,49 @@ export function IndustryHero({
   secondary,
   stats,
   breadcrumbName,
+  theme = 'dark',
 }: IndustryHeroProps) {
   return (
     <>
       {/* Breadcrumb (kept above the hero so the video isn't pushed down) */}
-      <div className="bg-white border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-3 flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-brand-blue transition-colors">
+      <div className={`transition-colors duration-300 border-b ${
+        theme === 'dark' ? 'bg-slate-950 border-white/5' : 'bg-white border-slate-100'
+      }`}>
+        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-3 flex items-center gap-2 text-xs">
+          <Link
+            href="/"
+            className={`transition-colors ${
+              theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-brand-blue'
+            }`}
+          >
             Home
           </Link>
-          <span>/</span>
-          <Link href="/industries" className="hover:text-brand-blue transition-colors">
+          <span className={theme === 'dark' ? 'text-slate-600' : 'text-slate-400'}>/</span>
+          <Link
+            href="/industries"
+            className={`transition-colors ${
+              theme === 'dark' ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-brand-blue'
+            }`}
+          >
             Industries
           </Link>
           {breadcrumbName && (
             <>
-              <span>/</span>
-              <span className="text-brand-navy font-medium">{breadcrumbName}</span>
+              <span className={theme === 'dark' ? 'text-slate-600' : 'text-slate-400'}>/</span>
+              <span className={`font-semibold ${theme === 'dark' ? 'text-brand-cyan' : 'text-brand-navy'}`}>
+                {breadcrumbName}
+              </span>
             </>
           )}
         </div>
       </div>
 
-      <section className="relative overflow-hidden text-white pt-24 pb-24 sm:pt-28 sm:pb-32 min-h-[640px]">
+      <section
+        data-theme={theme}
+        className={`relative overflow-hidden pt-24 pb-24 sm:pt-28 sm:pb-32 min-h-[640px] transition-all duration-500 ${
+          theme === 'dark' ? 'text-white' : 'text-brand-navy'
+        }`}
+      >
         {/* Background video */}
         <video
           autoPlay
@@ -70,31 +91,45 @@ export function IndustryHero({
           <source src="/herobackground.mp4" type="video/mp4" />
         </video>
 
-        {/* Dark overlays for legibility */}
+        {/* Dynamic theme overlays for legibility */}
         <div
           aria-hidden
-          className="absolute inset-0 bg-gradient-to-b from-brand-navy/85 via-brand-navy/70 to-[#0d1f3d]/90"
+          className={`absolute inset-0 transition-colors duration-500 ${
+            theme === 'dark'
+              ? 'bg-gradient-to-b from-slate-950/85 via-slate-950/70 to-[#0a192f]/90'
+              : 'bg-gradient-to-b from-white/95 via-white/80 to-slate-50/90'
+          }`}
         />
         <div
           aria-hidden
-          className="absolute -top-32 -right-32 w-[560px] h-[560px] rounded-full blur-3xl opacity-50"
+          className="absolute -top-32 -right-32 w-[560px] h-[560px] rounded-full blur-3xl opacity-50 pointer-events-none"
           style={{
-            background: 'radial-gradient(circle, rgba(0,194,255,0.32) 0%, transparent 70%)',
+            background:
+              theme === 'dark'
+                ? 'radial-gradient(circle, rgba(0,194,255,0.32) 0%, transparent 70%)'
+                : 'radial-gradient(circle, rgba(4,92,179,0.15) 0%, transparent 70%)',
           }}
         />
         <div
           aria-hidden
-          className="absolute -bottom-32 -left-32 w-[520px] h-[520px] rounded-full blur-3xl opacity-40"
+          className="absolute -bottom-32 -left-32 w-[520px] h-[520px] rounded-full blur-3xl opacity-40 pointer-events-none"
           style={{
-            background: 'radial-gradient(circle, rgba(4,92,179,0.55) 0%, transparent 70%)',
+            background:
+              theme === 'dark'
+                ? 'radial-gradient(circle, rgba(4,92,179,0.55) 0%, transparent 70%)'
+                : 'radial-gradient(circle, rgba(0,194,255,0.2) 0%, transparent 70%)',
           }}
         />
         <div
           aria-hidden
-          className="absolute inset-0 opacity-[0.06]"
+          className={`absolute inset-0 transition-opacity pointer-events-none ${
+            theme === 'dark' ? 'opacity-[0.06]' : 'opacity-[0.04]'
+          }`}
           style={{
             backgroundImage:
-              'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
+              theme === 'dark'
+                ? 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)'
+                : 'linear-gradient(rgba(10,25,47,0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(10,25,47,0.3) 1px, transparent 1px)',
             backgroundSize: '48px 48px',
           }}
         />
@@ -104,10 +139,14 @@ export function IndustryHero({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: easingCurve.industrial }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/15 mb-6"
+            className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full border mb-6 backdrop-blur transition-all ${
+              theme === 'dark'
+                ? 'bg-white/10 border-white/15 text-brand-cyan'
+                : 'bg-brand-blue/8 border-brand-blue/20 text-brand-blue'
+            }`}
           >
-            {Icon && <Icon className="w-3.5 h-3.5 text-brand-cyan" />}
-            <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand-cyan">
+            {Icon && <Icon className="w-3.5 h-3.5" />}
+            <span className="text-[11px] font-bold uppercase tracking-[0.18em]">
               {industry}
             </span>
           </motion.div>
@@ -125,7 +164,9 @@ export function IndustryHero({
             initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.12, ease: easingCurve.industrial }}
-            className="mt-7 text-lg sm:text-xl text-slate-200 leading-relaxed max-w-2xl"
+            className={`mt-7 text-lg sm:text-xl leading-relaxed max-w-2xl transition-colors duration-300 ${
+              theme === 'dark' ? 'text-slate-200' : 'text-slate-700'
+            }`}
           >
             {subtitle}
           </motion.p>
@@ -138,10 +179,10 @@ export function IndustryHero({
               className="mt-9 flex flex-wrap items-center gap-4"
             >
               {primary && (
-                <CTAButton variant="primary" {...primary} />
+                <CTAButton variant="primary" theme={theme} {...primary} />
               )}
               {secondary && (
-                <CTAButton variant="secondary" {...secondary} />
+                <CTAButton variant="secondary" theme={theme} {...secondary} />
               )}
             </motion.div>
           )}
@@ -154,11 +195,20 @@ export function IndustryHero({
               className="mt-14 grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-3xl"
             >
               {stats.map((s) => (
-                <div key={s.label} className="border-l-2 border-brand-cyan/40 pl-4">
-                  <div className="text-2xl sm:text-3xl font-bold text-white">
+                <div
+                  key={s.label}
+                  className={`border-l-2 pl-4 transition-colors ${
+                    theme === 'dark' ? 'border-brand-cyan/40' : 'border-brand-blue/40'
+                  }`}
+                >
+                  <div className={`text-2xl sm:text-3xl font-bold transition-colors ${
+                    theme === 'dark' ? 'text-white' : 'text-brand-navy'
+                  }`}>
                     {s.value}
                   </div>
-                  <div className="text-xs font-medium text-slate-300 mt-1 uppercase tracking-wider">
+                  <div className={`text-xs font-semibold mt-1 uppercase tracking-wider transition-colors ${
+                    theme === 'dark' ? 'text-slate-350' : 'text-slate-600'
+                  }`}>
                     {s.label}
                   </div>
                 </div>
@@ -176,13 +226,18 @@ function CTAButton({
   href,
   external,
   variant,
-}: CTA & { variant: 'primary' | 'secondary' }) {
+  theme,
+}: CTA & { variant: 'primary' | 'secondary'; theme: 'light' | 'dark' }) {
   const base =
-    'group inline-flex items-center gap-2 px-7 py-3.5 text-sm font-bold rounded-xl transition-colors';
+    'group inline-flex items-center gap-2 px-7 py-3.5 text-sm font-bold rounded-xl transition-all shadow-md';
   const styles =
     variant === 'primary'
-      ? `${base} bg-white text-brand-navy hover:bg-brand-cyan shadow-lg`
-      : `${base} border border-white/30 text-white hover:border-white hover:bg-white/10`;
+      ? theme === 'dark'
+        ? `${base} bg-white text-brand-navy hover:bg-brand-cyan hover:shadow-lg`
+        : `${base} bg-brand-blue text-white hover:bg-brand-blue/90 hover:shadow-lg`
+      : theme === 'dark'
+        ? `${base} border border-white/30 text-white hover:border-white hover:bg-white/10`
+        : `${base} border border-brand-blue/40 text-brand-navy hover:border-brand-blue hover:bg-brand-blue/5`;
 
   if (external || href.startsWith('http')) {
     return (
@@ -209,3 +264,4 @@ function CTAButton({
     </Link>
   );
 }
+

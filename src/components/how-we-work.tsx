@@ -90,17 +90,27 @@ export function HowWeWork() {
   return (
     <section
       id="how-we-work"
-      className="relative min-h-screen flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-16 lg:py-20 overflow-hidden"
+      data-theme="dark"
+      className="relative min-h-screen flex flex-col justify-center px-4 sm:px-6 lg:px-8 py-16 lg:py-20 overflow-hidden bg-transparent"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
+      {/* Dynamic Fading Video Overlay */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'linear-gradient(to bottom, #FFFFFF 0%, rgba(10,25,47,0.93) 12%, rgba(10,25,47,0.7) 50%, rgba(10,25,47,0.93) 88%, #FFFFFF 100%)'
+        }}
+      />
+
       {/* Ambient backdrop */}
       <div
         aria-hidden
         className="absolute inset-0 opacity-70 pointer-events-none"
         style={{
           background:
-            'radial-gradient(45% 35% at 85% 10%, rgba(0,194,255,0.08) 0%, transparent 70%), radial-gradient(45% 35% at 5% 90%, rgba(4,92,179,0.07) 0%, transparent 70%)',
+            'radial-gradient(45% 35% at 85% 10%, rgba(0,194,255,0.15) 0%, transparent 70%), radial-gradient(45% 35% at 5% 90%, rgba(4,92,179,0.12) 0%, transparent 70%)',
         }}
       />
 
@@ -113,16 +123,16 @@ export function HowWeWork() {
           transition={{ duration: 0.5, ease: easingCurve.industrial }}
           className="text-center max-w-3xl mx-auto mb-10 lg:mb-12"
         >
-          <span className="inline-block text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-3">
+          <span className="inline-block text-brand-cyan text-sm font-semibold uppercase tracking-[0.18em] mb-3">
             How We Work
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-navy leading-[1.1] tracking-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-[1.1] tracking-tight">
             Six steps.{' '}
             <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
               One way we work.
             </span>
           </h2>
-          <p className="mt-4 text-base text-slate-600 leading-relaxed">
+          <p className="mt-4 text-base text-slate-350 leading-relaxed">
             A transparent, repeatable engineering workflow that turns vision into systems built to last.
           </p>
         </motion.div>
@@ -138,8 +148,8 @@ export function HowWeWork() {
                 onClick={() => setActive(i)}
                 className={`group relative rounded-xl p-3 lg:p-4 text-left border transition-all overflow-hidden ${
                   isActive
-                    ? 'border-brand-blue/40 bg-white shadow-[0_10px_28px_-14px_rgba(4,92,179,0.32)]'
-                    : 'border-slate-200 bg-white/60 hover:border-brand-blue/20 hover:bg-white'
+                    ? 'border-brand-cyan/40 bg-slate-900 shadow-[0_10px_28px_-14px_rgba(0,194,255,0.4)]'
+                    : 'border-white/10 bg-slate-900/40 text-slate-300 hover:border-brand-cyan/25 hover:bg-slate-900/60 hover:text-white'
                 }`}
               >
                 {isActive && (
@@ -154,14 +164,14 @@ export function HowWeWork() {
                     className={`flex items-center justify-center w-7 h-7 lg:w-8 lg:h-8 rounded-lg transition-colors ${
                       isActive
                         ? 'bg-gradient-to-br from-brand-blue to-brand-cyan text-white'
-                        : 'bg-slate-100 text-slate-500 group-hover:text-brand-blue'
+                        : 'bg-slate-950/50 text-slate-400 group-hover:text-brand-cyan'
                     }`}
                   >
                     <Icon className="w-3.5 h-3.5 lg:w-4 lg:h-4" />
                   </span>
                   <span
                     className={`text-[10px] lg:text-xs font-bold tracking-[0.16em] ${
-                      isActive ? 'text-brand-blue' : 'text-slate-400'
+                      isActive ? 'text-brand-cyan' : 'text-slate-400'
                     }`}
                   >
                     {step.number}
@@ -169,7 +179,7 @@ export function HowWeWork() {
                 </div>
                 <h3
                   className={`text-xs lg:text-sm font-semibold leading-tight ${
-                    isActive ? 'text-brand-navy' : 'text-slate-600'
+                    isActive ? 'text-white' : 'text-slate-300'
                   }`}
                 >
                   {step.title}
@@ -182,10 +192,10 @@ export function HowWeWork() {
         {/* Stage — split panel */}
         <div className="relative grid lg:grid-cols-[1.05fr_1fr] gap-6 lg:gap-8 items-stretch">
           {/* Left: Copy */}
-          <div className="relative rounded-2xl bg-white border border-slate-200 p-6 sm:p-8 lg:p-10 shadow-[0_18px_44px_-22px_rgba(4,92,179,0.28)] overflow-hidden">
+          <div className="relative rounded-2xl bg-slate-900/60 border border-white/10 p-6 sm:p-8 lg:p-10 shadow-[0_18px_44px_-22px_rgba(0,0,0,0.6)] overflow-hidden backdrop-blur-sm">
             <div
               aria-hidden
-              className="absolute -top-12 -right-12 w-56 h-56 rounded-full bg-gradient-to-br from-brand-blue/15 to-brand-cyan/20 blur-3xl pointer-events-none"
+              className="absolute -top-12 -right-12 w-56 h-56 rounded-full bg-gradient-to-br from-brand-blue/10 to-brand-cyan/15 blur-3xl pointer-events-none"
             />
             <AnimatePresence mode="wait">
               <motion.div
@@ -200,21 +210,21 @@ export function HowWeWork() {
                   <span className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-brand-blue to-brand-cyan shadow-md shadow-brand-blue/30">
                     <ActiveIcon className="w-5 h-5 text-white" />
                   </span>
-                  <span className="text-xs font-bold uppercase tracking-[0.22em] text-brand-blue">
+                  <span className="text-xs font-bold uppercase tracking-[0.22em] text-brand-cyan">
                     Step {STEPS[active].number} of 06
                   </span>
                 </div>
-                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-navy leading-tight tracking-tight mb-4">
+                <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight tracking-tight mb-4">
                   {STEPS[active].title}
                 </h3>
-                <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-6">
+                <p className="text-sm sm:text-base text-slate-300 leading-relaxed mb-6">
                   {STEPS[active].description}
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {STEPS[active].highlights.map((h) => (
                     <span
                       key={h}
-                      className="px-3 py-1 text-xs font-semibold text-brand-blue bg-brand-blue/8 rounded-full"
+                      className="px-3 py-1 text-xs font-semibold text-brand-cyan bg-brand-cyan/10 rounded-full"
                     >
                       {h}
                     </span>
@@ -314,7 +324,7 @@ export function HowWeWork() {
         </div>
 
         {/* Auto-advance hint */}
-        <p className="mt-6 text-center text-xs text-slate-400">
+        <p className="mt-6 text-center text-xs text-slate-500">
           {paused ? 'Paused' : 'Auto-advancing'} · click any step to jump
         </p>
       </div>

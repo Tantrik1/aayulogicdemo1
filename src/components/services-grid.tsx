@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import StackIcon from 'tech-stack-icons';
 import {
   Sparkles,
   Code2,
@@ -11,8 +11,10 @@ import {
   ShoppingBag,
   Cpu,
   Building2,
-  ArrowUpRight,
   ChevronDown,
+  Users2,
+  Check,
+  ArrowRight,
   type LucideIcon,
 } from 'lucide-react';
 import { SERVICE_CATEGORIES } from '@/lib/constants';
@@ -26,6 +28,7 @@ const ICON_MAP: Record<string, LucideIcon> = {
   ShoppingBag,
   Cpu,
   Building2,
+  Users2,
 };
 
 export function ServicesGrid() {
@@ -35,8 +38,11 @@ export function ServicesGrid() {
   const [showLeftScroll, setShowLeftScroll] = useState(false);
   const [showRightScroll, setShowRightScroll] = useState(true);
 
-  // Sticky tab bar (mobile/tablet) — sits beneath the navbar while the user
-  // scrolls through service items, then releases when the next section enters.
+  // Dynamic Theme state (dark or light)
+  const theme = 'dark';
+
+
+  // Sticky tab bar (mobile/tablet)
   const stickyBarRef = useRef<HTMLDivElement>(null);
   const stickySentinelRef = useRef<HTMLDivElement>(null);
   const [isStuck, setIsStuck] = useState(false);
@@ -108,18 +114,30 @@ export function ServicesGrid() {
   };
 
   return (
-    <section className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <section
+      data-theme={theme}
+      className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden transition-all duration-500 bg-transparent"
+    >
+      {/* Dynamic Fading Video Overlay */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background: 'linear-gradient(to bottom, #FFFFFF 0%, rgba(10,25,47,0.93) 12%, rgba(10,25,47,0.7) 50%, rgba(10,25,47,0.93) 88%, #FFFFFF 100%)'
+        }}
+      />
+
       {/* Ambient backdrop */}
       <div
         aria-hidden
         className="absolute inset-0 opacity-60 pointer-events-none"
         style={{
-          background:
-            'radial-gradient(40% 30% at 80% 10%, rgba(0,194,255,0.06) 0%, transparent 70%), radial-gradient(40% 30% at 0% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)',
+          background: 'radial-gradient(40% 30% at 80% 10%, rgba(0,194,255,0.1) 0%, transparent 70%), radial-gradient(40% 30% at 0% 90%, rgba(4,92,179,0.1) 0%, transparent 70%)',
         }}
       />
 
       <div className="relative max-w-7xl mx-auto">
+
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -131,15 +149,22 @@ export function ServicesGrid() {
           <span className="inline-block text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-4">
             Our Services
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-brand-navy leading-[1.1] tracking-tight">
+          <h2
+            className={`text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-[1.1] tracking-tight transition-colors duration-300 ${
+              theme === 'dark' ? 'text-white' : 'text-brand-navy'
+            }`}
+          >
             Engineering across{' '}
             <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-              six capability domains
+              three core services
             </span>
           </h2>
-          <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed">
-            From AI agents to enterprise platforms — pick a domain to see how we build,
-            integrate, and operate at scale.
+          <p
+            className={`mt-5 text-base sm:text-lg leading-relaxed transition-colors duration-300 ${
+              theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+            }`}
+          >
+            We design, build, and operate software systems for companies that have outgrown standard tools — starting with rigorous technical planning.
           </p>
         </motion.div>
 
@@ -157,20 +182,34 @@ export function ServicesGrid() {
               sticky top-16 z-40 lg:static lg:z-auto
               -mx-4 sm:-mx-6 lg:mx-0
               py-2 lg:py-0
-              transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300
+              transition-all duration-300
               ${
                 isStuck
-                  ? 'bg-white/92 backdrop-blur-xl border-b border-slate-200/60 shadow-[0_8px_16px_-8px_rgba(10,25,47,0.12)] lg:bg-transparent lg:backdrop-blur-none lg:border-0 lg:shadow-none lg:py-0'
+                  ? theme === 'dark'
+                    ? 'bg-slate-950/92 backdrop-blur-xl border-b border-white/5 shadow-[0_8px_16px_-8px_rgba(0,0,0,0.5)] lg:bg-transparent lg:backdrop-blur-none lg:border-0 lg:shadow-none lg:py-0'
+                    : 'bg-white/92 backdrop-blur-xl border-b border-slate-200/60 shadow-[0_8px_16px_-8px_rgba(10,25,47,0.12)] lg:bg-transparent lg:backdrop-blur-none lg:border-0 lg:shadow-none lg:py-0'
                   : ''
               }
             `}
           >
             {/* Mobile Scroll Gradient Fade */}
             {showLeftScroll && (
-              <div className="absolute left-0 top-0 bottom-0 w-8 md:hidden bg-gradient-to-r from-white via-white to-transparent pointer-events-none z-20" />
+              <div
+                className={`absolute left-0 top-0 bottom-0 w-8 md:hidden pointer-events-none z-20 transition-all ${
+                  theme === 'dark'
+                    ? 'bg-gradient-to-r from-slate-950 via-slate-950/80 to-transparent'
+                    : 'bg-gradient-to-r from-white via-white/80 to-transparent'
+                }`}
+              />
             )}
             {showRightScroll && (
-              <div className="absolute right-0 top-0 bottom-0 w-8 md:hidden bg-gradient-to-l from-white via-white to-transparent pointer-events-none z-20" />
+              <div
+                className={`absolute right-0 top-0 bottom-0 w-8 md:hidden pointer-events-none z-20 transition-all ${
+                  theme === 'dark'
+                    ? 'bg-gradient-to-l from-slate-950 via-slate-950/80 to-transparent'
+                    : 'bg-gradient-to-l from-white via-white/80 to-transparent'
+                }`}
+              />
             )}
 
             {/* Tab Scroll Container with enhanced scroll indicators */}
@@ -183,8 +222,7 @@ export function ServicesGrid() {
                       scrollContainerRef.current.scrollBy({ left: -200, behavior: 'smooth' });
                     }
                   }}
-                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 rounded-r-lg bg-gradient-to-r from-white via-white to-transparent hover:from-slate-50 transition-all"
-                  whileHover={{ scale: 1.1 }}
+                  className="absolute left-0 top-1/2 -translate-y-1/2 z-10 p-2 rounded-r-lg bg-transparent hover:scale-105 transition-transform"
                 >
                   <ChevronDown className="w-5 h-5 text-brand-blue rotate-90" />
                 </motion.button>
@@ -198,8 +236,7 @@ export function ServicesGrid() {
                       scrollContainerRef.current.scrollBy({ left: 200, behavior: 'smooth' });
                     }
                   }}
-                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-2 rounded-l-lg bg-gradient-to-l from-white via-white to-transparent hover:from-slate-50 transition-all"
-                  whileHover={{ scale: 1.1 }}
+                  className="absolute right-0 top-1/2 -translate-y-1/2 z-10 p-2 rounded-l-lg bg-transparent hover:scale-105 transition-transform"
                 >
                   <ChevronDown className="w-5 h-5 text-brand-blue -rotate-90" />
                 </motion.button>
@@ -218,22 +255,26 @@ export function ServicesGrid() {
                       key={cat.key}
                       onClick={() => handleTabClick(cat.key)}
                       layoutId={`indicator-${cat.key}`}
-                      className={`relative flex-shrink-0 flex items-center gap-2 px-3 sm:px-4 py-3 rounded-full border text-xs sm:text-sm font-semibold transition-all whitespace-nowrap ${
+                      className={`relative flex-shrink-0 flex items-center gap-2 px-3 sm:px-5 py-3 rounded-full border text-xs sm:text-sm font-bold transition-all whitespace-nowrap ${
                         isActive
-                          ? 'bg-brand-blue text-white border-brand-blue shadow-[0_8px_24px_-6px_rgba(4,92,179,0.3)]'
-                          : 'bg-white text-brand-navy border-slate-200 hover:border-brand-blue/40 hover:bg-slate-50'
+                          ? theme === 'dark'
+                            ? 'bg-gradient-to-r from-brand-blue to-brand-cyan text-white border-transparent shadow-[0_8px_24px_-6px_rgba(0,194,255,0.4)]'
+                            : 'bg-brand-blue text-white border-brand-blue shadow-[0_8px_24px_-6px_rgba(4,92,179,0.3)]'
+                          : theme === 'dark'
+                            ? 'bg-slate-900/60 text-slate-300 border-slate-800 hover:border-slate-700 hover:text-white hover:bg-slate-850/60'
+                            : 'bg-white text-brand-navy border-slate-200 hover:border-brand-blue/40 hover:bg-slate-50'
                       }`}
-                      whileHover={{ scale: 1.05 }}
+                      whileHover={{ scale: 1.04 }}
                       whileTap={{ scale: 0.98 }}
                     >
                       <motion.div
                         className="flex items-center gap-1.5"
                         initial={false}
                         animate={{
-                          color: isActive ? '#FFFFFF' : '#045CB3',
+                          color: isActive ? '#FFFFFF' : theme === 'dark' ? '#00C2FF' : '#045CB3',
                         }}
                       >
-                        <Icon className="w-4 h-4 flex-shrink-0" />
+                        <Icon className="w-4.5 h-4.5 flex-shrink-0" />
                         <span className="truncate">{cat.title}</span>
                       </motion.div>
                     </motion.button>
@@ -258,7 +299,7 @@ export function ServicesGrid() {
               }}
               transition={{ duration: 0.4, ease: easingCurve.industrial }}
             >
-              <ServiceContent category={active} />
+              <ServiceContent category={active} theme={theme} />
             </motion.div>
           </AnimatePresence>
         </div>
@@ -271,134 +312,188 @@ export function ServicesGrid() {
 //  Service Content Panel with Staggered Animations
 // =============================================================================
 
-function ServiceContent({ category }: { category: typeof SERVICE_CATEGORIES[number] }) {
+function ServiceContent({
+  category,
+  theme,
+}: {
+  category: typeof SERVICE_CATEGORIES[number];
+  theme: 'light' | 'dark';
+}) {
   const Icon = ICON_MAP[category.iconKey] ?? Sparkles;
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.06,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 12 },
-    show: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.4, ease: easingCurve.industrial },
-    },
-  };
-
   return (
-    <div className="rounded-lg border border-slate-200 p-6 sm:p-8 lg:p-10 shadow-[0_10px_40px_-20px_rgba(10,25,47,0.08)] bg-white/40 backdrop-blur-sm">
+    <div
+      className={`rounded-2xl border p-6 sm:p-8 lg:p-10 transition-all duration-500 ${
+        theme === 'dark'
+          ? 'bg-slate-950/70 border-white/10 shadow-2xl shadow-brand-blue/5 backdrop-blur-md'
+          : 'bg-white border-slate-200/80 shadow-[0_15px_40px_-20px_rgba(10,25,47,0.08)]'
+      }`}
+    >
       {/* Header with animated icon */}
       <motion.div
         initial={{ opacity: 0, y: -12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, ease: easingCurve.industrial }}
-        className="flex items-start gap-4 sm:gap-6 pb-6 sm:pb-8 mb-8 sm:mb-10 border-b border-slate-100"
+        className={`flex items-start gap-4 sm:gap-6 pb-6 sm:pb-8 mb-8 border-b transition-colors duration-300 ${
+          theme === 'dark' ? 'border-white/5' : 'border-slate-100'
+        }`}
       >
         <motion.div
-          className="w-12 h-12 sm:w-16 sm:h-16 rounded-lg bg-gradient-to-br from-brand-blue to-brand-system-blue flex items-center justify-center flex-shrink-0 shadow-[0_8px_20px_-6px_rgba(4,92,179,0.2)]"
-          whileHover={{ scale: 1.1, rotate: 5 }}
+          className={`w-12 h-12 sm:w-16 sm:h-16 rounded-xl flex items-center justify-center flex-shrink-0 shadow-lg transition-all duration-300 ${
+            theme === 'dark'
+              ? 'bg-gradient-to-br from-brand-blue to-brand-cyan shadow-brand-blue/20'
+              : 'bg-gradient-to-br from-brand-blue to-brand-system-blue shadow-brand-blue/15'
+          }`}
+          whileHover={{ scale: 1.08, rotate: 3 }}
           transition={{ type: 'spring', stiffness: 300, damping: 20 }}
         >
           <Icon className="w-6 h-6 sm:w-8 sm:h-8 text-white" />
         </motion.div>
         <div className="flex-1">
-          <h3 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-navy leading-tight tracking-tight">
+          <h3
+            className={`text-2xl sm:text-3xl lg:text-4xl font-bold leading-tight tracking-tight transition-colors duration-300 ${
+              theme === 'dark' ? 'text-white' : 'text-brand-navy'
+            }`}
+          >
             {category.title}
           </h3>
-          <p className="text-base sm:text-lg text-slate-600 mt-2 sm:mt-3 leading-relaxed">{category.tagline}</p>
+          <p
+            className={`text-base sm:text-lg mt-2 leading-relaxed transition-colors duration-300 ${
+              theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+            }`}
+          >
+            {category.tagline}
+          </p>
         </div>
       </motion.div>
 
-      {/* Items Grid with Staggered Reveals */}
-      <motion.div
-        className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5"
-        variants={containerVariants}
-        initial="hidden"
-        animate="show"
-      >
-        {category.items.map((item) => (
-          <motion.a
-            key={item.title}
-            href={`/services/${category.key}`}
-            variants={itemVariants}
-            className="group relative p-5 sm:p-6 rounded-lg border border-slate-200 bg-gradient-to-br from-white/60 to-white/40 backdrop-blur-sm hover:border-brand-blue/50 hover:shadow-[0_16px_32px_-12px_rgba(4,92,179,0.25)] transition-all overflow-hidden"
-            whileHover={{
-              y: -4,
-              boxShadow: '0 20px 40px -12px rgba(4, 92, 179, 0.3)',
-            }}
-            transition={{ duration: 0.3, ease: easingCurve.industrial }}
-          >
-            {/* Animated gradient background on hover */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-br from-brand-blue/5 to-brand-cyan/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-              initial={false}
-            />
+      {/* Two columns layout: details and timeline flow */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        {/* Left Column: What's Included & Ideal For */}
+        <div className="lg:col-span-6 space-y-6">
+          <div>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
+              What's Included:
+            </h4>
+            <ul className="space-y-2.5">
+              {category.whatsIncluded.map((item) => (
+                <li key={item} className="flex items-start gap-2.5 text-sm sm:text-base leading-snug">
+                  <span
+                    className={`w-5.5 h-5.5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
+                      theme === 'dark' ? 'bg-brand-cyan/10' : 'bg-brand-blue/8'
+                    }`}
+                  >
+                    <Check
+                      className={`w-3 h-3 stroke-[3px] transition-colors ${
+                        theme === 'dark' ? 'text-brand-cyan' : 'text-brand-blue'
+                      }`}
+                    />
+                  </span>
+                  <span
+                    className={`transition-colors duration-300 ${
+                      theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+                    }`}
+                  >
+                    {item}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-            {/* Card content */}
-            <div className="relative z-10">
-              <div className="flex items-start justify-between gap-2 mb-3">
-                <h4 className="text-base sm:text-lg font-bold text-brand-navy group-hover:text-brand-blue transition-colors leading-tight pr-2">
-                  {item.title}
-                </h4>
-                <motion.div
-                  initial={{ opacity: 0.5, x: 0, y: 0 }}
-                  whileHover={{ opacity: 1, x: 2, y: -2 }}
-                  transition={{ duration: 0.2 }}
+          <div className={`pt-4 border-t transition-colors duration-300 ${
+            theme === 'dark' ? 'border-white/5' : 'border-slate-100'
+          }`}>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-3">
+              Ideal For:
+            </h4>
+            <ul className="space-y-2.5">
+              {category.idealFor.map((item) => (
+                <li key={item} className="flex items-start gap-2.5 text-sm sm:text-base leading-snug">
+                  <span
+                    className={`w-5.5 h-5.5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 transition-colors ${
+                      theme === 'dark' ? 'bg-brand-cyan/10' : 'bg-brand-cyan/8'
+                    }`}
+                  >
+                    <Check className="w-3 h-3 text-brand-cyan stroke-[3px]" />
+                  </span>
+                  <span
+                    className={`transition-colors duration-300 ${
+                      theme === 'dark' ? 'text-slate-300' : 'text-slate-600'
+                    }`}
+                  >
+                    {item}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Right Column: Flow / Process */}
+        <div
+          className={`lg:col-span-6 border rounded-2xl p-5 sm:p-6 transition-colors duration-500 ${
+            theme === 'dark'
+              ? 'bg-slate-900/30 border-white/5'
+              : 'bg-slate-50/50 border-slate-100'
+          }`}
+        >
+          <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-5">
+            {category.flowTitle}:
+          </h4>
+          <div className="space-y-4">
+            {category.flowStages.slice(0, 5).map((stage, idx) => (
+              <div key={stage.title} className="flex items-start gap-3.5">
+                <div
+                  className={`w-6.5 h-6.5 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5 transition-colors ${
+                    theme === 'dark' ? 'bg-brand-cyan text-brand-navy' : 'bg-brand-blue text-white'
+                  }`}
                 >
-                  <ArrowUpRight className="w-4 h-4 sm:w-5 sm:h-5 text-slate-300 group-hover:text-brand-blue flex-shrink-0" />
-                </motion.div>
+                  {idx + 1}
+                </div>
+                <div>
+                  <div
+                    className={`text-sm sm:text-base font-bold leading-tight transition-colors duration-300 ${
+                      theme === 'dark' ? 'text-white' : 'text-brand-navy'
+                    }`}
+                  >
+                    {stage.title}
+                  </div>
+                  <div
+                    className={`text-xs sm:text-sm mt-0.5 leading-normal transition-colors duration-300 ${
+                      theme === 'dark' ? 'text-slate-400' : 'text-slate-500'
+                    }`}
+                  >
+                    {stage.detail}
+                  </div>
+                </div>
               </div>
+            ))}
+            {category.flowStages.length > 5 && (
+              <div className="text-xs sm:text-sm font-semibold text-slate-400 pl-10 pt-1">
+                + {category.flowStages.length - 5} more stages
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
 
-              <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-4 group-hover:text-slate-700 transition-colors">
-                {item.description}
-              </p>
-
-              {/* Tech Icons Footer */}
-              {item.techIcons && item.techIcons.length > 0 && (
-                <motion.div
-                  className="flex items-center gap-2.5 pt-4 sm:pt-5 border-t border-slate-100/50"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                >
-                  {item.techIcons.slice(0, 4).map((t, i) => (
-                    <motion.div
-                      key={t}
-                      className="w-6 h-6 flex items-center justify-center hover:scale-125 transition-transform"
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: 0.15 + i * 0.05 }}
-                      whileHover={{ scale: 1.3 }}
-                      title={t}
-                    >
-                      <StackIcon name={t as never} className="w-6 h-6" />
-                    </motion.div>
-                  ))}
-                  {item.techIcons.length > 4 && (
-                    <motion.span
-                      className="text-xs font-semibold text-slate-500 ml-2"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ delay: 0.25 }}
-                    >
-                      +{item.techIcons.length - 4} more
-                    </motion.span>
-                  )}
-                </motion.div>
-              )}
-            </div>
-          </motion.a>
-        ))}
-      </motion.div>
+      {/* Service Learn More CTA button */}
+      <div className={`mt-8 pt-6 border-t flex justify-end transition-colors duration-300 ${
+        theme === 'dark' ? 'border-white/5' : 'border-slate-100'
+      }`}>
+        <Link
+          href={`/services/${category.key}`}
+          className={`group inline-flex items-center gap-2 px-6 py-3.5 text-sm font-bold rounded-xl transition-all shadow-md hover:shadow-lg ${
+            theme === 'dark'
+              ? 'bg-gradient-to-r from-brand-blue to-brand-cyan text-white hover:opacity-90 shadow-brand-blue/15'
+              : 'bg-brand-blue text-white hover:bg-brand-blue/90 shadow-brand-blue/10'
+          }`}
+        >
+          <span>Learn More about {category.title}</span>
+          <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+        </Link>
+      </div>
     </div>
   );
 }
