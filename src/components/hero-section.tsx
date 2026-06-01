@@ -62,7 +62,7 @@ export function HeroSection() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="relative w-full mx-auto flex flex-col items-center justify-center text-center"
+        className="relative z-10 w-full mx-auto flex flex-col items-center justify-center text-center"
         style={{
           maxWidth: 'min(80rem, 94vw)',
           gap: 'clamp(0.75rem, 2vh, 1.75rem)',

@@ -37,7 +37,7 @@ export function HeroClockBackground() {
   }, []);
 
   return (
-    <div className="absolute inset-0 flex items-center justify-center -z-10 select-none pointer-events-none overflow-hidden bg-transparent">
+    <div className="absolute inset-0 flex items-center justify-center z-0 select-none pointer-events-none overflow-hidden bg-transparent">
       {/* Large scale-up for screen coverage, positioned centered */}
       <div className="w-[36rem] h-[36rem] sm:w-[54rem] sm:h-[54rem] lg:w-[68rem] lg:h-[68rem] relative flex items-center justify-center opacity-15">
         <svg
