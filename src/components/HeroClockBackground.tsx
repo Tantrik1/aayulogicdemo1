@@ -7,7 +7,11 @@ export function HeroClockBackground() {
   const [secAngle, setSecAngle] = useState(0);
   const [minAngle, setMinAngle] = useState(0);
   const [hourAngle, setHourAngle] = useState(0);
+  const [digitalTime, setDigitalTime] = useState('');
+  const [tiltX, setTiltX] = useState(0);
+  const [tiltY, setTiltY] = useState(0);
 
+  // Time & Angles Hook
   useEffect(() => {
     const startTime = Date.now();
     const now = new Date();
@@ -36,237 +40,352 @@ export function HeroClockBackground() {
     return () => clearInterval(interval);
   }, []);
 
+  // 60 FPS Milliseconds Digital Readout Hook
+  useEffect(() => {
+    let frameId: number;
+    const updateTime = () => {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      const ms = String(Math.floor(now.getMilliseconds() / 10)).padStart(2, '0');
+
+      setDigitalTime(`${h}:${m}:${s}:${ms}`);
+      frameId = requestAnimationFrame(updateTime);
+    };
+    frameId = requestAnimationFrame(updateTime);
+    return () => cancelAnimationFrame(frameId);
+  }, []);
+
+  // 3D Parallax Mouse Move Hook
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const { innerWidth, innerHeight } = window;
+      // Get normalized coordinate offset from center (-0.5 to 0.5)
+      const nx = e.clientX / innerWidth - 0.5;
+      const ny = e.clientY / innerHeight - 0.5;
+
+      // Soft tilt (max 10 degrees)
+      setTiltX(-ny * 10);
+      setTiltY(nx * 10);
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   return (
-    <div className="absolute inset-0 flex items-center justify-center z-0 select-none pointer-events-none overflow-hidden bg-transparent">
-      {/* Large scale-up for screen coverage, positioned centered */}
-      <div className="w-[36rem] h-[36rem] sm:w-[54rem] sm:h-[54rem] lg:w-[68rem] lg:h-[68rem] relative flex items-center justify-center opacity-15">
+    <div 
+      className="absolute inset-0 flex items-center justify-center z-0 select-none pointer-events-none overflow-hidden bg-transparent"
+      style={{ perspective: 1200 }}
+    >
+      {/* Responsive container with springy parallax tilt */}
+      <motion.div
+        animate={{ rotateX: tiltX, rotateY: tiltY }}
+        transition={{ type: 'spring', stiffness: 75, damping: 20 }}
+        style={{ transformStyle: 'preserve-3d' }}
+        className="w-[36rem] h-[36rem] sm:w-[54rem] sm:h-[54rem] lg:w-[68rem] lg:h-[68rem] relative flex items-center justify-center opacity-[0.16]"
+      >
         <svg
           viewBox="0 0 800 800"
-          className="w-full h-full text-brand-cyan filter drop-shadow-[0_0_15px_rgba(0,229,255,0.15)]"
+          className="w-full h-full text-brand-cyan filter drop-shadow-[0_0_20px_rgba(0,229,255,0.12)]"
           aria-hidden
         >
           <defs>
-            {/* Glow filters */}
+            {/* Soft Glow filter */}
             <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="4" result="blur" />
+              <feGaussianBlur stdDeviation="3" result="blur" />
               <feMerge>
                 <feMergeNode in="blur" />
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
-            <filter id="strongGlow" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="8" result="blur" />
+            
+            {/* High-intensity Glow filter */}
+            <filter id="strongGlow" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="6" result="blur" />
               <feMerge>
                 <feMergeNode in="blur" />
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
 
-            {/* Gradients */}
+            {/* Premium linear gradients */}
             <linearGradient id="hourGrad" x1="0" x2="0" y1="1" y2="0">
-              <stop offset="0%" stopColor="#00E5FF" stopOpacity="0.2" />
+              <stop offset="0%" stopColor="#0078FF" stopOpacity="0.1" />
               <stop offset="100%" stopColor="#00E5FF" stopOpacity="0.9" />
             </linearGradient>
             <linearGradient id="minGrad" x1="0" x2="0" y1="1" y2="0">
-              <stop offset="0%" stopColor="#0078FF" stopOpacity="0.2" />
+              <stop offset="0%" stopColor="#0052FF" stopOpacity="0.1" />
               <stop offset="100%" stopColor="#00E5FF" stopOpacity="0.95" />
             </linearGradient>
           </defs>
 
-          {/* BACKGROUND TECH GRID */}
-          <circle cx="400" cy="400" r="390" fill="none" stroke="rgba(0, 229, 255, 0.03)" strokeWidth="1" />
-          <circle cx="400" cy="400" r="300" fill="none" stroke="rgba(0, 229, 255, 0.04)" strokeWidth="1" strokeDasharray="5, 10" />
-          <circle cx="400" cy="400" r="200" fill="none" stroke="rgba(0, 229, 255, 0.03)" strokeWidth="1" />
+          {/* ========================================== */}
+          {/*          BACKGROUND COORDINATE SYSTEM      */}
+          {/* ========================================== */}
           
-          {/* Axis Crosshairs */}
-          <line x1="400" y1="10" x2="400" y2="790" stroke="rgba(0, 229, 255, 0.03)" strokeWidth="1" strokeDasharray="3, 9" />
-          <line x1="10" y1="400" x2="790" y2="400" stroke="rgba(0, 229, 255, 0.03)" strokeWidth="1" strokeDasharray="3, 9" />
+          {/* Concentric grids */}
+          <circle cx="400" cy="400" r="390" fill="none" stroke="rgba(0, 229, 255, 0.02)" strokeWidth="1" />
+          <circle cx="400" cy="400" r="380" fill="none" stroke="rgba(0, 229, 255, 0.03)" strokeWidth="1.5" />
+          <circle cx="400" cy="400" r="280" fill="none" stroke="rgba(0, 229, 255, 0.02)" strokeWidth="1" strokeDasharray="4, 16" />
+          <circle cx="400" cy="400" r="180" fill="none" stroke="rgba(0, 229, 255, 0.03)" strokeWidth="1" />
+          
+          {/* Axis lines */}
+          <line x1="400" y1="15" x2="400" y2="785" stroke="rgba(0, 229, 255, 0.02)" strokeWidth="1.5" strokeDasharray="4, 8" />
+          <line x1="15" y1="400" x2="785" y2="400" stroke="rgba(0, 229, 255, 0.02)" strokeWidth="1.5" strokeDasharray="4, 8" />
 
-          {/* RIPPLE WAVE ON EVERY SECOND TICK */}
+          {/* Dynamic 45-degree angle lines */}
+          <line x1="120" y1="120" x2="680" y2="680" stroke="rgba(0, 229, 255, 0.015)" strokeWidth="1" strokeDasharray="2, 6" />
+          <line x1="120" y1="680" x2="680" y2="120" stroke="rgba(0, 229, 255, 0.015)" strokeWidth="1" strokeDasharray="2, 6" />
+
+          {/* RIPPLE WAVE PULSING ON EVERY CRITICAL SECOND TICK */}
           <AnimatePresence initial={false}>
             <motion.circle
               key={secAngle}
               cx="400"
               cy="400"
-              r="260"
+              r="280"
               fill="none"
               stroke="#00E5FF"
-              strokeWidth="2"
+              strokeWidth="2.5"
               filter="url(#strongGlow)"
-              initial={{ scale: 0.4, opacity: 0.6 }}
-              animate={{ scale: 1.35, opacity: 0 }}
+              initial={{ scale: 0.35, opacity: 0.8 }}
+              animate={{ scale: 1.4, opacity: 0 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.95, ease: 'easeOut' }}
+              transition={{ duration: 0.9, ease: 'easeOut' }}
             />
           </AnimatePresence>
 
-          {/* SLOW ROTATING OUTER DEGREE TRACK (CLOCKWISE) */}
+          {/* ========================================== */}
+          {/*           ROTATING CYBERNETIC RINGS        */}
+          {/* ========================================== */}
+
+          {/* Outer Ring: Rotating Gear & Compass Bearings (Clockwise) */}
           <motion.g
             animate={{ rotate: 360 }}
-            transition={{ duration: 240, repeat: Infinity, ease: 'linear' }}
+            transition={{ duration: 210, repeat: Infinity, ease: 'linear' }}
             style={{ transformOrigin: '400px 400px' }}
           >
-            {/* Dashed outer gear ring */}
+            {/* Concentric tick marks */}
             <circle
               cx="400"
               cy="400"
-              r="370"
+              r="360"
               fill="none"
               stroke="rgba(0, 229, 255, 0.08)"
               strokeWidth="6"
-              strokeDasharray="4, 14"
+              strokeDasharray="4, 20"
             />
-            {/* Tech markers on outer ring */}
-            <circle cx="400" cy="30" r="4" fill="#00E5FF" filter="url(#glow)" />
-            <circle cx="400" cy="770" r="4" fill="#00E5FF" />
-            <circle cx="30" cy="400" r="4" fill="#00E5FF" />
-            <circle cx="770" cy="400" r="4" fill="#00E5FF" />
+            {/* Solid accent blocks */}
+            <circle cx="400" cy="40" r="5" fill="#00E5FF" filter="url(#glow)" />
+            <circle cx="400" cy="760" r="5" fill="#00E5FF" />
+            <circle cx="40" cy="400" r="5" fill="#00E5FF" />
+            <circle cx="760" cy="400" r="5" fill="#00E5FF" />
           </motion.g>
 
-          {/* SLOW ROTATING COUNTER-CLOCKWISE INNER RING */}
+          {/* Middle Ring: Slowly Rotating HUD Degrees (Counter-Clockwise) */}
           <motion.g
             animate={{ rotate: -360 }}
-            transition={{ duration: 160, repeat: Infinity, ease: 'linear' }}
+            transition={{ duration: 150, repeat: Infinity, ease: 'linear' }}
             style={{ transformOrigin: '400px 400px' }}
           >
-            {/* Concentric tick lines */}
             <circle
               cx="400"
               cy="400"
-              r="340"
+              r="320"
               fill="none"
               stroke="rgba(0, 229, 255, 0.12)"
-              strokeWidth="2"
-              strokeDasharray="1, 8"
+              strokeWidth="2.5"
+              strokeDasharray="2, 8"
             />
             <circle
               cx="400"
               cy="400"
-              r="330"
+              r="310"
               fill="none"
-              stroke="rgba(0, 229, 255, 0.06)"
-              strokeWidth="1"
-              strokeDasharray="40, 20"
+              stroke="rgba(0, 229, 255, 0.04)"
+              strokeWidth="1.5"
+              strokeDasharray="60, 40"
             />
-            {/* Degree nodes */}
             <g transform="translate(400, 400)">
-              {[0, 45, 90, 135, 180, 225, 270, 315].map((deg) => (
+              {[0, 30, 60, 90, 120, 150, 180, 210, 240, 270, 300, 330].map((deg) => (
                 <text
                   key={deg}
                   x="0"
-                  y="-345"
+                  y="-328"
                   transform={`rotate(${deg})`}
-                  fill="rgba(0, 229, 255, 0.2)"
-                  fontSize="9"
+                  fill="rgba(0, 229, 255, 0.25)"
+                  fontSize="8"
                   fontFamily="monospace"
+                  fontWeight="bold"
                   textAnchor="middle"
                 >
-                  {deg}°
+                  {String(deg).padStart(3, '0')}
                 </text>
               ))}
             </g>
           </motion.g>
 
-          {/* INNER SCALE & SOLID TRACK */}
-          <circle cx="400" cy="400" r="260" fill="none" stroke="rgba(0, 229, 255, 0.05)" strokeWidth="2" />
-          <circle
-            cx="400"
-            cy="400"
-            r="250"
-            fill="none"
-            stroke="rgba(0, 229, 255, 0.08)"
-            strokeWidth="4"
-            strokeDasharray="2, 6"
-          />
-
-          {/* COMPASS COMPONENT (DECORATIVE ROTATING ELEMENT) */}
+          {/* Inner Ring: Continuous Radar Sweep */}
           <motion.g
             animate={{ rotate: 360 }}
-            transition={{ duration: 60, repeat: Infinity, ease: 'linear' }}
+            transition={{ duration: 16, repeat: Infinity, ease: 'linear' }}
             style={{ transformOrigin: '400px 400px' }}
           >
+            {/* Glowing sweep trail */}
             <path
-              d="M390,280 L400,265 L410,280 L402,280 L402,320 L398,320 L398,280 Z"
-              fill="rgba(0, 229, 255, 0.12)"
+              d="M400,400 L400,120 A280,280 0 0,1 598,202 Z"
+              fill="rgba(0, 229, 255, 0.015)"
             />
-            <path
-              d="M390,520 L400,535 L410,520 L402,520 L402,480 L398,480 L398,520 Z"
-              fill="rgba(0, 229, 255, 0.12)"
+            <line
+              x1="400"
+              y1="400"
+              x2="400"
+              y2="120"
+              stroke="rgba(0, 229, 255, 0.15)"
+              strokeWidth="2"
+              filter="url(#glow)"
             />
           </motion.g>
 
+          {/* Inner solid dial line */}
+          <circle cx="400" cy="400" r="280" fill="none" stroke="rgba(0, 229, 255, 0.06)" strokeWidth="2.5" />
+          <circle cx="400" cy="400" r="270" fill="none" stroke="rgba(0, 229, 255, 0.03)" strokeWidth="1" strokeDasharray="10, 10" />
+
           {/* ========================================== */}
-          {/*                 CLOCK HANDS                */}
+          {/*          DYNAMIC MONOSPACE DIGITAL READOUT */}
           {/* ========================================== */}
+          
+          <text
+            x="400"
+            y="575"
+            fill="rgba(0, 229, 255, 0.45)"
+            fontSize="18"
+            fontFamily="monospace"
+            fontWeight="bold"
+            letterSpacing="6"
+            textAnchor="middle"
+            filter="url(#glow)"
+          >
+            {digitalTime}
+          </text>
+          
+          <text
+            x="400"
+            y="600"
+            fill="rgba(0, 229, 255, 0.2)"
+            fontSize="9"
+            fontFamily="monospace"
+            letterSpacing="3"
+            textAnchor="middle"
+          >
+            UTC OVERLAP SYSTEM
+          </text>
+
+          {/* ========================================== */}
+          {/*      perfectly balanced clock hands        */}
+          {/* ========================================== */}
+
+          {/* 
+            BUG SOLUTION: By extending an invisible/transparent identical vector
+            in the exact opposite (180 deg) direction, we force the bounding box 
+            to be perfectly centered at (400, 400). This guarantees absolutely 
+            perfect wobbyless transform-origin rotation.
+          */}
 
           {/* HOUR HAND */}
           <motion.g
             animate={{ rotate: hourAngle }}
-            transition={{ type: 'spring', stiffness: 90, damping: 15 }}
+            transition={{ type: 'spring', stiffness: 100, damping: 15 }}
             style={{ transformOrigin: '400px 400px' }}
           >
-            {/* Glowing hour hand block */}
+            {/* Visible Hour Hand */}
             <path
-              d="M394,400 L396,250 L404,250 L406,400 Z"
+              d="M394,400 L396,230 L404,230 L406,400 Z"
               fill="url(#hourGrad)"
               filter="url(#glow)"
+            />
+            {/* Symmetrical Balancing Vector (Invisible) */}
+            <path
+              d="M394,400 L396,570 L404,570 L406,400 Z"
+              fill="transparent"
             />
           </motion.g>
 
           {/* MINUTE HAND */}
           <motion.g
             animate={{ rotate: minAngle }}
-            transition={{ type: 'spring', stiffness: 100, damping: 15 }}
+            transition={{ type: 'spring', stiffness: 110, damping: 15 }}
             style={{ transformOrigin: '400px 400px' }}
           >
-            {/* Detailed tech minute hand */}
+            {/* Visible Minute Hand */}
             <path
-              d="M396,400 L398,170 L402,170 L404,400 Z"
+              d="M396,400 L398,160 L402,160 L404,400 Z"
               fill="url(#minGrad)"
               filter="url(#glow)"
             />
-            <circle cx="400" cy="185" r="3" fill="#00E5FF" />
+            <circle cx="400" cy="180" r="3.5" fill="#00E5FF" filter="url(#glow)" />
+            {/* Symmetrical Balancing Vector (Invisible) */}
+            <path
+              d="M396,400 L398,640 L402,640 L404,400 Z"
+              fill="transparent"
+            />
           </motion.g>
 
-          {/* SECONDS HAND (Precise physical spring mechanical snap tick) */}
+          {/* SECONDS HAND (Spring Snap Recoil Ticking) */}
           <motion.g
             animate={{ rotate: secAngle }}
-            transition={{ type: 'spring', stiffness: 150, damping: 14 }}
+            transition={{ type: 'spring', stiffness: 220, damping: 12 }}
             style={{ transformOrigin: '400px 400px' }}
           >
+            {/* Visible thin neon-cyan hand */}
             <line
               x1="400"
-              y1="460"
+              y1="400"
               x2="400"
-              y2="100"
+              y2="90"
               stroke="#00E5FF"
               strokeWidth="2"
               strokeLinecap="round"
               filter="url(#glow)"
             />
-            {/* Needle indicator ring */}
+            {/* Center axle pointer details */}
             <circle
               cx="400"
-              cy="140"
-              r="12"
+              cy="130"
+              r="10"
               fill="none"
               stroke="#00E5FF"
               strokeWidth="2"
               filter="url(#glow)"
             />
-            <circle cx="400" cy="140" r="3" fill="#00E5FF" />
+            <circle cx="400" cy="130" r="3.5" fill="#00E5FF" />
             
-            {/* Counterweight tail circle */}
-            <circle cx="400" cy="460" r="6" fill="#00E5FF" />
-            <circle cx="400" cy="460" r="10" fill="none" stroke="#00E5FF" strokeWidth="1.5" />
+            {/* Decorative counterweight tail */}
+            <circle cx="400" cy="450" r="6" fill="#00E5FF" />
+            <circle cx="400" cy="450" r="10" fill="none" stroke="#00E5FF" strokeWidth="1.5" />
+            
+            {/* Symmetrical Balancing Vector (Invisible) */}
+            <line
+              x1="400"
+              y1="400"
+              x2="400"
+              y2="710"
+              stroke="transparent"
+              strokeWidth="2"
+            />
           </motion.g>
 
-          {/* CENTER CAP (AXLE) */}
-          <circle cx="400" cy="400" r="15" fill="#0B0D12" stroke="#00E5FF" strokeWidth="3" filter="url(#glow)" />
-          <circle cx="400" cy="400" r="6" fill="#00E5FF" />
-          <circle cx="400" cy="400" r="2" fill="#FFFFFF" />
+          {/* ========================================== */}
+          {/*                 CENTER AXLE CAP            */}
+          {/* ========================================== */}
+          
+          <circle cx="400" cy="400" r="18" fill="#0A0D14" stroke="#00E5FF" strokeWidth="3" filter="url(#glow)" />
+          <circle cx="400" cy="400" r="8" fill="#00E5FF" />
+          <circle cx="400" cy="400" r="3" fill="#FFFFFF" />
         </svg>
-      </div>
+      </motion.div>
     </div>
   );
 }
