@@ -18,6 +18,27 @@ export const metadata = {
     'RealHRsoft, Real Chat, and Real Learn — Aayulogic\'s SaaS products powering HR, communication, and learning at scale.',
 };
 
+import { FAQSection } from '@/components/FAQSection';
+
+const productsFaqs = [
+  {
+    q: "How do your SaaS products integrate?",
+    a: "RealHRsoft, Real Chat, and Real Learn are built with native integrations. They share user directories, identity management, single sign-on (SSO), and unified audit trails to run your enterprise smoothly."
+  },
+  {
+    q: "Are the products customizable for enterprise clients?",
+    a: "Yes. While they are multi-tenant SaaS products, we offer dedicated enterprise instances and extensive custom integrations to connect with your existing identity providers and databases."
+  },
+  {
+    q: "Where is the data hosted and is it secure?",
+    a: "All product data is hosted on secure AWS/Azure instances with bank-grade encryption at rest and in transit. Our operations are fully ISO 27001:2022 certified for information security."
+  },
+  {
+    q: "What kind of SLA and support do you provide?",
+    a: "We offer 99.9% uptime SLAs for enterprise clients, with 24/7 dedicated support teams spanning our Toronto and Kathmandu offices to ensure help is always available."
+  }
+];
+
 export default function ProductsPage() {
   return (
     <>
@@ -103,6 +124,8 @@ export default function ProductsPage() {
           </div>
         </div>
       </section>
+
+      <FAQSection items={productsFaqs} />
 
       <CTABand
         eyebrow="Try It"

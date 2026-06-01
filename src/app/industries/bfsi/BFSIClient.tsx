@@ -16,7 +16,23 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CTABand } from '@/components/section/CTABand';
 import { IndustryHero } from '@/components/industry-hero';
+import { FAQSection } from '@/components/FAQSection';
 import { easingCurve } from '@/lib/utils';
+
+const bfsiFaqs = [
+  {
+    q: "How does Aayulogic ensure security compliance for digital finance applications?",
+    a: "We hardcode security into our delivery. All systems are designed in compliance with PCI-DSS Level 1, SOC 2 Type II, and multi-region data residency laws, with full audit trail logging and penetration testing standard."
+  },
+  {
+    q: "What is your experience with legacy mainframe core banking migration?",
+    a: "We specialize in strangler-pattern migrations, gradually moving legacy COBOL/monolith transactions to event-driven Go/Java microservices with zero downtime, proven across 5 major financial institutions."
+  },
+  {
+    q: "Do you sign banking-grade SLAs and liability NDAs?",
+    a: "Yes. We sign strict banking-grade NDAs, non-competes, and SLAs backing our systems with guaranteed uptime metrics, supported by our dual Canadian/Nepalese corporate structures."
+  }
+];
 
 const CHALLENGES = [
   {
@@ -374,6 +390,8 @@ export function BFSIClient() {
           </ul>
         </div>
       </section>
+
+      <FAQSection items={bfsiFaqs} />
 
       <CTABand
         eyebrow="Scope an Engagement"

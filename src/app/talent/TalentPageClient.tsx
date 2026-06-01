@@ -18,8 +18,28 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { SectionHero } from '@/components/section/SectionHero';
 import { CTABand } from '@/components/section/CTABand';
+import { FAQSection } from '@/components/FAQSection';
 import { TALENT_MODELS } from '@/lib/constants';
 import { easingCurve } from '@/lib/utils';
+
+const talentFaqs = [
+  {
+    q: "What is the typical lead time to deploy senior developers?",
+    a: "We deploy individual senior staff augmentation engineers within 7 business days, and complete multi-disciplinary engineering pods (3 to 5 members) within 14 business days."
+  },
+  {
+    q: "How do you vet your senior engineering talent?",
+    a: "All Aayulogic engineers undergo rigorous continuous evaluations: a manual code screen, standard algorithmic problem solving, paid system design exercises, and soft skill reviews. 100% of our production team holds senior titles (5+ years of experience)."
+  },
+  {
+    q: "What timezone coverage do your engineers support?",
+    a: "We offer 24/7 timezone coverage across Toronto, Lalitpur, Louisville, and Brisbane. We ensure a minimum of 4 hours of daily synchronous overlap with your core working hours."
+  },
+  {
+    q: "How are communications and stand-ups managed?",
+    a: "Our engineers operate natively inside your Slack/Teams and Jira workspaces, participating in standard daily stand-ups and reviews just like your internal team."
+  }
+];
 
 const MODEL_VISUALS = [
   {
@@ -504,6 +524,8 @@ export function TalentPageClient() {
           </div>
         </div>
       </section>
+
+      <FAQSection items={talentFaqs} />
 
       <CTABand
         eyebrow="Get Matched"

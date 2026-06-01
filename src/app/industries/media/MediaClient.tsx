@@ -19,6 +19,7 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CTABand } from '@/components/section/CTABand';
 import { IndustryHero } from '@/components/industry-hero';
+import { FAQSection } from '@/components/FAQSection';
 import { easingCurve } from '@/lib/utils';
 
 const CHALLENGES = [
@@ -114,6 +115,25 @@ const WHY_US = [
   'Paywall expertise that doesn&apos;t torch SEO surface.',
   'Header-bidding and brand-safety wired in from day one.',
   'Editorial CMS UX designed for journalists, not engineers.',
+];
+
+const mediaFaqs = [
+  {
+    q: "How do your systems handle high-volume digital media asset processing?",
+    a: "We design cloud-native serverless media processing pipelines (using FFmpeg, AWS Lambda, and AWS Elemental) that automate video transcoding, dynamic thumbnail generation, metadata extraction, and multi-region CDN distribution at scale.",
+  },
+  {
+    q: "What is your experience with DRM and content protection?",
+    a: "We implement robust multi-DRM integrations (Widevine, FairPlay, PlayReady) with strict access token validation to ensure your premium digital content is protected across all target platforms and devices.",
+  },
+  {
+    q: "How do you design for editorial CMS speed and user experience?",
+    a: "We build custom Headless CMS configurations or tailored WordPress/Strapi platforms that allow editorial staff to compose content at rapid pace, with real-time preview, drag-and-drop media insertion, and high-performance frontends.",
+  },
+  {
+    q: "Can you support print-to-web or print composition pipelines?",
+    a: "Yes. We have deep expertise orchestrating Adobe InDesign Server engines to automate dynamic template layouts, edition variant runs, and pre-press output verification directly on the editorial press deadline.",
+  },
 ];
 
 // Animated waveform for hero
@@ -553,6 +573,8 @@ export function MediaClient() {
           </ul>
         </div>
       </section>
+
+      <FAQSection items={mediaFaqs} />
 
       <CTABand
         eyebrow="Scope a Media Engagement"

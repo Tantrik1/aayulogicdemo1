@@ -20,7 +20,27 @@ import {
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CTABand } from '@/components/section/CTABand';
+import { FAQSection } from '@/components/FAQSection';
 import { easingCurve } from '@/lib/utils';
+
+const realhrsoftFaqs = [
+  {
+    q: "What is the typical setup and onboarding time for RealHRsoft?",
+    a: "Onboarding typically takes 4 to 6 weeks depending on organization size. We provide a dedicated implementation engineer to manage data migration, policy configuration, and user training."
+  },
+  {
+    q: "Does RealHRsoft support biometric integration for attendance tracking?",
+    a: "Yes. It supports biometric devices, geo-fenced mobile check-ins, and IP-restricted web check-ins. All punch data syncs into attendance and payroll logs in real-time."
+  },
+  {
+    q: "Is the payroll module compliant with multi-country tax regulations?",
+    a: "Yes. Our payroll engine is pre-configured for compliance across South Asia, North America, and Middle East regions, supporting automated tax calculation, payslips, and local bank file exports."
+  },
+  {
+    q: "Can we customize performance review cycles and OKR workflows?",
+    a: "Yes. RealHRsoft features a highly flexible review builder supporting 360-degree feedback, custom assessment questionnaires, continuous check-ins, and performance calibration."
+  }
+];
 
 const FEATURES = [
   {
@@ -419,6 +439,8 @@ export function RealHRsoftClient() {
           </div>
         </div>
       </section>
+
+      <FAQSection items={realhrsoftFaqs} />
 
       <CTABand
         eyebrow="See It Live"

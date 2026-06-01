@@ -18,6 +18,7 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CTABand } from '@/components/section/CTABand';
 import { IndustryHero } from '@/components/industry-hero';
+import { FAQSection } from '@/components/FAQSection';
 import { easingCurve } from '@/lib/utils';
 
 const CHALLENGES = [
@@ -113,6 +114,25 @@ const WHY_US = [
   'CMO and partner data-exchange harnesses built before kickoff.',
   'Single-tenant deployment for sponsor and HCP confidentiality.',
   'Validation team that has been audited and survived — repeatedly.',
+];
+
+const pharmaFaqs = [
+  {
+    q: "How do you ensure GxP and FDA compliance for pharmaceutical software?",
+    a: "Our software processes are strictly governed under ISO 9001 and ISO 27001 controls. We implement electronic records compliance (FDA 21 CFR Part 11) with non-repudiation audit trails, and deliver GAMP 5 risk-based Computer System Validation (CSV) deliverables directly from our automated pipelines.",
+  },
+  {
+    q: "What systems have you built for pharmaceutical supply chains?",
+    a: "We develop drug serialization tracking platforms (fully aligned with DSCSA and EU FMD guidelines), automated cold-chain IoT temperature logs, and secure CMO (Contract Manufacturing Organization) catalog ingestion harnesses.",
+  },
+  {
+    q: "How do you protect R&D data and intellectual property?",
+    a: "IP security is absolute. We deploy single-tenant secure cloud architectures, restrict data residency per geographic requirements, enforce MFA-backed Role-Based Access Controls (RBAC), and integrate secure Electronic Lab Notebook (ELN) and LIMS protocols.",
+  },
+  {
+    q: "Do you support clinical trial data standards?",
+    a: "Yes, our engineering squads are well-versed in CDISC standards, building ingestion pipelines and export utilities that produce study data in CDISC SDTM and ADaM formats ready for regulatory eCTD submissions.",
+  },
 ];
 
 // Molecular structure SVG decoration
@@ -532,6 +552,8 @@ export function PharmaClient() {
           </ul>
         </div>
       </section>
+
+      <FAQSection items={pharmaFaqs} />
 
       <CTABand
         eyebrow="Scope a GxP Engagement"

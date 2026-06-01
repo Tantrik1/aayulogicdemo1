@@ -18,6 +18,7 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CTABand } from '@/components/section/CTABand';
 import { IndustryHero } from '@/components/industry-hero';
+import { FAQSection } from '@/components/FAQSection';
 import { easingCurve } from '@/lib/utils';
 
 const CHALLENGES = [
@@ -113,6 +114,25 @@ const WHY_US = [
   'Edge-rendered storefronts on Cloudflare or Vercel — sub-100ms TTFB.',
   'PCI scope minimized to the smallest possible surface.',
   'Same delivery team from architecture through peak season.',
+];
+
+const retailFaqs = [
+  {
+    q: "What ecommerce engines do you specialize in?",
+    a: "We build headless, composable commerce architectures combining fast React/Next.js frontends with Shopify Plus, Magento, BigCommerce, or custom-built carts depending on your transactional scale and catalog complexity.",
+  },
+  {
+    q: "How do you handle rapid scalability during major retail sales?",
+    a: "We design auto-scaling container configurations (Kubernetes/ECS), database read-replicas, and distributed Redis caching layers to absorb 40x spikes in traffic and keep checkout latencies under 100ms.",
+  },
+  {
+    q: "How do you secure credit card and transaction data?",
+    a: "We minimize PCI scope by implementing tokenized payment collection (via Stripe, Adyen, or Braintree). Customer credit card data never touches our application servers, maintaining complete PCI-DSS compliance by design.",
+  },
+  {
+    q: "How do you ensure inventory remains synced across multiple sales channels?",
+    a: "We build robust real-time inventory reconciliation engines with safety-stock threshold alerts, preventing oversells and syncing product availability across physical stores, web, marketplaces, and drop-ship partners.",
+  },
 ];
 
 // Conversion funnel visualization
@@ -541,6 +561,8 @@ export function RetailClient() {
           </ul>
         </div>
       </section>
+
+      <FAQSection items={retailFaqs} />
 
       <CTABand
         eyebrow="Scope a Commerce Engagement"

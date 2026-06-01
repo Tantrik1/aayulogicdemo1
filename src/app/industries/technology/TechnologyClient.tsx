@@ -18,6 +18,7 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CTABand } from '@/components/section/CTABand';
 import { IndustryHero } from '@/components/industry-hero';
+import { FAQSection } from '@/components/FAQSection';
 import { easingCurve } from '@/lib/utils';
 
 const CHALLENGES = [
@@ -113,6 +114,25 @@ const WHY_US = [
   'API productization playbook with OpenAPI, SDK gen, and dev portal templates.',
   'SLSA-aligned supply chain across build, sign, and provenance.',
   'Same delivery team from MVP through scale to long-tail platform owner.',
+];
+
+const technologyFaqs = [
+  {
+    q: "What is your experience building SaaS product architectures?",
+    a: "We have built multiple production-hardened SaaS platforms, including our own flagship products like RealHRsoft, Real Chat, and Real Learn. We design for multi-tenant isolation, robust horizontal scaling, and secure single sign-on (SSO) integrations.",
+  },
+  {
+    q: "How do you support AI/ML integrations for tech companies?",
+    a: "We construct scalable data pipelines, secure vector database configurations (Pinecone, pgvector), LLM orchestration layers (LangChain, LlamaIndex), and custom predictive model endpoints that integrate cleanly with application codebases.",
+  },
+  {
+    q: "Do you follow standard continuous deployment (CI/CD) and Infrastructure as Code?",
+    a: "Absolutely. All tech-focused projects are provisioned using Terraform or CloudFormation and run on automated pipelines (GitHub Actions, GitLab CI) with fully integrated linting, security scanning, and unit tests.",
+  },
+  {
+    q: "How do you handle API versioning and breaking changes?",
+    a: "We follow strict semantic versioning, leverage OpenAPI specs for auto-generating SDKs, and build rate-limiting/throttling middleware to protect backend resources while ensuring developer-friendly integration layers.",
+  },
 ];
 
 // Animated terminal lines
@@ -529,6 +549,8 @@ export function TechnologyClient() {
           </ul>
         </div>
       </section>
+
+      <FAQSection items={technologyFaqs} />
 
       <CTABand
         eyebrow="Scope a Platform Engagement"

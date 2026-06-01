@@ -620,14 +620,9 @@ export const COMPANY_LINKS = [
     description: "Open engineering positions and team environment.",
   },
   {
-    title: "Leadership Team",
-    href: "/leadership",
-    description: "Executive profiles routing architectures and operations.",
-  },
-  {
-    title: "Global Locations",
-    href: "/locations",
-    description: "Engineering centers, branches, and contact nodes.",
+    title: "Contact Us",
+    href: "/contact",
+    description: "Get in touch with our delivery leadership and team.",
   },
 ];
 

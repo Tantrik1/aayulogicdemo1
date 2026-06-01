@@ -8,13 +8,7 @@ import {
   ShieldCheck,
   Sparkles,
   Search,
-  Landmark,
-  Cpu,
-  Building2,
-  Plane,
   Globe2,
-  Workflow,
-  type LucideIcon,
 } from 'lucide-react';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
@@ -91,33 +85,7 @@ const STATS = [
   { value: '18+', label: 'Industries we have built for' },
 ];
 
-const WHY: { number: string; title: string; body: string; icon: LucideIcon }[] = [
-  {
-    number: '01',
-    title: 'Real engineering work — not maintenance.',
-    body: 'You will not be maintaining legacy systems or doing support tickets. You will be designing and building enterprise software — the kind that runs at commercial banks and operates at scale across 18 industries.',
-    icon: Workflow,
-  },
-  {
-    number: '02',
-    title: 'ISO-certified from day one.',
-    body: 'Our processes are ISO 9001:2015 and ISO 27001:2022 certified. You will work to professional engineering standards from your first week — architecture reviews, documented processes, security protocols.',
-    icon: ShieldCheck,
-  },
-  {
-    number: '03',
-    title: 'A company that is growing deliberately.',
-    body: 'Canadian entity live. International expansion underway. If you want to grow with a company that is scaling deliberately — not chaotically — this is the right moment to join.',
-    icon: Sparkles,
-  },
-];
 
-const NEPAL_FACTS = [
-  { icon: Landmark, title: 'Stable majority government', body: 'First in almost seven decades. Political continuity that allows long-term planning.' },
-  { icon: Cpu, title: 'IT declared a strategic sector', body: 'Government policy now formally supports the technology ecosystem.' },
-  { icon: Building2, title: 'One-window company registration', body: 'Simplified business environment. International companies entering Nepal.' },
-  { icon: Plane, title: 'Digital nomad visa live', body: 'International professionals working from Kathmandu. A growing global talent network.' },
-];
 
 const TECH_STACK = ['Python', 'Django', 'Vue.js', 'Flutter', 'AWS', 'Docker', 'PostgreSQL', 'Redis'];
 
@@ -125,15 +93,35 @@ function roleHref(slug: string) {
   return `${HRMS_BASE}?role=${slug}`;
 }
 
+import { FAQSection } from '@/components/FAQSection';
+
+const careersFaqs = [
+  {
+    q: "What's it like to work at Aayulogic?",
+    a: "We have a senior-heavy team, async-first communication, clear processes, and a solid focus on engineering craft. We support hybrid and remote work across all our hubs."
+  },
+  {
+    q: "Do you hire junior developers?",
+    a: "We rarely hire juniors. Our production roles are typically senior-heavy (5+ years of experience with real production systems) because our clients expect senior engineering velocity and quality."
+  },
+  {
+    q: "Is remote work supported?",
+    a: "Yes. We operate as a remote-first company across our offices in Toronto, Lalitpur, and Brisbane. Async communication is a core tool in how we build and collaborate."
+  },
+  {
+    q: "How long does the hiring process take?",
+    a: "Our hiring process is thorough but fast, usually taking 3-4 weeks across four stages: initial screening, technical discussion, paid work sample project, and final leadership review."
+  }
+];
+
 export default function CareersPage() {
   return (
     <>
       <Header />
       <Hero />
-      <WhyAayulogic />
-      <NepalRightNow />
       <TheWork />
       <CurrentOpenings />
+      <FAQSection items={careersFaqs} />
       <FinalCTA />
       <Footer />
     </>
@@ -150,29 +138,14 @@ function Hero() {
   return (
     <section
       data-theme={theme}
-      className="relative overflow-hidden pt-28 pb-24 sm:pt-32 sm:pb-36 transition-all duration-500 text-white bg-slate-950/80 backdrop-blur-[1px]"
+      className="relative overflow-hidden pt-28 pb-24 sm:pt-32 sm:pb-36 transition-all duration-500 text-white bg-cobalt-premium"
     >
-
-      <video
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        aria-hidden
-        className="absolute inset-0 w-full h-full object-cover"
-      >
-        <source src="/herobackground.mp4" type="video/mp4" />
-      </video>
+      <div aria-hidden className="cobalt-grain" />
 
       {/* Dynamic theme overlays for legibility */}
       <div
         aria-hidden
-        className={`absolute inset-0 transition-colors duration-500 ${
-          theme === 'dark'
-            ? 'bg-gradient-to-b from-slate-950/90 via-slate-950/80 to-[#0a1c4a]/95'
-            : 'bg-gradient-to-b from-white/95 via-white/80 to-slate-50/90'
-        }`}
+        className="absolute inset-0 bg-gradient-to-b from-slate-950/20 via-slate-950/10 to-[#0a1c4a]/30"
       />
       <div
         aria-hidden
@@ -342,114 +315,7 @@ function Hero() {
   );
 }
 
-// =============================================================================
-//  WHY AAYULOGIC
-// =============================================================================
 
-function WhyAayulogic() {
-  return (
-    <section className="relative py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 border-b border-slate-100">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={motionConfig.default}
-          className="max-w-3xl"
-        >
-          <p className="text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-3">
-            Why Aayulogic
-          </p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-navy leading-tight">
-            Three honest reasons to work here.
-          </h2>
-        </motion.div>
-
-        <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
-          {WHY.map((w, i) => {
-            const Icon = w.icon;
-            return (
-              <motion.div
-                key={w.number}
-                initial={{ opacity: 0, y: 16 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 0.45, delay: i * 0.06, ease: easingCurve.industrial }}
-                className="group relative p-7 rounded-xl border border-slate-200 bg-white hover:border-brand-blue/30 hover:shadow-[0_18px_40px_-16px_rgba(4,92,179,0.18)] transition-all"
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-11 h-11 rounded-lg bg-gradient-to-br from-brand-blue to-brand-cyan flex items-center justify-center">
-                    <Icon className="w-5 h-5 text-white" />
-                  </div>
-                  <span className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-slate-200 to-slate-300">
-                    {w.number}
-                  </span>
-                </div>
-                <h3 className="text-base font-bold text-brand-navy mb-2 group-hover:text-brand-blue transition-colors">
-                  {w.title}
-                </h3>
-                <p className="text-sm text-slate-600 leading-relaxed">{w.body}</p>
-              </motion.div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// =============================================================================
-//  NEPAL RIGHT NOW
-// =============================================================================
-
-function NepalRightNow() {
-  return (
-    <section className="relative bg-brand-navy text-white py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 overflow-hidden">
-      <div
-        aria-hidden
-        className="absolute -top-40 -right-40 w-[520px] h-[520px] rounded-full blur-3xl opacity-40"
-        style={{ background: 'radial-gradient(circle, rgba(0,194,255,0.35) 0%, transparent 70%)' }}
-      />
-      <div className="relative max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
-        <div>
-          <p className="text-brand-cyan text-sm font-semibold uppercase tracking-[0.18em] mb-3">
-            Nepal Right Now
-          </p>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-5">
-            The country is at an inflection point. We have been here since 2016.
-          </h2>
-          <p className="text-base sm:text-lg text-white/70 leading-relaxed mb-4">
-            Nepal has a <strong className="text-white font-semibold">stable majority government</strong> — the first in almost seven decades. The government has formally declared IT a strategic economic sector.
-          </p>
-          <p className="text-base sm:text-lg text-white/70 leading-relaxed">
-            Engineers who build their careers in Kathmandu right now will have worked at the centre of Nepal&apos;s technology emergence — <strong className="text-white font-semibold">not arrived after it was already obvious.</strong>
-          </p>
-        </div>
-        <div className="space-y-3">
-          {NEPAL_FACTS.map((f) => {
-            const Icon = f.icon;
-            return (
-              <div
-                key={f.title}
-                className="rounded-xl border-l-4 border-brand-cyan bg-white/5 backdrop-blur px-5 py-4"
-              >
-                <div className="flex items-start gap-3">
-                  <div className="w-9 h-9 rounded-lg bg-brand-cyan/15 flex items-center justify-center flex-shrink-0">
-                    <Icon className="w-4 h-4 text-brand-cyan" />
-                  </div>
-                  <div>
-                    <h4 className="text-sm font-semibold text-white mb-1">{f.title}</h4>
-                    <p className="text-sm text-white/60 leading-relaxed">{f.body}</p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 // =============================================================================
 //  THE WORK
@@ -713,7 +579,8 @@ function CurrentOpenings() {
 
 function FinalCTA() {
   return (
-    <section className="relative bg-brand-navy text-white py-20 sm:py-24 px-6 text-center overflow-hidden">
+    <section className="relative bg-cobalt-premium text-white py-20 sm:py-24 px-6 text-center overflow-hidden">
+      <div aria-hidden className="cobalt-grain" />
       <div
         aria-hidden
         className="absolute -top-32 -left-32 w-[520px] h-[520px] rounded-full blur-3xl opacity-40"

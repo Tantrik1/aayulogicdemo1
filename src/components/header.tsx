@@ -211,7 +211,7 @@ export function Header() {
                   } font-medium ${
                     activeMenu === item.key
                       ? 'text-brand-blue bg-brand-blue/5'
-                      : isOverDark
+                      : (isOverDark && !activeMenu)
                         ? 'text-white hover:text-brand-cyan hover:bg-white/10'
                         : 'text-brand-navy hover:text-brand-blue hover:bg-slate-50'
                   }`}

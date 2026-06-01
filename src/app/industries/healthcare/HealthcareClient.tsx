@@ -18,6 +18,7 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CTABand } from '@/components/section/CTABand';
 import { IndustryHero } from '@/components/industry-hero';
+import { FAQSection } from '@/components/FAQSection';
 import { easingCurve } from '@/lib/utils';
 
 const CHALLENGES = [
@@ -113,6 +114,25 @@ const WHY_US = [
   'IEC 62304-aligned process for any FDA Class II SaMD work.',
   'Auditor-grade evidence generated automatically from CI.',
   'On-call clinical informaticists for go-live and stabilization.',
+];
+
+const healthcareFaqs = [
+  {
+    q: "Are Aayulogic's healthcare systems HIPAA and PHI compliant?",
+    a: "Yes, 100%. We secure Protected Health Information (PHI) with AES-256 encryption in transit and at rest, detailed access-control logs (audit trails), and HIPAA-compliant database topologies on AWS, GCP, and Azure.",
+  },
+  {
+    q: "How do you handle integrations with existing EHR/EMR platforms?",
+    a: "We build secure HL7, FHIR R4, and custom API layers using SMART on FHIR launch flows to connect seamlessly with major EHR systems like Epic, Cerner, and athenahealth.",
+  },
+  {
+    q: "Do you align with IEC 62304 standards for Software as a Medical Device (SaMD)?",
+    a: "Yes, our software development processes align with IEC 62304 for Class I and Class II medical devices, incorporating rigorous risk analysis, software verification, and automated evidence pipelines.",
+  },
+  {
+    q: "How do you ensure audit trails survive retention requirements?",
+    a: "We implement immutable audit logging (using secure cloud logs with object locks or ledger databases) that satisfies HIPAA and FDA 21 CFR Part 11 requirements for the standard 6-year retention window.",
+  },
 ];
 
 // SVG: stylized ECG/heartbeat line — animated draw
@@ -562,6 +582,8 @@ export function HealthcareClient() {
           </ul>
         </div>
       </section>
+
+      <FAQSection items={healthcareFaqs} />
 
       <CTABand
         eyebrow="Scope a Clinical Engagement"

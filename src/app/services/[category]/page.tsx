@@ -13,6 +13,64 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { SERVICE_CATEGORIES } from '@/lib/constants';
 import { CTABand } from '@/components/section/CTABand';
+import { FAQSection } from '@/components/FAQSection';
+
+const CATEGORY_FAQS: Record<string, { q: string; a: string }[]> = {
+  'custom-software': [
+    {
+      q: "What is your development methodology for custom software?",
+      a: "We operate on an Agile-Scrum model, working in structured two-week sprints. We deliver working code and a demo at the end of every sprint, keeping you completely aligned with progress."
+    },
+    {
+      q: "How do you handle change requests and scope changes during a build?",
+      a: "We prioritize flexibility. If you need to make changes, we log them, estimate the impact on timeline and resources, and align on whether to swap scope within the current phase or schedule it for a subsequent phase."
+    },
+    {
+      q: "Who owns the source code and intellectual property?",
+      a: "You do. All custom software, source code, architecture designs, and integrations built for your business are assigned to you 100% upon delivery and final billing."
+    },
+    {
+      q: "What technologies do you specialize in for custom builds?",
+      a: "Our core stacks include Node.js, Python, Django, React, Vue.js, Flutter for mobile, and modern databases like PostgreSQL and Redis. We prioritize proven, reliable systems."
+    }
+  ],
+  'dedicated-teams': [
+    {
+      q: "How quickly can you spin up a dedicated engineering pod?",
+      a: "We can typically deploy a pre-vetted, highly skilled dedicated team within 7 to 14 business days, matching your specific tech stack and project domain requirements."
+    },
+    {
+      q: "Who manages the dedicated team day-to-day?",
+      a: "The team is fully self-managed by a dedicated Tech Lead or Product Manager under our delivery oversight, reporting directly into your product leadership for sprint alignment."
+    },
+    {
+      q: "Can we review and choose the individual engineers assigned to our pod?",
+      a: "Yes. While we curate the team to match your exact technical constraints, you have full visibility and can interview the key senior engineers before kickoff."
+    },
+    {
+      q: "What is the minimum commitment for a dedicated team engagement?",
+      a: "We ask for a minimum 6-month commitment for dedicated teams. This ensures we can provide compounding technical knowledge and team stability."
+    }
+  ],
+  'devops': [
+    {
+      q: "What cloud platforms do your DevOps engineers specialize in?",
+      a: "We are deeply experienced across Amazon Web Services (AWS), Microsoft Azure, and Google Cloud Platform (GCP). We also support hybrid and multi-cloud architectures."
+    },
+    {
+      q: "How do you handle high availability, security, and disaster recovery?",
+      a: "We build all infrastructure as code (IaC) using Terraform, incorporating automated backups, multi-AZ failovers, continuous health monitoring, and strict ISO 27001 security controls."
+    },
+    {
+      q: "Do you provide continuous 24/7 monitoring and incident response?",
+      a: "Yes. For infrastructure under our active operational care, we set up continuous telemetry (DataDog/Prometheus) and standard on-call pager rotations for 24/7 coverage."
+    },
+    {
+      q: "Can you help us migrate our legacy infrastructure to the cloud?",
+      a: "Yes. We design step-by-step cloud migration paths that minimize system downtime, optimize data transfer security, and reduce post-migration cloud operating costs."
+    }
+  ]
+};
 
 export function generateStaticParams() {
   return [
@@ -57,8 +115,11 @@ export default async function ServiceCategoryPage({
     <>
       <Header />
 
-      {/* ============ HERO — video bg, pure text ============ */}
-      <section className="relative w-full min-h-[78svh] flex flex-col items-center justify-center pt-28 sm:pt-32 lg:pt-36 pb-16 sm:pb-20 lg:pb-24 px-5 sm:px-6 lg:px-8 overflow-hidden bg-transparent">
+      <section
+        data-theme="dark"
+        className="relative w-full min-h-[78svh] flex flex-col items-center justify-center pt-28 sm:pt-32 lg:pt-36 pb-16 sm:pb-20 lg:pb-24 px-5 sm:px-6 lg:px-8 overflow-hidden bg-cobalt-premium"
+      >
+        <div aria-hidden className="cobalt-grain" />
         <div className="relative max-w-5xl mx-auto w-full text-center flex flex-col items-center gap-6 sm:gap-7">
           {/* Breadcrumb */}
           <nav className="flex items-center gap-2 text-xs text-white/70 font-medium">
@@ -119,8 +180,11 @@ export default async function ServiceCategoryPage({
         </section>
       )}
 
-      {/* ============ WHAT'S INCLUDED + IDEAL FOR — video bg ============ */}
-      <section className="relative py-20 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden bg-transparent">
+      <section
+        data-theme="dark"
+        className="relative py-20 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden bg-cobalt-premium"
+      >
+        <div aria-hidden className="cobalt-grain" />
         <div className="relative max-w-7xl mx-auto">
           <div className="max-w-3xl mb-12">
             <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-cyan mb-3 block">
@@ -214,8 +278,11 @@ export default async function ServiceCategoryPage({
         </section>
       )}
 
-      {/* ============ ENGAGEMENT FLOW — video bg ============ */}
-      <section className="relative py-20 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden bg-transparent">
+      <section
+        data-theme="dark"
+        className="relative py-20 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden bg-cobalt-premium"
+      >
+        <div aria-hidden className="cobalt-grain" />
         <div className="relative max-w-7xl mx-auto">
           <div className="max-w-3xl mb-14">
             <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-cyan mb-3 block">
@@ -295,7 +362,11 @@ export default async function ServiceCategoryPage({
 
       {/* ============ OUTCOMES — video bg ============ */}
       {cat.outcomes && (
-        <section className="relative py-20 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden bg-transparent">
+        <section
+          data-theme="dark"
+          className="relative py-20 sm:py-24 lg:py-28 px-4 sm:px-6 lg:px-8 overflow-hidden bg-cobalt-premium"
+        >
+          <div aria-hidden className="cobalt-grain" />
           <div className="relative max-w-7xl mx-auto">
             <div className="max-w-3xl mb-12">
               <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-cyan mb-3 block">
@@ -375,8 +446,11 @@ export default async function ServiceCategoryPage({
         </section>
       )}
 
-      {/* ============ OTHER SERVICES — video bg ============ */}
-      <section className="relative py-20 sm:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden bg-transparent">
+      <section
+        data-theme="dark"
+        className="relative py-20 sm:py-24 px-4 sm:px-6 lg:px-8 overflow-hidden bg-cobalt-premium"
+      >
+        <div aria-hidden className="cobalt-grain" />
         <div className="relative max-w-7xl mx-auto">
           <div className="max-w-3xl mb-10">
             <span className="text-[11px] font-bold uppercase tracking-[0.22em] text-brand-cyan mb-3 block">
@@ -417,6 +491,8 @@ export default async function ServiceCategoryPage({
           </div>
         </div>
       </section>
+
+      <FAQSection items={CATEGORY_FAQS[cat.key] || []} />
 
       {/* ============ CTA — sits on white ============ */}
       <CTABand

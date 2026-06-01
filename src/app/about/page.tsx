@@ -19,7 +19,27 @@ import {
 } from 'lucide-react';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
+import { FAQSection } from '@/components/FAQSection';
 import { easingCurve, motionConfig } from '@/lib/utils';
+
+const companyFaqs = [
+  {
+    q: "What does Aayulogic actually do?",
+    a: "We are a Canadian-headquartered global technology company. We build and operate production software — including flagship platforms like RealHRsoft and custom AI/cloud engagements for enterprise clients across North America."
+  },
+  {
+    q: "Where is Aayulogic headquartered?",
+    a: "Our global headquarters is Aayulogic Inc. in Toronto, Canada. Our primary engineering hub is Aayulogic Systems Pvt. Ltd. in Lalitpur, Kathmandu, Nepal, which has been operating continuously since 2016."
+  },
+  {
+    q: "How long has Aayulogic been around?",
+    a: "Since 2016. We have spent nine years building and operating software — for clients and for ourselves, proving our global engineering capabilities over a decade of continuous growth."
+  },
+  {
+    q: "Are your processes certified for security and quality?",
+    a: "Yes. We hold active, independently audited ISO 9001:2015 (Quality Management Systems) and ISO 27001:2022 (Information Security Management Systems) certifications. These standards govern all client engagements and delivery pipelines."
+  }
+];
 
 // =============================================================================
 //  PAGE
@@ -36,6 +56,7 @@ export default function AboutPage() {
       <TimelineSection />
       <Values />
       <Certifications />
+      <FAQSection items={companyFaqs} />
       <FinalCTA />
       <Footer />
     </>
@@ -48,7 +69,11 @@ export default function AboutPage() {
 
 function Hero() {
   return (
-    <section className="relative w-full min-h-[80svh] flex flex-col items-center justify-center pt-28 sm:pt-32 lg:pt-36 pb-16 sm:pb-20 lg:pb-24 px-5 sm:px-6 lg:px-8 overflow-hidden bg-transparent">
+    <section
+      data-theme="dark"
+      className="relative w-full min-h-[80svh] flex flex-col items-center justify-center pt-28 sm:pt-32 lg:pt-36 pb-16 sm:pb-20 lg:pb-24 px-5 sm:px-6 lg:px-8 overflow-hidden bg-cobalt-premium"
+    >
+      <div aria-hidden className="cobalt-grain" />
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -162,7 +187,11 @@ const FACTS: { label: string; value: string; icon: LucideIcon }[] = [
 
 function CompanyStructure() {
   return (
-    <section className="relative py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 overflow-hidden bg-transparent">
+    <section
+      data-theme="dark"
+      className="relative py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 overflow-hidden bg-cobalt-premium"
+    >
+      <div aria-hidden className="cobalt-grain" />
       <div className="relative max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -344,7 +373,11 @@ function TimelineSection() {
   const m = TIMELINE[active];
 
   return (
-    <section className="relative py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 overflow-hidden bg-transparent">
+    <section
+      data-theme="dark"
+      className="relative py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 overflow-hidden bg-cobalt-premium"
+    >
+      <div aria-hidden className="cobalt-grain" />
       <div className="relative max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -538,7 +571,11 @@ function Values() {
 
 function Certifications() {
   return (
-    <section className="relative py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 overflow-hidden bg-transparent">
+    <section
+      data-theme="dark"
+      className="relative py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 overflow-hidden bg-cobalt-premium"
+    >
+      <div aria-hidden className="cobalt-grain" />
       <div className="relative max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -607,7 +644,11 @@ function FinalCTA() {
   return (
     <section className="relative bg-white py-20 sm:py-28 px-6 overflow-hidden">
       <div className="max-w-7xl mx-auto px-2 sm:px-4">
-        <div className="relative rounded-2xl bg-brand-navy text-white overflow-hidden px-8 sm:px-14 py-14 sm:py-20 text-center">
+        <div
+          data-theme="dark"
+          className="relative rounded-2xl bg-cobalt-premium text-white overflow-hidden px-8 sm:px-14 py-14 sm:py-20 text-center"
+        >
+          <div aria-hidden className="cobalt-grain" />
           <div
             aria-hidden
             className="absolute -top-32 -left-32 w-[520px] h-[520px] rounded-full blur-3xl opacity-30"

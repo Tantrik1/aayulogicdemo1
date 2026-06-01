@@ -13,6 +13,46 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CTABand } from '@/components/section/CTABand';
 import { PRODUCTS } from '@/lib/constants';
+import { FAQSection } from '@/components/FAQSection';
+
+const PRODUCT_FAQS: Record<string, { q: string; a: string }[]> = {
+  realchat: [
+    {
+      q: "Is Real Chat fully secure and end-to-end encrypted?",
+      a: "Yes. Real Chat incorporates end-to-end transit encryption (TLS 1.3) and AES-256 encryption at rest. All messages, media, and attachments are protected under ISO 27001 audited security controls."
+    },
+    {
+      q: "Does Real Chat integrate with our existing HRMS structure?",
+      a: "Yes. It integrates natively with RealHRsoft and popular enterprise directories (Active Directory, Okta, G-Suite). When you update your org chart or department groups, they sync in real-time."
+    },
+    {
+      q: "Can we deploy Real Chat on-premises or is it strictly SaaS?",
+      a: "By default, Real Chat is hosted as a secure cloud SaaS. However, for enterprise clients with high security or compliance requirements, we offer dedicated, single-tenant private cloud virtual environments."
+    },
+    {
+      q: "Does Real Chat support high-fidelity video/voice rooms?",
+      a: "Yes. It has built-in audio/video channels supporting screen sharing, session recording, and persistent chat threads for seamless collaborative stand-ups and reviews."
+    }
+  ],
+  reallearn: [
+    {
+      q: "What training formats does Real Learn support?",
+      a: "Real Learn supports multiple training formats, including self-paced slide decks, interactive HTML5 content, video lectures, live webinar schedules, and automated quizzes."
+    },
+    {
+      q: "Can we import our existing courses from SCORM libraries?",
+      a: "Yes. Real Learn supports standard SCORM 1.2, SCORM 2004, and xAPI specifications. You can import existing course packages and start tracking progress immediately with zero conversion required."
+    },
+    {
+      q: "How does the skills assessment and reporting dashboard work?",
+      a: "Managers get team-level visibility through real-time dashboards mapping course completions, quiz scores, compliance milestones, and individual progress against defined skill matrices."
+    },
+    {
+      q: "Is there a mobile app for offline learning?",
+      a: "Yes. Real Learn is fully responsive and offers native mobile apps for iOS and Android, allowing field, sales, or shift workers to download modules and learn offline with automatic sync."
+    }
+  ]
+};
 
 const ICON_MAP: Record<string, LucideIcon> = {
   Users,
@@ -316,6 +356,8 @@ export default async function ProductDetailPage({
           </div>
         </div>
       </section>
+
+      <FAQSection items={PRODUCT_FAQS[product.slug] || []} />
 
       <CTABand
         eyebrow="Try It"

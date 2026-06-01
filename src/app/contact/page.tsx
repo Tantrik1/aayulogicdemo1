@@ -47,6 +47,27 @@ const TIMELINES = [
   'Exploring',
 ];
 
+import { FAQSection } from '@/components/FAQSection';
+
+const contactFaqs = [
+  {
+    q: "How do we get started with a project?",
+    a: "Send us a message or email hello@aayulogic.com. We will schedule a 45-minute discovery call with the engineering or product lead closest to your context — not an account manager. We get straight to the technical design."
+  },
+  {
+    q: "Can we visit one of your engineering offices?",
+    a: "Absolutely. We host clients regularly in our Toronto and Lalitpur offices. Most of our enterprise engagements begin with or include an on-site visit for planning and team alignment."
+  },
+  {
+    q: "Do you participate in vendor due diligence?",
+    a: "Yes. We have a pre-packaged vendor due diligence packet ready under NDA, covering ISO 9001/27001 certifications, engineering principles, security standards, and business insurance."
+  },
+  {
+    q: "Who owns the IP built during the engagement?",
+    a: "You do. All custom software, architectures, and systems built during client engagements are fully assigned to you upon delivery — clean ownership, no encumbrances."
+  }
+];
+
 export default function ContactPage() {
   return (
     <>
@@ -69,6 +90,7 @@ export default function ContactPage() {
       <ContactFormSection />
       <DirectChannelsSection />
       <TrustBandSection />
+      <FAQSection items={contactFaqs} />
 
       <Footer />
     </>
@@ -528,8 +550,9 @@ function TrustBandSection() {
   return (
     <section
       data-theme="dark"
-      className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-brand-navy text-white"
+      className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-cobalt-premium text-white"
     >
+      <div aria-hidden className="cobalt-grain" />
       <div
         aria-hidden
         className="absolute -top-20 -left-20 w-96 h-96 rounded-full blur-3xl opacity-40"

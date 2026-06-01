@@ -18,6 +18,7 @@ import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CTABand } from '@/components/section/CTABand';
 import { IndustryHero } from '@/components/industry-hero';
+import { FAQSection } from '@/components/FAQSection';
 import { easingCurve } from '@/lib/utils';
 
 const CHALLENGES = [
@@ -113,6 +114,25 @@ const WHY_US = [
   'Adaptive engines you can debug — no black-box recommendation hell.',
   'SIS/LMS bridge expertise across PowerSchool, Banner, Canvas, Moodle.',
   'Anti-cheat that respects learners and still satisfies accreditors.',
+];
+
+const professionalServicesFaqs = [
+  {
+    q: "How does Aayulogic support engineering for professional training and services firms?",
+    a: "We build custom practice management engines, secure client or learner collaboration portals, practice schedulers, and automated billing workflows designed to seamlessly integrate with your existing CRM and ERP platforms.",
+  },
+  {
+    q: "What experience do you have with EdTech and educational standards?",
+    a: "We have deep experience building standards-first educational tools, including custom integrations with major LMSs (Canvas, Moodle, Blackboard) via LTI 1.3/Advantage, SCORM/xAPI compliant databases, and W3C Verifiable Credentials.",
+  },
+  {
+    q: "Do you design for WCAG accessibility compliance?",
+    a: "Yes, 100%. We integrate WCAG 2.2 AA accessibility standards into our styling and components from the design phase, verifying keyboard navigability, screen-reader markup, and color contrast on every release.",
+  },
+  {
+    q: "Can you scale systems to handle enrollment spikes and high-concurrency learning?",
+    a: "Absolutely. We design microservices and serverless layers proven to handle rapid traffic bursts, caching heavy catalogs via Redis, database read-replicas, and message queues to ensure 100% platform availability on enrollment day.",
+  },
 ];
 
 // Learning path visualization — connected nodes
@@ -586,6 +606,8 @@ export function ProfessionalServicesClient() {
           </ul>
         </div>
       </section>
+
+      <FAQSection items={professionalServicesFaqs} />
 
       <CTABand
         eyebrow="Scope an EdTech Engagement"
