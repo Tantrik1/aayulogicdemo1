@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 export function HeroClockBackground() {
   const [mounted, setMounted] = useState(false);
@@ -96,7 +96,7 @@ export function HeroClockBackground() {
     const angle = (i * 6 - 90) * Math.PI / 180;
     const isHour = i % 5 === 0;
     const isMajorHour = i % 15 === 0; // 12, 3, 6, 9
-    const radiusOuter = 260; // outer alignment boundaries
+    const radiusOuter = 260; // outer alignment boundary
 
     if (isHour) {
       return {
@@ -148,25 +148,6 @@ export function HeroClockBackground() {
                 <feMergeNode in="SourceGraphic" />
               </feMerge>
             </filter>
-            
-            {/* High-intensity Glow filter */}
-            <filter id="strongGlow" x="-40%" y="-40%" width="180%" height="180%">
-              <feGaussianBlur stdDeviation="6" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-
-            {/* Premium linear gradients */}
-            <linearGradient id="hourGrad" x1="0" x2="0" y1="1" y2="0">
-              <stop offset="0%" stopColor="#0078FF" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="#00E5FF" stopOpacity="0.95" />
-            </linearGradient>
-            <linearGradient id="minGrad" x1="0" x2="0" y1="1" y2="0">
-              <stop offset="0%" stopColor="#0052FF" stopOpacity="0.3" />
-              <stop offset="100%" stopColor="#00E5FF" stopOpacity="0.95" />
-            </linearGradient>
           </defs>
 
           {/* ========================================== */}
@@ -181,25 +162,6 @@ export function HeroClockBackground() {
             <line x1="15" y1="400" x2="785" y2="400" stroke="rgba(0, 229, 255, 0.2)" strokeWidth="1.5" strokeDasharray="4, 8" />
           </g>
 
-          {/* RIPPLE WAVE PULSING ON EVERY SECOND TICK */}
-          <AnimatePresence initial={false}>
-            <motion.circle
-              key={secAngle}
-              cx="400"
-              cy="400"
-              r="260"
-              fill="none"
-              stroke="#00E5FF"
-              strokeWidth="2.5"
-              filter="url(#strongGlow)"
-              initial={{ scale: 0.35, opacity: 0.8 }}
-              animate={{ scale: 1.4, opacity: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.95, ease: 'easeOut' }}
-              className="opacity-20"
-            />
-          </AnimatePresence>
-
           {/* ========================================== */}
           {/*           ROTATING CYBERNETIC DETAILS      */}
           {/* ========================================== */}
@@ -208,7 +170,7 @@ export function HeroClockBackground() {
           <motion.g
             animate={{ rotate: 360 }}
             transition={{ duration: 240, repeat: Infinity, ease: 'linear' }}
-            style={{ transformOrigin: '400px 400px' }}
+            style={{ transformOrigin: 'center' }}
             className="opacity-25"
           >
             <circle
@@ -226,7 +188,7 @@ export function HeroClockBackground() {
           <motion.g
             animate={{ rotate: 360 }}
             transition={{ duration: 18, repeat: Infinity, ease: 'linear' }}
-            style={{ transformOrigin: '400px 400px' }}
+            style={{ transformOrigin: 'center' }}
             className="opacity-15"
           >
             <path
@@ -245,7 +207,7 @@ export function HeroClockBackground() {
           </motion.g>
 
           {/* ========================================== */}
-          {/*      60 DIAL MARKINGS (REFERENCE CODES)    */}
+          {/*      60 DIAL MARKINGS (REFERENCE ALIGNED)    */}
           {/* ========================================== */}
           
           <g className="opacity-40">
@@ -313,18 +275,24 @@ export function HeroClockBackground() {
           {/* ========================================== */}
 
           {/* 
-            BUG SOLUTION: By extending an invisible/transparent identical vector
-            in the exact opposite (180 deg) direction, we force the bounding box 
-            to be perfectly centered at (400, 400). This guarantees absolutely 
-            perfect wobbyless transform-origin rotation.
+            BUG SOLUTION 1: Standard linearGradients fail on perfectly straight 
+            vertical lines with zero bounding width. We replaced gradients with 
+            solid, high-contrast, beautiful cyber-brand colors.
+ 
+            BUG SOLUTION 2: Direct CSS transformOrigin on SVG groups can be buggy 
+            in standard browsers. By passing transformOrigin: 'center' in style,
+            Framer Motion forces pin-point, wobble-free rotation.
+ 
+            BUG SOLUTION 3: Opposing transparent lines are retained to maintain
+            perfect geometric symmetry and prevent rendering shifts.
           */}
 
-          {/* 1. HOUR HAND (Thick, Solid, Gradient) */}
+          {/* 1. HOUR HAND (Solid White, Bold) */}
           <motion.g
             animate={{ rotate: hourAngle }}
             transition={{ type: 'spring', stiffness: 90, damping: 15 }}
-            style={{ transformOrigin: '400px 400px' }}
-            className="opacity-80"
+            style={{ transformOrigin: 'center' }}
+            className="opacity-90"
           >
             {/* Visible Hour Hand */}
             <line
@@ -332,7 +300,7 @@ export function HeroClockBackground() {
               y1="400"
               x2="400"
               y2="245"
-              stroke="url(#hourGrad)"
+              stroke="#FFFFFF"
               strokeWidth="9"
               strokeLinecap="round"
               filter="url(#glow)"
@@ -348,12 +316,12 @@ export function HeroClockBackground() {
             />
           </motion.g>
 
-          {/* 2. MINUTE HAND (Longer, Solid, Gradient, Circle tip) */}
+          {/* 2. MINUTE HAND (Solid Cyan, Long, Open Ring near Tip) */}
           <motion.g
             animate={{ rotate: minAngle }}
             transition={{ type: 'spring', stiffness: 100, damping: 15 }}
-            style={{ transformOrigin: '400px 400px' }}
-            className="opacity-85"
+            style={{ transformOrigin: 'center' }}
+            className="opacity-90"
           >
             {/* Visible Minute Hand */}
             <line
@@ -361,7 +329,7 @@ export function HeroClockBackground() {
               y1="400"
               x2="400"
               y2="170"
-              stroke="url(#minGrad)"
+              stroke="#00E5FF"
               strokeWidth="6"
               strokeLinecap="round"
               filter="url(#glow)"
@@ -387,21 +355,21 @@ export function HeroClockBackground() {
             />
           </motion.g>
 
-          {/* 3. SECONDS HAND (Spring Recoil Snap, Glowing Neon) */}
+          {/* 3. SECONDS HAND (Solid Neon-Orange/Red Chrono Hand) */}
           <motion.g
             animate={{ rotate: secAngle }}
             transition={{ type: 'spring', stiffness: 220, damping: 13 }}
-            style={{ transformOrigin: '400px 400px' }}
-            className="opacity-90"
+            style={{ transformOrigin: 'center' }}
+            className="opacity-95"
           >
-            {/* Visible thin neon-cyan hand */}
+            {/* Visible thin neon-orange hand */}
             <line
               x1="400"
               y1="400"
               x2="400"
               y2="115"
-              stroke="#00E5FF"
-              strokeWidth="3"
+              stroke="#FF3D00"
+              strokeWidth="3.5"
               strokeLinecap="round"
               filter="url(#glow)"
             />
@@ -411,7 +379,7 @@ export function HeroClockBackground() {
               cy="145"
               r="9.5"
               fill="none"
-              stroke="#00E5FF"
+              stroke="#FF3D00"
               strokeWidth="2.5"
               filter="url(#glow)"
             />
@@ -422,7 +390,7 @@ export function HeroClockBackground() {
               x2="400"
               y2="685"
               stroke="transparent"
-              strokeWidth="3"
+              strokeWidth="3.5"
             />
           </motion.g>
 
