@@ -5,10 +5,6 @@ import { motion } from 'framer-motion';
 import {
   ShieldCheck,
   Lock,
-  Users2,
-  Code2,
-  ShieldAlert,
-  ArrowUpRight,
   MapPin,
   BadgeCheck,
 } from 'lucide-react';
@@ -45,35 +41,7 @@ const CERTIFICATIONS: TrustItem[] = [
   },
 ];
 
-const PARTNERS: TrustItem[] = [
-  {
-    logo: '/mero-job-jobaxle-1024x126.png',
-    alt: 'Merojob and JobAxle',
-    name: 'Merojob × JobAxle',
-    role: 'Recruitment Partners',
-    desc: 'Sourcing top IT and HR talent across Nepal — feeding the engineering pipeline that powers our delivery.',
-    icon: Users2,
-    kind: 'partner',
-  },
-  {
-    logo: '/awecode.svg',
-    alt: 'Awecode',
-    name: 'Awecode Pvt. Ltd.',
-    role: 'Software Development Partner',
-    desc: 'Extended resource pool for urgent or large-scale projects — surge capacity without compromising standards.',
-    icon: Code2,
-    kind: 'partner',
-  },
-  {
-    logo: '/Greentick-Logo.png',
-    alt: 'Greentick Nepal',
-    name: 'Greentick Nepal Pvt. Ltd.',
-    role: 'Cybersecurity Partner',
-    desc: 'Trusted cybersecurity solutions — penetration testing, threat assessment and continuous security posture.',
-    icon: ShieldAlert,
-    kind: 'partner',
-  },
-];
+
 
 export function AboutSection() {
   const containerVariants = {
@@ -331,94 +299,6 @@ export function AboutSection() {
             })}
           </motion.div>
 
-          {/* === Strategic Partners subheading === */}
-          <div className="mt-14 lg:mt-20 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6 lg:mb-8">
-            <div>
-              <span className="inline-flex items-center gap-2 text-brand-blue text-xs sm:text-sm font-semibold uppercase tracking-[0.18em]">
-                <Users2 className="w-3.5 h-3.5" />
-                Strategic Partners
-              </span>
-              <h3 className="mt-2 text-2xl sm:text-3xl lg:text-4xl font-bold text-brand-navy tracking-tight leading-[1.1]">
-                An ecosystem that{' '}
-                <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-                  extends our reach
-                </span>
-              </h3>
-            </div>
-            <p className="text-sm text-slate-500 sm:max-w-xs sm:text-right">
-              Specialist allies for talent, surge capacity and security — vetted, contracted, accountable.
-            </p>
-          </div>
-
-          {/* === Partners — compact colorful cards === */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-60px' }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-5"
-          >
-            {PARTNERS.map((p) => {
-              const Icon = p.icon;
-              return (
-                <motion.div
-                  key={p.name}
-                  variants={itemVariants}
-                  whileHover={{ y: -3 }}
-                  transition={{ duration: 0.3, ease: easingCurve.industrial }}
-                  className="group relative p-5 rounded-xl border border-slate-200 bg-white hover:border-brand-blue/30 hover:shadow-[0_16px_32px_-12px_rgba(4,92,179,0.16)] transition-all flex flex-col"
-                >
-                  {/* Hover gradient sheen */}
-                  <div
-                    aria-hidden
-                    className="absolute inset-0 rounded-xl bg-gradient-to-br from-brand-blue/[0.03] to-brand-cyan/[0.04] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
-                  />
-
-                  <div className="relative flex-1 flex flex-col">
-                    {/* Logo — colorful, no grayscale */}
-                    <div className="h-12 sm:h-14 flex items-center mb-4">
-                      <div className="relative w-full max-w-[180px] h-full">
-                        <Image
-                          src={p.logo}
-                          alt={p.alt}
-                          fill
-                          sizes="180px"
-                          className="object-contain object-left transition-transform duration-300 group-hover:scale-[1.03] origin-left"
-                        />
-                      </div>
-                    </div>
-
-                    {/* Role tag */}
-                    <div className="flex items-center gap-1.5 mb-1.5">
-                      <Icon className="w-3 h-3 text-brand-blue flex-shrink-0" />
-                      <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-brand-blue">
-                        {p.role}
-                      </p>
-                    </div>
-
-                    {/* Name */}
-                    <h4 className="text-sm font-bold text-brand-navy leading-tight mb-1.5">
-                      {p.name}
-                    </h4>
-
-                    {/* Description */}
-                    <p className="text-xs text-slate-600 leading-relaxed flex-1">
-                      {p.desc}
-                    </p>
-
-                    {/* Verified footer */}
-                    <div className="mt-3.5 pt-3 border-t border-slate-100 flex items-center justify-between">
-                      <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-slate-500 uppercase tracking-wider">
-                        <BadgeCheck className="w-3 h-3 text-brand-blue" />
-                        Verified partner
-                      </span>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-slate-300 group-hover:text-brand-blue group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all" />
-                    </div>
-                  </div>
-                </motion.div>
-              );
-            })}
-          </motion.div>
         </motion.div>
       </div>
     </section>

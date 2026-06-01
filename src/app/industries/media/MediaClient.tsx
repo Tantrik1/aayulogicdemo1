@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   Clapperboard,
@@ -19,6 +18,8 @@ import {
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CTABand } from '@/components/section/CTABand';
+import { IndustryHero } from '@/components/industry-hero';
+import { FAQSection } from '@/components/FAQSection';
 import { easingCurve } from '@/lib/utils';
 
 const CHALLENGES = [
@@ -116,6 +117,25 @@ const WHY_US = [
   'Editorial CMS UX designed for journalists, not engineers.',
 ];
 
+const mediaFaqs = [
+  {
+    q: "How do your systems handle high-volume digital media asset processing?",
+    a: "We design cloud-native serverless media processing pipelines (using FFmpeg, AWS Lambda, and AWS Elemental) that automate video transcoding, dynamic thumbnail generation, metadata extraction, and multi-region CDN distribution at scale.",
+  },
+  {
+    q: "What is your experience with DRM and content protection?",
+    a: "We implement robust multi-DRM integrations (Widevine, FairPlay, PlayReady) with strict access token validation to ensure your premium digital content is protected across all target platforms and devices.",
+  },
+  {
+    q: "How do you design for editorial CMS speed and user experience?",
+    a: "We build custom Headless CMS configurations or tailored WordPress/Strapi platforms that allow editorial staff to compose content at rapid pace, with real-time preview, drag-and-drop media insertion, and high-performance frontends.",
+  },
+  {
+    q: "Can you support print-to-web or print composition pipelines?",
+    a: "Yes. We have deep expertise orchestrating Adobe InDesign Server engines to automate dynamic template layouts, edition variant runs, and pre-press output verification directly on the editorial press deadline.",
+  },
+];
+
 // Animated waveform for hero
 function Waveform() {
   const bars = Array.from({ length: 48 });
@@ -154,19 +174,26 @@ export function MediaClient() {
     <>
       <Header />
 
-      {/* Breadcrumb */}
-      <div className="bg-white border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-3 flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-brand-blue transition-colors">Home</Link>
-          <span>/</span>
-          <Link href="/industries" className="hover:text-brand-blue transition-colors">Industries</Link>
-          <span>/</span>
-          <span className="text-brand-navy font-medium">Media & Entertainment</span>
-        </div>
-      </div>
+      <IndustryHero
+        breadcrumbName="Media & Entertainment"
+        industry="Media & Entertainment"
+        icon={Clapperboard}
+        title={
+          <>
+            Built for the{' '}
+            <span className="bg-gradient-to-r from-brand-cyan via-white to-brand-cyan bg-clip-text text-transparent">
+              press deadline &amp; the live whistle.
+            </span>
+          </>
+        }
+        subtitle="Low-latency streaming, CV-powered DAM, automated print composition, and paywalls that don't crater SEO. We engineer for the moment newsrooms have, not the moment they wish they had."
+        primary={{ label: 'Scope a Media Build', href: '#contact' }}
+        secondary={{ label: 'Read the Cobalt Case Study', href: '#case-study' }}
+        stats={STATS}
+      />
 
-      {/* Hero — cinematic black + magenta */}
-      <section className="relative overflow-hidden bg-[#0A0612] text-white pt-24 pb-24 sm:pt-28 sm:pb-32">
+      {/* Hero — cinematic black + magenta (LEGACY — hidden) */}
+      <section className="hidden relative overflow-hidden bg-[#0A0612] text-white pt-24 pb-24 sm:pt-28 sm:pb-32">
         {/* Vibrant accent radials */}
         <div
           aria-hidden
@@ -546,6 +573,8 @@ export function MediaClient() {
           </ul>
         </div>
       </section>
+
+      <FAQSection items={mediaFaqs} />
 
       <CTABand
         eyebrow="Scope a Media Engagement"

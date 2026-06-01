@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   ShoppingCart,
@@ -18,6 +17,8 @@ import {
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CTABand } from '@/components/section/CTABand';
+import { IndustryHero } from '@/components/industry-hero';
+import { FAQSection } from '@/components/FAQSection';
 import { easingCurve } from '@/lib/utils';
 
 const CHALLENGES = [
@@ -115,6 +116,25 @@ const WHY_US = [
   'Same delivery team from architecture through peak season.',
 ];
 
+const retailFaqs = [
+  {
+    q: "What ecommerce engines do you specialize in?",
+    a: "We build headless, composable commerce architectures combining fast React/Next.js frontends with Shopify Plus, Magento, BigCommerce, or custom-built carts depending on your transactional scale and catalog complexity.",
+  },
+  {
+    q: "How do you handle rapid scalability during major retail sales?",
+    a: "We design auto-scaling container configurations (Kubernetes/ECS), database read-replicas, and distributed Redis caching layers to absorb 40x spikes in traffic and keep checkout latencies under 100ms.",
+  },
+  {
+    q: "How do you secure credit card and transaction data?",
+    a: "We minimize PCI scope by implementing tokenized payment collection (via Stripe, Adyen, or Braintree). Customer credit card data never touches our application servers, maintaining complete PCI-DSS compliance by design.",
+  },
+  {
+    q: "How do you ensure inventory remains synced across multiple sales channels?",
+    a: "We build robust real-time inventory reconciliation engines with safety-stock threshold alerts, preventing oversells and syncing product availability across physical stores, web, marketplaces, and drop-ship partners.",
+  },
+];
+
 // Conversion funnel visualization
 function ConversionFunnel() {
   const stages = [
@@ -158,19 +178,26 @@ export function RetailClient() {
     <>
       <Header />
 
-      {/* Breadcrumb */}
-      <div className="bg-white border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-3 flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-brand-blue transition-colors">Home</Link>
-          <span>/</span>
-          <Link href="/industries" className="hover:text-brand-blue transition-colors">Industries</Link>
-          <span>/</span>
-          <span className="text-brand-navy font-medium">Retail & Digital Commerce</span>
-        </div>
-      </div>
+      <IndustryHero
+        breadcrumbName="Retail & Digital Commerce"
+        industry="Retail & Digital Commerce"
+        icon={ShoppingCart}
+        title={
+          <>
+            Commerce that holds up{' '}
+            <span className="bg-gradient-to-r from-brand-cyan via-white to-brand-cyan bg-clip-text text-transparent">
+              on the worst day of the year.
+            </span>
+          </>
+        }
+        subtitle="Headless storefronts, real-time inventory, OMS with audit trails. We engineer commerce platforms that survive Black Friday — and convert better the other 364 days too."
+        primary={{ label: 'Scope a Commerce Build', href: '#contact' }}
+        secondary={{ label: 'Read the case study', href: '#case-study' }}
+        stats={STATS}
+      />
 
-      {/* Hero — bright commerce emerald + slate */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-white via-emerald-50/40 to-white pt-20 pb-24 sm:pt-24 sm:pb-32">
+      {/* Hero — bright commerce emerald + slate (LEGACY — hidden) */}
+      <section className="hidden relative overflow-hidden bg-gradient-to-b from-white via-emerald-50/40 to-white pt-20 pb-24 sm:pt-24 sm:pb-32">
         <div
           aria-hidden
           className="absolute -top-32 -right-32 w-[520px] h-[520px] rounded-full blur-3xl opacity-50"
@@ -534,6 +561,8 @@ export function RetailClient() {
           </ul>
         </div>
       </section>
+
+      <FAQSection items={retailFaqs} />
 
       <CTABand
         eyebrow="Scope a Commerce Engagement"

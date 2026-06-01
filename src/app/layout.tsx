@@ -26,11 +26,12 @@ export const metadata: Metadata = {
   applicationName: 'Aayulogic',
   icons: {
     icon: [
+      { url: '/favicon.png', type: 'image/png', sizes: '32x32' },
+      { url: '/logo.png', type: 'image/png', sizes: 'any' },
       { url: '/favicon.ico', sizes: 'any' },
-      { url: '/logo.png', type: 'image/png' },
     ],
-    shortcut: '/favicon.ico',
-    apple: '/logo.png',
+    shortcut: '/favicon.png',
+    apple: '/favicon.png',
   },
   manifest: '/site.webmanifest',
   alternates: {

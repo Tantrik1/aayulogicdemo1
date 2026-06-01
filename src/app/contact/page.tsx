@@ -11,29 +11,14 @@ import {
   Clock,
   ShieldCheck,
   Users2,
-  MessageSquare,
-  Briefcase,
   Lock,
   Globe2,
 } from 'lucide-react';
-import CA from 'country-flag-icons/react/3x2/CA';
-import NP from 'country-flag-icons/react/3x2/NP';
-import US from 'country-flag-icons/react/3x2/US';
-import AU from 'country-flag-icons/react/3x2/AU';
-import AE from 'country-flag-icons/react/3x2/AE';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { PageHero } from '@/components/section/PageHero';
-import { OFFICES_DETAILED } from '@/lib/constants';
 import { easingCurve, motionConfig } from '@/lib/utils';
 
-const FLAG_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
-  CA,
-  NP,
-  US,
-  AU,
-  AE,
-};
 
 const PROJECT_TYPES = [
   'AI & Automation',
@@ -62,6 +47,27 @@ const TIMELINES = [
   'Exploring',
 ];
 
+import { FAQSection } from '@/components/FAQSection';
+
+const contactFaqs = [
+  {
+    q: "How do we get started with a project?",
+    a: "Send us a message or email hello@aayulogic.com. We will schedule a 45-minute discovery call with the engineering or product lead closest to your context — not an account manager. We get straight to the technical design."
+  },
+  {
+    q: "Can we visit one of your engineering offices?",
+    a: "Absolutely. We host clients regularly in our Toronto and Lalitpur offices. Most of our enterprise engagements begin with or include an on-site visit for planning and team alignment."
+  },
+  {
+    q: "Do you participate in vendor due diligence?",
+    a: "Yes. We have a pre-packaged vendor due diligence packet ready under NDA, covering ISO 9001/27001 certifications, engineering principles, security standards, and business insurance."
+  },
+  {
+    q: "Who owns the IP built during the engagement?",
+    a: "You do. All custom software, architectures, and systems built during client engagements are fully assigned to you upon delivery — clean ownership, no encumbrances."
+  }
+];
+
 export default function ContactPage() {
   return (
     <>
@@ -77,14 +83,14 @@ export default function ContactPage() {
           { value: '4', label: 'Continents' },
           { value: '15M+', label: 'Daily Txns' },
         ]}
-        primaryCta={{ label: 'Email Sales', href: 'mailto:projects@aayulogic.com' }}
-        secondaryCta={{ label: 'See Offices', href: '#offices' }}
+        primaryCta={{ label: 'Email Us', href: 'mailto:info@aayulogic.com' }}
+        secondaryCta={{ label: 'Start the conversation', href: '#contact-form' }}
       />
 
       <ContactFormSection />
       <DirectChannelsSection />
-      <OfficesQuickSection />
       <TrustBandSection />
+      <FAQSection items={contactFaqs} />
 
       <Footer />
     </>
@@ -415,28 +421,10 @@ function SuccessState({ onReset }: { onReset: () => void }) {
 function DirectChannelsSection() {
   const CHANNELS = [
     {
-      title: 'General Inquiries',
-      email: 'hello@aayulogic.com',
-      description: 'For partnerships, press, and anything that doesn’t fit elsewhere.',
-      icon: MessageSquare,
-    },
-    {
-      title: 'New Projects',
-      email: 'projects@aayulogic.com',
-      description: 'Engagements, RFPs, and consulting briefs. Routed to delivery leadership.',
-      icon: Briefcase,
-    },
-    {
-      title: 'Careers',
-      email: 'careers@aayulogic.com',
-      description: 'Applications and warm pipeline. Read within 5 business days.',
-      icon: Users2,
-    },
-    {
-      title: 'Security',
-      email: 'security@aayulogic.com',
-      description: 'Responsible disclosure, security audits, and ISO 27001 inquiries.',
-      icon: Lock,
+      title: 'Email Us',
+      email: 'info@aayulogic.com',
+      description: 'One inbox. Real humans read every message and respond within one business day — Toronto business hours.',
+      icon: Mail,
     },
   ];
 
@@ -469,11 +457,11 @@ function DirectChannelsSection() {
             </span>
           </h2>
           <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed">
-            Four routes by intent. Emails go to the humans actually working on it — no ticketing, no auto-replies.
+            One inbox. Real humans read every message — no ticketing, no auto-replies. Response within one business day on Toronto hours.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-6">
+        <div className="grid grid-cols-1 max-w-xl mx-auto gap-5 lg:gap-6">
           {CHANNELS.map((c, idx) => {
             const Icon = c.icon;
             return (
@@ -529,114 +517,7 @@ function DirectChannelsSection() {
   );
 }
 
-// =============================================================================
-//  OFFICES QUICK CARDS
-// =============================================================================
 
-function OfficesQuickSection() {
-  return (
-    <section
-      id="offices"
-      className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white"
-    >
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-60 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(40% 30% at 10% 10%, rgba(0,194,255,0.05) 0%, transparent 70%), radial-gradient(40% 30% at 95% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)',
-        }}
-      />
-
-      <div className="relative max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={motionConfig.default}
-          className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10 lg:mb-12"
-        >
-          <div>
-            <span className="inline-block text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-3">
-              Visit an Office
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-navy leading-[1.1] tracking-tight">
-              Reach a region{' '}
-              <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-                directly
-              </span>
-              .
-            </h2>
-          </div>
-          <Link
-            href="/locations"
-            className="group inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-brand-blue/30 bg-white text-sm font-bold text-brand-navy hover:border-brand-blue hover:text-brand-blue transition-colors self-start"
-          >
-            See full office details
-            <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </Link>
-        </motion.div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 lg:gap-5">
-          {OFFICES_DETAILED.map((office, idx) => {
-            const Flag = FLAG_MAP[office.countryCode];
-            const isHQ = office.badge === 'Head Office';
-            return (
-              <motion.div
-                key={office.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                whileHover={{ y: -4 }}
-                transition={{
-                  duration: 0.5,
-                  delay: idx * 0.05,
-                  ease: easingCurve.industrial,
-                }}
-                className={`group relative p-5 rounded-xl border transition-all flex flex-col ${
-                  isHQ
-                    ? 'border-brand-blue/40 bg-gradient-to-br from-brand-blue/5 to-brand-cyan/5 hover:border-brand-blue/60 hover:shadow-[0_20px_40px_-15px_rgba(4,92,179,0.25)]'
-                    : 'border-slate-200 bg-white hover:border-brand-blue/30 hover:shadow-[0_16px_32px_-12px_rgba(4,92,179,0.18)]'
-                }`}
-              >
-                <div className="flex items-center gap-3 mb-3">
-                  {Flag && (
-                    <div className="rounded-md overflow-hidden ring-1 ring-slate-200/80 w-10 h-7 flex-shrink-0">
-                      <Flag className="w-full h-full object-cover" />
-                    </div>
-                  )}
-                  {isHQ && (
-                    <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-brand-blue text-white text-[9px] font-bold uppercase tracking-[0.15em]">
-                      HQ
-                    </span>
-                  )}
-                </div>
-                <h3 className="text-base font-bold text-brand-navy leading-tight mb-1">
-                  {office.city}
-                </h3>
-                <p className="text-xs text-slate-500 mb-3">{office.country}</p>
-
-                {office.contact ? (
-                  <a
-                    href={`mailto:${office.contact.email}`}
-                    className="group/link mt-auto inline-flex items-center gap-1.5 text-xs font-semibold text-brand-blue hover:text-brand-navy transition-colors break-all"
-                  >
-                    <Mail className="w-3 h-3 flex-shrink-0" />
-                    <span className="truncate">{office.contact.email}</span>
-                  </a>
-                ) : (
-                  <p className="mt-auto text-xs text-amber-700 font-semibold">
-                    Opening 2026
-                  </p>
-                )}
-              </motion.div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 // =============================================================================
 //  TRUST BAND (dark — promises)
@@ -669,8 +550,9 @@ function TrustBandSection() {
   return (
     <section
       data-theme="dark"
-      className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-brand-navy text-white"
+      className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-cobalt-premium text-white"
     >
+      <div aria-hidden className="cobalt-grain" />
       <div
         aria-hidden
         className="absolute -top-20 -left-20 w-96 h-96 rounded-full blur-3xl opacity-40"

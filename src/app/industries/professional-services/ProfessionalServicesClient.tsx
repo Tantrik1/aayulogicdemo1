@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   GraduationCap,
@@ -18,6 +17,8 @@ import {
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CTABand } from '@/components/section/CTABand';
+import { IndustryHero } from '@/components/industry-hero';
+import { FAQSection } from '@/components/FAQSection';
 import { easingCurve } from '@/lib/utils';
 
 const CHALLENGES = [
@@ -115,6 +116,25 @@ const WHY_US = [
   'Anti-cheat that respects learners and still satisfies accreditors.',
 ];
 
+const professionalServicesFaqs = [
+  {
+    q: "How does Aayulogic support engineering for professional training and services firms?",
+    a: "We build custom practice management engines, secure client or learner collaboration portals, practice schedulers, and automated billing workflows designed to seamlessly integrate with your existing CRM and ERP platforms.",
+  },
+  {
+    q: "What experience do you have with EdTech and educational standards?",
+    a: "We have deep experience building standards-first educational tools, including custom integrations with major LMSs (Canvas, Moodle, Blackboard) via LTI 1.3/Advantage, SCORM/xAPI compliant databases, and W3C Verifiable Credentials.",
+  },
+  {
+    q: "Do you design for WCAG accessibility compliance?",
+    a: "Yes, 100%. We integrate WCAG 2.2 AA accessibility standards into our styling and components from the design phase, verifying keyboard navigability, screen-reader markup, and color contrast on every release.",
+  },
+  {
+    q: "Can you scale systems to handle enrollment spikes and high-concurrency learning?",
+    a: "Absolutely. We design microservices and serverless layers proven to handle rapid traffic bursts, caching heavy catalogs via Redis, database read-replicas, and message queues to ensure 100% platform availability on enrollment day.",
+  },
+];
+
 // Learning path visualization — connected nodes
 function LearningPath() {
   const nodes = [
@@ -203,19 +223,26 @@ export function ProfessionalServicesClient() {
     <>
       <Header />
 
-      {/* Breadcrumb */}
-      <div className="bg-white border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-3 flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-brand-blue transition-colors">Home</Link>
-          <span>/</span>
-          <Link href="/industries" className="hover:text-brand-blue transition-colors">Industries</Link>
-          <span>/</span>
-          <span className="text-brand-navy font-medium">Professional Services & EdTech</span>
-        </div>
-      </div>
+      <IndustryHero
+        breadcrumbName="Professional Services & EdTech"
+        industry="Professional Services & EdTech"
+        icon={GraduationCap}
+        title={
+          <>
+            Learning platforms with{' '}
+            <span className="bg-gradient-to-r from-brand-cyan via-white to-brand-cyan bg-clip-text text-transparent">
+              pedagogy in their bones.
+            </span>
+          </>
+        }
+        subtitle="Adaptive, accessible, accredited. We build learning systems — from cohort bootcamps to enterprise L&D — that learning scientists, not just engineers, would actually use."
+        primary={{ label: 'Scope a Learning Build', href: '#contact' }}
+        secondary={{ label: 'Read the case study', href: '#case-study' }}
+        stats={STATS}
+      />
 
-      {/* Hero — academic warm cream / amber / indigo */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#FFFBF1] via-white to-[#F5F3FF] pt-20 pb-24 sm:pt-24 sm:pb-32">
+      {/* Hero — academic warm cream / amber / indigo (LEGACY — hidden) */}
+      <section className="hidden relative overflow-hidden bg-gradient-to-br from-[#FFFBF1] via-white to-[#F5F3FF] pt-20 pb-24 sm:pt-24 sm:pb-32">
         <div
           aria-hidden
           className="absolute -top-32 -right-32 w-[520px] h-[520px] rounded-full blur-3xl opacity-60"
@@ -579,6 +606,8 @@ export function ProfessionalServicesClient() {
           </ul>
         </div>
       </section>
+
+      <FAQSection items={professionalServicesFaqs} />
 
       <CTABand
         eyebrow="Scope an EdTech Engagement"

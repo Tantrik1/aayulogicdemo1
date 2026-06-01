@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   HeartPulse,
@@ -18,6 +17,8 @@ import {
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CTABand } from '@/components/section/CTABand';
+import { IndustryHero } from '@/components/industry-hero';
+import { FAQSection } from '@/components/FAQSection';
 import { easingCurve } from '@/lib/utils';
 
 const CHALLENGES = [
@@ -115,6 +116,25 @@ const WHY_US = [
   'On-call clinical informaticists for go-live and stabilization.',
 ];
 
+const healthcareFaqs = [
+  {
+    q: "Are Aayulogic's healthcare systems HIPAA and PHI compliant?",
+    a: "Yes, 100%. We secure Protected Health Information (PHI) with AES-256 encryption in transit and at rest, detailed access-control logs (audit trails), and HIPAA-compliant database topologies on AWS, GCP, and Azure.",
+  },
+  {
+    q: "How do you handle integrations with existing EHR/EMR platforms?",
+    a: "We build secure HL7, FHIR R4, and custom API layers using SMART on FHIR launch flows to connect seamlessly with major EHR systems like Epic, Cerner, and athenahealth.",
+  },
+  {
+    q: "Do you align with IEC 62304 standards for Software as a Medical Device (SaMD)?",
+    a: "Yes, our software development processes align with IEC 62304 for Class I and Class II medical devices, incorporating rigorous risk analysis, software verification, and automated evidence pipelines.",
+  },
+  {
+    q: "How do you ensure audit trails survive retention requirements?",
+    a: "We implement immutable audit logging (using secure cloud logs with object locks or ledger databases) that satisfies HIPAA and FDA 21 CFR Part 11 requirements for the standard 6-year retention window.",
+  },
+];
+
 // SVG: stylized ECG/heartbeat line — animated draw
 function EcgLine() {
   return (
@@ -152,19 +172,26 @@ export function HealthcareClient() {
     <>
       <Header />
 
-      {/* Breadcrumb */}
-      <div className="bg-white border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-3 flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-brand-blue transition-colors">Home</Link>
-          <span>/</span>
-          <Link href="/industries" className="hover:text-brand-blue transition-colors">Industries</Link>
-          <span>/</span>
-          <span className="text-brand-navy font-medium">Healthcare & MedDev</span>
-        </div>
-      </div>
+      <IndustryHero
+        breadcrumbName="Healthcare & MedDev"
+        industry="Healthcare & MedDev"
+        icon={HeartPulse}
+        title={
+          <>
+            Built around{' '}
+            <span className="bg-gradient-to-r from-brand-cyan via-white to-brand-cyan bg-clip-text text-transparent">
+              the four minutes a clinician has.
+            </span>
+          </>
+        }
+        subtitle="HIPAA by default. FHIR-native by reflex. We ship clinical systems that auditors approve and clinicians actually use — from patient portals to connected devices to imaging pipelines."
+        primary={{ label: 'Scope a Clinical Build', href: '#contact' }}
+        secondary={{ label: 'Read the Meridian Case Study', href: '#case-study' }}
+        stats={STATS}
+      />
 
-      {/* Hero — calm clinical white-teal */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-white via-[#F4FBFB] to-[#E6F7F6] pt-20 pb-24 sm:pt-24 sm:pb-32">
+      {/* Hero — calm clinical white-teal (LEGACY — HIDDEN, kept for context) */}
+      <section className="hidden relative overflow-hidden bg-gradient-to-b from-white via-[#F4FBFB] to-[#E6F7F6] pt-20 pb-24 sm:pt-24 sm:pb-32">
         {/* Soft mesh */}
         <div
           aria-hidden
@@ -555,6 +582,8 @@ export function HealthcareClient() {
           </ul>
         </div>
       </section>
+
+      <FAQSection items={healthcareFaqs} />
 
       <CTABand
         eyebrow="Scope a Clinical Engagement"

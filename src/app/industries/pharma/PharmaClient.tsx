@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   Pill,
@@ -18,6 +17,8 @@ import {
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CTABand } from '@/components/section/CTABand';
+import { IndustryHero } from '@/components/industry-hero';
+import { FAQSection } from '@/components/FAQSection';
 import { easingCurve } from '@/lib/utils';
 
 const CHALLENGES = [
@@ -115,6 +116,25 @@ const WHY_US = [
   'Validation team that has been audited and survived — repeatedly.',
 ];
 
+const pharmaFaqs = [
+  {
+    q: "How do you ensure GxP and FDA compliance for pharmaceutical software?",
+    a: "Our software processes are strictly governed under ISO 9001 and ISO 27001 controls. We implement electronic records compliance (FDA 21 CFR Part 11) with non-repudiation audit trails, and deliver GAMP 5 risk-based Computer System Validation (CSV) deliverables directly from our automated pipelines.",
+  },
+  {
+    q: "What systems have you built for pharmaceutical supply chains?",
+    a: "We develop drug serialization tracking platforms (fully aligned with DSCSA and EU FMD guidelines), automated cold-chain IoT temperature logs, and secure CMO (Contract Manufacturing Organization) catalog ingestion harnesses.",
+  },
+  {
+    q: "How do you protect R&D data and intellectual property?",
+    a: "IP security is absolute. We deploy single-tenant secure cloud architectures, restrict data residency per geographic requirements, enforce MFA-backed Role-Based Access Controls (RBAC), and integrate secure Electronic Lab Notebook (ELN) and LIMS protocols.",
+  },
+  {
+    q: "Do you support clinical trial data standards?",
+    a: "Yes, our engineering squads are well-versed in CDISC standards, building ingestion pipelines and export utilities that produce study data in CDISC SDTM and ADaM formats ready for regulatory eCTD submissions.",
+  },
+];
+
 // Molecular structure SVG decoration
 function MoleculeOrbit() {
   return (
@@ -172,19 +192,26 @@ export function PharmaClient() {
     <>
       <Header />
 
-      {/* Breadcrumb */}
-      <div className="bg-white border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-3 flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-brand-blue transition-colors">Home</Link>
-          <span>/</span>
-          <Link href="/industries" className="hover:text-brand-blue transition-colors">Industries</Link>
-          <span>/</span>
-          <span className="text-brand-navy font-medium">Pharma & Life Sciences</span>
-        </div>
-      </div>
+      <IndustryHero
+        breadcrumbName="Pharma & Life Sciences"
+        industry="Pharma & Life Sciences"
+        icon={FlaskConical}
+        title={
+          <>
+            Validation as a{' '}
+            <span className="bg-gradient-to-r from-brand-cyan via-white to-brand-cyan bg-clip-text text-transparent">
+              build artifact, not a phase gate.
+            </span>
+          </>
+        }
+        subtitle="21 CFR Part 11 by default. GAMP 5 risk classification in every ADR. We ship GxP platforms — clinical trial systems, ELNs, field force CRMs — that pass FDA Form 483s without rework."
+        primary={{ label: 'Scope a GxP Build', href: '#contact' }}
+        secondary={{ label: 'Read the case study', href: '#case-study' }}
+        stats={STATS}
+      />
 
-      {/* Hero — laboratory violet */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-[#0F0524] via-[#1E0B47] to-[#2A0F5F] text-white pt-24 pb-24 sm:pt-28 sm:pb-32">
+      {/* Hero — laboratory violet (LEGACY — hidden) */}
+      <section className="hidden relative overflow-hidden bg-gradient-to-br from-[#0F0524] via-[#1E0B47] to-[#2A0F5F] text-white pt-24 pb-24 sm:pt-28 sm:pb-32">
         {/* Molecular grid background */}
         <div
           aria-hidden
@@ -525,6 +552,8 @@ export function PharmaClient() {
           </ul>
         </div>
       </section>
+
+      <FAQSection items={pharmaFaqs} />
 
       <CTABand
         eyebrow="Scope a GxP Engagement"

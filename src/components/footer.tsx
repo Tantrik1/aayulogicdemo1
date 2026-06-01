@@ -17,9 +17,7 @@ const LINK_GROUPS = [
     title: 'Company',
     links: [
       { label: 'About Us', href: '/about' },
-      { label: 'Leadership', href: '/leadership' },
       { label: 'Careers', href: '/careers' },
-      { label: 'Locations', href: '/locations' },
       { label: 'FAQ', href: '/faq' },
       { label: 'Contact', href: '/contact' },
     ],
@@ -27,12 +25,9 @@ const LINK_GROUPS = [
   {
     title: 'Services',
     links: [
-      { label: 'AI & Automation', href: '/services/ai' },
-      { label: 'Software Engineering', href: '/services/engineering' },
-      { label: 'Cloud & DevOps', href: '/services/cloud' },
-      { label: 'Digital & Commerce', href: '/services/commerce' },
-      { label: 'Enterprise Software', href: '/services/enterprise' },
-      { label: 'Emerging Tech & IoT', href: '/services/emerging' },
+      { label: 'Custom Software Development', href: '/services/custom-software' },
+      { label: 'Dedicated Engineering Teams', href: '/services/dedicated-teams' },
+      { label: 'Cloud, DevOps & Infrastructure', href: '/services/devops' },
     ],
   },
   {

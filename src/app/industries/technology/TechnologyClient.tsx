@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   Cpu,
@@ -18,6 +17,8 @@ import {
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CTABand } from '@/components/section/CTABand';
+import { IndustryHero } from '@/components/industry-hero';
+import { FAQSection } from '@/components/FAQSection';
 import { easingCurve } from '@/lib/utils';
 
 const CHALLENGES = [
@@ -115,6 +116,25 @@ const WHY_US = [
   'Same delivery team from MVP through scale to long-tail platform owner.',
 ];
 
+const technologyFaqs = [
+  {
+    q: "What is your experience building SaaS product architectures?",
+    a: "We have built multiple production-hardened SaaS platforms, including our own flagship products like RealHRsoft, Real Chat, and Real Learn. We design for multi-tenant isolation, robust horizontal scaling, and secure single sign-on (SSO) integrations.",
+  },
+  {
+    q: "How do you support AI/ML integrations for tech companies?",
+    a: "We construct scalable data pipelines, secure vector database configurations (Pinecone, pgvector), LLM orchestration layers (LangChain, LlamaIndex), and custom predictive model endpoints that integrate cleanly with application codebases.",
+  },
+  {
+    q: "Do you follow standard continuous deployment (CI/CD) and Infrastructure as Code?",
+    a: "Absolutely. All tech-focused projects are provisioned using Terraform or CloudFormation and run on automated pipelines (GitHub Actions, GitLab CI) with fully integrated linting, security scanning, and unit tests.",
+  },
+  {
+    q: "How do you handle API versioning and breaking changes?",
+    a: "We follow strict semantic versioning, leverage OpenAPI specs for auto-generating SDKs, and build rate-limiting/throttling middleware to protect backend resources while ensuring developer-friendly integration layers.",
+  },
+];
+
 // Animated terminal lines
 const TERMINAL_LINES = [
   { type: 'cmd', text: '$ aayulogic deploy --env prod --canary 5%' },
@@ -170,19 +190,26 @@ export function TechnologyClient() {
     <>
       <Header />
 
-      {/* Breadcrumb */}
-      <div className="bg-white border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-3 flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-brand-blue transition-colors">Home</Link>
-          <span>/</span>
-          <Link href="/industries" className="hover:text-brand-blue transition-colors">Industries</Link>
-          <span>/</span>
-          <span className="text-brand-navy font-medium">Technology & SaaS</span>
-        </div>
-      </div>
+      <IndustryHero
+        breadcrumbName="Technology & SaaS"
+        industry="Technology & SaaS"
+        icon={Cpu}
+        title={
+          <>
+            Architecture reviews that{' '}
+            <span className="bg-gradient-to-r from-brand-cyan via-white to-brand-cyan bg-clip-text text-transparent">
+              move the needle, not just the deck.
+            </span>
+          </>
+        }
+        subtitle="MVP acceleration, scale engineering, FinOps that recovers real dollars, API productization. We engineer for the next 10x — and the one after it."
+        primary={{ label: 'Scope a SaaS Build', href: '#contact' }}
+        secondary={{ label: 'Read the Helix Case Study', href: '#case-study' }}
+        stats={STATS}
+      />
 
-      {/* Hero — slate / electric blue / orange terminal vibe */}
-      <section className="relative overflow-hidden bg-[#0B0D12] text-white pt-24 pb-24 sm:pt-28 sm:pb-32">
+      {/* Hero — slate / electric blue / orange terminal vibe (LEGACY — hidden) */}
+      <section className="hidden relative overflow-hidden bg-[#0B0D12] text-white pt-24 pb-24 sm:pt-28 sm:pb-32">
         {/* Background grid + glows */}
         <div
           aria-hidden
@@ -522,6 +549,8 @@ export function TechnologyClient() {
           </ul>
         </div>
       </section>
+
+      <FAQSection items={technologyFaqs} />
 
       <CTABand
         eyebrow="Scope a Platform Engagement"

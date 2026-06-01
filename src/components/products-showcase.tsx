@@ -82,19 +82,11 @@ export function ProductsShowcase() {
   return (
     <section
       id="products-showcase"
+      data-theme="dark"
       aria-label="Our products"
-      className="relative px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-32 overflow-hidden"
+      className="relative px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-32 overflow-hidden bg-cobalt-premium"
     >
-      {/* Ambient backdrop — matches sibling sections */}
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-60 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(40% 30% at 80% 10%, rgba(0,194,255,0.06) 0%, transparent 70%), radial-gradient(40% 30% at 0% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)',
-        }}
-      />
-
+      <div aria-hidden className="cobalt-grain" />
       <div className="relative max-w-7xl mx-auto">
         {/* =============== HEADER =============== */}
         <motion.div
@@ -104,17 +96,17 @@ export function ProductsShowcase() {
           transition={motionConfig.default}
           className="text-center max-w-3xl mx-auto mb-12 lg:mb-16"
         >
-          <span className="inline-block text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-4">
+          <span className="inline-block text-brand-cyan text-sm font-semibold uppercase tracking-[0.18em] mb-4">
             Our Products
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-brand-navy leading-[1.1] tracking-tight">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-[1.1] tracking-tight">
             Real products serving{' '}
-            <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-brand-cyan to-white bg-clip-text text-transparent">
               millions of customers
             </span>
             .
           </h2>
-          <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed">
+          <p className="mt-5 text-base sm:text-lg text-white/80 leading-relaxed">
             Three platforms running in production every day — built, operated, and iterated by the same engineers who partner with you.
           </p>
         </motion.div>
@@ -156,7 +148,7 @@ function ProductCard({
       whileHover={{ y: -6 }}
       transition={{ duration: 0.35, ease: easingCurve.industrial }}
       href={product.href}
-      className="group relative flex flex-col overflow-hidden rounded-2xl border border-brand-blue/10 bg-white/80 p-7 backdrop-blur transition-colors hover:border-brand-cyan/40 hover:bg-white hover:shadow-[0_25px_50px_-15px_rgba(4,92,179,0.25)] sm:p-8"
+      className="group relative flex flex-col overflow-hidden rounded-2xl border border-white/12 bg-brand-navy/65 backdrop-blur-md p-7 transition-all duration-300 hover:border-brand-cyan/45 hover:bg-brand-navy/75 hover:shadow-[0_30px_60px_-15px_rgba(0,194,255,0.3)] sm:p-8"
     >
       {/* Top luminous line on hover */}
       <span
@@ -179,10 +171,10 @@ function ProductCard({
 
       {/* Index badge */}
       <div className="relative mb-6 flex items-center gap-3">
-        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-blue/10 text-[11px] font-bold tracking-tight text-brand-blue">
+        <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-brand-cyan/10 text-[11px] font-bold tracking-tight text-brand-cyan">
           {product.index}
         </span>
-        <span className="h-px flex-1 bg-gradient-to-r from-brand-blue/20 to-transparent" />
+        <span className="h-px flex-1 bg-gradient-to-r from-brand-cyan/20 to-transparent" />
       </div>
 
       {/* Logo */}
@@ -192,31 +184,31 @@ function ProductCard({
           alt={product.logoAlt}
           width={1024}
           height={230}
-          className="h-full w-auto object-contain object-left"
+          className="h-full w-auto object-contain object-left invert brightness-0 group-hover:invert-0 group-hover:brightness-100 transition-all duration-300"
         />
       </div>
 
       {/* Tagline */}
-      <p className="relative mb-2 text-[11px] font-bold uppercase tracking-[0.22em] text-brand-blue">
+      <p className="relative mb-2 text-[11px] font-bold uppercase tracking-[0.22em] text-brand-cyan">
         {product.tagline}
       </p>
 
       {/* Title */}
-      <h3 className="relative mb-3 text-2xl font-bold tracking-tight text-brand-navy sm:text-[1.65rem]">
+      <h3 className="relative mb-3 text-2xl font-bold tracking-tight text-white sm:text-[1.65rem]">
         {product.name}
       </h3>
 
       {/* Description */}
-      <p className="relative mb-6 text-sm leading-relaxed text-slate-600 sm:text-[15px]">
+      <p className="relative mb-6 text-sm leading-relaxed text-white/70 sm:text-[15px]">
         {product.description}
       </p>
 
       {/* Highlights */}
-      <ul className="relative mb-7 space-y-2 border-t border-slate-100 pt-5">
+      <ul className="relative mb-7 space-y-2 border-t border-white/10 pt-5">
         {product.highlights.map((h) => (
           <li
             key={h}
-            className="flex items-center gap-2.5 text-[13px] text-slate-700"
+            className="flex items-center gap-2.5 text-[13px] text-white/75"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-brand-cyan" />
             {h}
@@ -225,11 +217,11 @@ function ProductCard({
       </ul>
 
       {/* CTA — sits at bottom */}
-      <div className="relative mt-auto flex items-center justify-between border-t border-slate-100 pt-5">
-        <span className="text-[13px] font-bold uppercase tracking-[0.16em] text-brand-blue transition-colors group-hover:text-brand-navy">
+      <div className="relative mt-auto flex items-center justify-between border-t border-white/10 pt-5">
+        <span className="text-[13px] font-bold uppercase tracking-[0.16em] text-brand-cyan transition-colors group-hover:text-white">
           Learn More
         </span>
-        <span className="flex h-9 w-9 items-center justify-center rounded-full border border-brand-blue/15 text-brand-blue transition-all duration-300 group-hover:border-brand-blue group-hover:bg-brand-blue group-hover:text-white">
+        <span className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-brand-cyan transition-all duration-300 group-hover:border-brand-cyan group-hover:bg-brand-cyan group-hover:text-brand-navy">
           <ArrowUpRight className="h-4 w-4 transition-transform group-hover:-translate-y-px group-hover:translate-x-px" />
         </span>
       </div>

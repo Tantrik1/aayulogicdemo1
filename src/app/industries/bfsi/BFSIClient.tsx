@@ -1,7 +1,6 @@
 'use client';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { motion } from 'framer-motion';
 import {
   Landmark,
@@ -11,13 +10,29 @@ import {
   TrendingUp,
   Layers,
   GitBranch,
-  ArrowUpRight,
   Sparkles,
 } from 'lucide-react';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
 import { CTABand } from '@/components/section/CTABand';
+import { IndustryHero } from '@/components/industry-hero';
+import { FAQSection } from '@/components/FAQSection';
 import { easingCurve } from '@/lib/utils';
+
+const bfsiFaqs = [
+  {
+    q: "How does Aayulogic ensure security compliance for digital finance applications?",
+    a: "We hardcode security into our delivery. All systems are designed in compliance with PCI-DSS Level 1, SOC 2 Type II, and multi-region data residency laws, with full audit trail logging and penetration testing standard."
+  },
+  {
+    q: "What is your experience with legacy mainframe core banking migration?",
+    a: "We specialize in strangler-pattern migrations, gradually moving legacy COBOL/monolith transactions to event-driven Go/Java microservices with zero downtime, proven across 5 major financial institutions."
+  },
+  {
+    q: "Do you sign banking-grade SLAs and liability NDAs?",
+    a: "Yes. We sign strict banking-grade NDAs, non-competes, and SLAs backing our systems with guaranteed uptime metrics, supported by our dual Canadian/Nepalese corporate structures."
+  }
+];
 
 const CHALLENGES = [
   {
@@ -108,124 +123,23 @@ export function BFSIClient() {
     <>
       <Header />
 
-      {/* Breadcrumb */}
-      <div className="bg-white border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-3 flex items-center gap-2 text-xs text-slate-500">
-          <Link href="/" className="hover:text-brand-blue transition-colors">
-            Home
-          </Link>
-          <span>/</span>
-          <Link href="/industries" className="hover:text-brand-blue transition-colors">
-            Industries
-          </Link>
-          <span>/</span>
-          <span className="text-brand-navy font-medium">Banking & Digital Finance</span>
-        </div>
-      </div>
-
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-brand-navy via-brand-navy to-[#0d1f3d] text-white pt-24 pb-24 sm:pt-28 sm:pb-32">
-        <div
-          aria-hidden
-          className="absolute -top-32 -right-32 w-[560px] h-[560px] rounded-full blur-3xl opacity-50"
-          style={{
-            background: 'radial-gradient(circle, rgba(0,194,255,0.35) 0%, transparent 70%)',
-          }}
-        />
-        <div
-          aria-hidden
-          className="absolute -bottom-32 -left-32 w-[520px] h-[520px] rounded-full blur-3xl opacity-40"
-          style={{
-            background: 'radial-gradient(circle, rgba(4,92,179,0.6) 0%, transparent 70%)',
-          }}
-        />
-        <div
-          aria-hidden
-          className="absolute inset-0 opacity-[0.06]"
-          style={{
-            backgroundImage:
-              'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
-            backgroundSize: '48px 48px',
-          }}
-        />
-
-        <div className="relative max-w-7xl mx-auto px-6 sm:px-8 lg:px-12">
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: easingCurve.industrial }}
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/10 backdrop-blur border border-white/15 mb-6"
-          >
-            <Landmark className="w-3.5 h-3.5 text-brand-cyan" />
-            <span className="text-[11px] font-bold uppercase tracking-[0.18em] text-brand-cyan">
-              Banking & Digital Finance
-            </span>
-          </motion.div>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.05, ease: easingCurve.industrial }}
-            className="text-4xl sm:text-5xl lg:text-7xl font-bold leading-[1.05] tracking-tight text-balance max-w-4xl"
-          >
+      <IndustryHero
+        breadcrumbName="Banking & Digital Finance"
+        industry="Banking & Digital Finance"
+        icon={Landmark}
+        title={
+          <>
             Engineering for the{' '}
             <span className="bg-gradient-to-r from-brand-cyan via-white to-brand-cyan bg-clip-text text-transparent">
               regulators in the room.
             </span>
-          </motion.h1>
-
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.12, ease: easingCurve.industrial }}
-            className="mt-7 text-lg sm:text-xl text-slate-300 leading-relaxed max-w-2xl"
-          >
-            We modernize core banking, ship sub-50ms fraud engines, and prove
-            our work to auditors. Five tier-1 bank engagements, fifteen million
-            daily transactions, zero settlement misses.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2, ease: easingCurve.industrial }}
-            className="mt-9 flex flex-wrap items-center gap-4"
-          >
-            <a
-              href="#contact"
-              className="group relative inline-flex items-center gap-2 px-7 py-3.5 text-sm font-bold rounded-xl text-brand-navy overflow-hidden shadow-lg bg-white hover:bg-brand-cyan transition-colors"
-            >
-              <span>Scope a Banking Build</span>
-              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </a>
-            <a
-              href="#case-study"
-              className="group inline-flex items-center gap-2 px-7 py-3.5 text-sm font-bold rounded-xl border border-white/30 text-white hover:border-white hover:bg-white/10 transition-colors"
-            >
-              Read the Nordvik Case Study
-              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </a>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.3, ease: easingCurve.industrial }}
-            className="mt-14 grid grid-cols-2 sm:grid-cols-4 gap-6 max-w-3xl"
-          >
-            {STATS.map((s) => (
-              <div key={s.label} className="border-l-2 border-brand-cyan/40 pl-4">
-                <div className="text-2xl sm:text-3xl font-bold text-white">
-                  {s.value}
-                </div>
-                <div className="text-xs font-medium text-slate-400 mt-1 uppercase tracking-wider">
-                  {s.label}
-                </div>
-              </div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+          </>
+        }
+        subtitle="We modernize core banking, ship sub-50ms fraud engines, and prove our work to auditors. Five tier-1 bank engagements, fifteen million daily transactions, zero settlement misses."
+        primary={{ label: 'Scope a Banking Build', href: '#contact' }}
+        secondary={{ label: 'Read the Nordvik Case Study', href: '#case-study' }}
+        stats={STATS}
+      />
 
       {/* Challenges we solve */}
       <section className="relative py-20 sm:py-28 bg-white">
@@ -476,6 +390,8 @@ export function BFSIClient() {
           </ul>
         </div>
       </section>
+
+      <FAQSection items={bfsiFaqs} />
 
       <CTABand
         eyebrow="Scope an Engagement"

@@ -1,817 +1,232 @@
 'use client';
 
-import Image from 'next/image';
+import { useState } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
-  Wrench,
-  TrendingUp,
   ShieldCheck,
-  Globe2,
-  BadgeCheck,
-  MapPin,
-  Sparkles,
+  Lock,
   ArrowUpRight,
-  Heart,
-  Target,
-  Compass,
-  Server,
-  Layout,
-  Activity,
-  Briefcase,
-  Trophy,
-  HelpCircle,
   Quote,
   Building2,
+  MapPin,
+  Globe2,
+  Briefcase,
   Users2,
+  Award,
+  Calendar,
   type LucideIcon,
 } from 'lucide-react';
-import CA from 'country-flag-icons/react/3x2/CA';
-import NP from 'country-flag-icons/react/3x2/NP';
-import US from 'country-flag-icons/react/3x2/US';
-import AU from 'country-flag-icons/react/3x2/AU';
-import AE from 'country-flag-icons/react/3x2/AE';
 import { Header } from '@/components/header';
 import { Footer } from '@/components/footer';
-import { PageHero } from '@/components/section/PageHero';
-import { CTABand } from '@/components/section/CTABand';
-import {
-  COMPANY_TIMELINE,
-  COMPANY_VALUES,
-  ENGINEERING_PRINCIPLES,
-  MISSION_VISION,
-  FOUNDERS,
-  REGIONAL_HEADQUARTERS,
-  COMPANY_DEPARTMENTS,
-  AWARDS_RECOGNITION,
-  FAQ_CATEGORIES,
-} from '@/lib/constants';
+import { FAQSection } from '@/components/FAQSection';
 import { easingCurve, motionConfig } from '@/lib/utils';
 
-const VALUE_ICON_MAP: Record<string, LucideIcon> = {
-  Wrench,
-  TrendingUp,
-  ShieldCheck,
-  Globe2,
-  Heart,
-};
+const companyFaqs = [
+  {
+    q: "What does Aayulogic actually do?",
+    a: "We are a Canadian-headquartered global technology company. We build and operate production software — including flagship platforms like RealHRsoft and custom AI/cloud engagements for enterprise clients across North America."
+  },
+  {
+    q: "Where is Aayulogic headquartered?",
+    a: "Our global headquarters is Aayulogic Inc. in Toronto, Canada. Our primary engineering hub is Aayulogic Systems Pvt. Ltd. in Lalitpur, Kathmandu, Nepal, which has been operating continuously since 2016."
+  },
+  {
+    q: "How long has Aayulogic been around?",
+    a: "Since 2016. We have spent nine years building and operating software — for clients and for ourselves, proving our global engineering capabilities over a decade of continuous growth."
+  },
+  {
+    q: "Are your processes certified for security and quality?",
+    a: "Yes. We hold active, independently audited ISO 9001:2015 (Quality Management Systems) and ISO 27001:2022 (Information Security Management Systems) certifications. These standards govern all client engagements and delivery pipelines."
+  }
+];
 
-const DEPT_ICON_MAP: Record<string, LucideIcon> = {
-  Server,
-  Compass,
-  Sparkles,
-  Layout,
-  Activity,
-  Briefcase,
-};
-
-const FLAG_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
-  CA,
-  NP,
-  US,
-  AU,
-  AE,
-};
+// =============================================================================
+//  PAGE
+// =============================================================================
 
 export default function AboutPage() {
   return (
     <>
       <Header />
-
-      <PageHero
-        eyebrow="Our Company"
-        title="Engineering the Future of"
-        highlight="Digital Transformation"
-        subtitle="Aayulogic Inc. is a Canadian-headquartered global technology company. Since 2016, we've quietly built the platforms, products, and partnerships that 500+ organizations depend on every day."
-        stats={[
-          { value: '10+', label: 'Years Building' },
-          { value: '300+', label: 'Engineers' },
-          { value: '4', label: 'Continents' },
-        ]}
-        primaryCta={{ label: 'Meet the Team', href: '/leadership' }}
-        secondaryCta={{ label: 'See Our Locations', href: '/locations' }}
-      />
-
-      <MissionVisionSection />
-      <StorySection />
-      <FoundersSection />
-      <ValuesSection />
-      <DepartmentsSection />
-      <PrinciplesSection />
-      <RegionalHeadquartersSection />
-      <NumbersSection />
-      <AwardsSection />
-      <CertificationsSection />
-      <FaqTeaserSection />
-
-      <CTABand
-        eyebrow="Let's Build Together"
-        title="Ready to engineer your next chapter?"
-        body="Whether you're modernizing a legacy system or launching a new platform, our team can match the right engineering muscle to your roadmap."
-        primaryLabel="Start a Project"
-        primaryHref="/contact"
-        secondaryLabel="Open Roles"
-        secondaryHref="/careers"
-      />
-
+      <Hero />
+      <WhoWeAre />
+      <CompanyStructure />
+      <TheModel />
+      <TimelineSection />
+      <Values />
+      <Certifications />
+      <FAQSection items={companyFaqs} />
+      <FinalCTA />
       <Footer />
     </>
   );
 }
 
 // =============================================================================
-//  MISSION & VISION
+//  HERO — pure video, text + CTAs
 // =============================================================================
 
-function MissionVisionSection() {
+function Hero() {
   return (
-    <section className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white">
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-60 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(40% 30% at 90% 10%, rgba(0,194,255,0.07) 0%, transparent 70%), radial-gradient(40% 30% at 10% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)',
-        }}
-      />
-
-      <div className="relative max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={motionConfig.default}
-          className="text-center max-w-3xl mx-auto mb-12 lg:mb-16"
-        >
-          <span className="inline-block text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-4">
-            Mission & Vision
+    <section
+      data-theme="dark"
+      className="relative w-full min-h-[80svh] flex flex-col items-center justify-center pt-28 sm:pt-32 lg:pt-36 pb-16 sm:pb-20 lg:pb-24 px-5 sm:px-6 lg:px-8 overflow-hidden bg-cobalt-premium"
+    >
+      <div aria-hidden className="cobalt-grain" />
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease: easingCurve.industrial }}
+        className="relative max-w-5xl mx-auto w-full text-center flex flex-col items-center gap-7"
+      >
+        <span className="inline-block text-[11px] sm:text-xs font-semibold uppercase tracking-[0.32em] text-white/85 px-4 py-1.5 rounded-full border border-white/25 bg-white/5 backdrop-blur-sm">
+          About Aayulogic
+        </span>
+        <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-black leading-[1.02] tracking-tight text-balance text-white">
+          A Canadian Engineering Company.{' '}
+          <span className="bg-gradient-to-r from-white via-brand-cyan to-white bg-clip-text text-transparent">
+            Nine Years in the Making.
           </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-brand-navy leading-[1.1] tracking-tight">
-            Why we{' '}
-            <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-              show up every day
-            </span>
-            .
-          </h2>
-        </motion.div>
+        </h1>
+        <p className="text-base sm:text-lg md:text-xl leading-relaxed max-w-3xl text-white/85">
+          Aayulogic Inc. is incorporated in Toronto, Canada, with an engineering hub in Kathmandu, Nepal —
+          established in 2016. We build custom software, dedicated engineering teams, and enterprise software
+          platforms for startups and growing companies in Canada and the US.
+        </p>
 
-        {/* Mission + Vision split cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6 mb-14 lg:mb-16">
-          {[MISSION_VISION.mission, MISSION_VISION.vision].map((block, idx) => (
-            <motion.div
-              key={block.title}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-80px' }}
-              transition={{
-                duration: 0.6,
-                delay: idx * 0.08,
-                ease: easingCurve.industrial,
-              }}
-              whileHover={{ y: -4 }}
-              className="group relative p-8 sm:p-10 rounded-3xl border border-slate-200 bg-gradient-to-br from-white to-slate-50/70 overflow-hidden hover:border-brand-blue/30 hover:shadow-[0_30px_60px_-20px_rgba(4,92,179,0.22)] transition-all"
-            >
-              <div
-                aria-hidden
-                className="absolute -top-20 -right-20 w-64 h-64 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                style={{
-                  background:
-                    idx === 0
-                      ? 'radial-gradient(circle, rgba(0,194,255,0.22) 0%, transparent 70%)'
-                      : 'radial-gradient(circle, rgba(4,92,179,0.2) 0%, transparent 70%)',
-                }}
-              />
-              <div className="relative">
-                <div className="flex items-center gap-3 mb-5">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-blue to-brand-cyan flex items-center justify-center shadow-lg shadow-brand-blue/20">
-                    {idx === 0 ? (
-                      <Target className="w-6 h-6 text-white" />
-                    ) : (
-                      <Compass className="w-6 h-6 text-white" />
-                    )}
-                  </div>
-                  <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-brand-blue">
-                    {block.title}
-                  </p>
-                </div>
-                <p className="text-xl sm:text-2xl font-bold text-brand-navy leading-tight tracking-tight mb-4">
-                  {block.statement}
-                </p>
-                <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-                  {block.detail}
-                </p>
-              </div>
-            </motion.div>
-          ))}
+        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2">
+          <Link
+            href="/contact"
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 text-white font-bold rounded-full bg-gradient-to-r from-brand-blue to-brand-cyan shadow-[0_15px_40px_-10px_rgba(0,194,255,0.5)] hover:shadow-[0_20px_50px_-10px_rgba(0,194,255,0.7)] transition-all"
+          >
+            Start a Conversation
+            <ArrowUpRight className="w-5 h-5" />
+          </Link>
+          <Link
+            href="/services"
+            className="inline-flex items-center justify-center gap-2 px-8 py-4 font-bold rounded-full border-2 border-white/40 hover:border-white text-white bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all"
+          >
+            Explore Services
+          </Link>
         </div>
-
-        {/* Pillars row */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={motionConfig.default}
-          className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6"
-        >
-          {MISSION_VISION.pillars.map((p, idx) => {
-            const Icon = VALUE_ICON_MAP[p.iconKey] ?? Sparkles;
-            return (
-              <motion.div
-                key={p.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{
-                  duration: 0.5,
-                  delay: idx * 0.06,
-                  ease: easingCurve.industrial,
-                }}
-                whileHover={{ y: -3 }}
-                className="p-6 rounded-2xl border border-slate-200 bg-white hover:border-brand-blue/30 hover:shadow-[0_16px_32px_-12px_rgba(4,92,179,0.16)] transition-all"
-              >
-                <div className="w-10 h-10 rounded-lg bg-brand-blue/10 flex items-center justify-center mb-3">
-                  <Icon className="w-5 h-5 text-brand-blue" />
-                </div>
-                <h3 className="text-base sm:text-lg font-bold text-brand-navy mb-2 leading-tight">
-                  {p.title}
-                </h3>
-                <p className="text-sm text-slate-600 leading-relaxed">
-                  {p.description}
-                </p>
-              </motion.div>
-            );
-          })}
-        </motion.div>
-      </div>
+      </motion.div>
     </section>
   );
 }
 
 // =============================================================================
-//  STORY TIMELINE
+//  WHO WE ARE — white
 // =============================================================================
 
-function StorySection() {
+function WhoWeAre() {
   return (
-    <section className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-60 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(40% 30% at 10% 10%, rgba(0,194,255,0.05) 0%, transparent 70%), radial-gradient(40% 30% at 95% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)',
-        }}
-      />
-
-      <div className="relative max-w-7xl mx-auto">
+    <section className="relative bg-white py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12">
+      <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 lg:gap-16 items-start">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
+          viewport={{ once: true, margin: '-80px' }}
           transition={motionConfig.default}
-          className="text-center max-w-3xl mx-auto mb-12 lg:mb-16"
         >
-          <span className="inline-block text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-4">
-            Our Story
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-brand-navy leading-[1.1] tracking-tight">
-            A decade of{' '}
-            <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-              compounding craft
-            </span>
-            .
+          <p className="text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-3">
+            Who We Are
+          </p>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-navy leading-tight mb-5">
+            Not a consultancy.<br />Not a staffing company.
           </h2>
-          <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed">
-            Started in Kathmandu with six engineers, anchored in Toronto today — every milestone shipped, never just announced.
+          <p className="text-base sm:text-lg text-slate-700 leading-relaxed mb-4">
+            We are an engineering team that has spent nine years building and operating software — for clients and for ourselves. We have made architecture decisions we later had to undo. We have rebuilt modules from scratch when we got things wrong. We have absorbed the cost of deployment failures and learned from them.
+          </p>
+          <p className="text-base sm:text-lg text-slate-700 leading-relaxed">
+            When we say we bring product-building discipline to client engagements — we mean it literally. We have lived every stage of it.
           </p>
         </motion.div>
 
-        <div className="relative max-w-4xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ ...motionConfig.default, delay: 0.1 }}
+          className="relative rounded-2xl bg-brand-navy text-white p-7 sm:p-8 overflow-hidden"
+        >
           <div
             aria-hidden
-            className="absolute left-4 sm:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-brand-blue/40 via-brand-cyan/30 to-transparent sm:-translate-x-px"
+            className="absolute -top-16 -right-16 w-60 h-60 rounded-full blur-3xl opacity-40"
+            style={{ background: 'radial-gradient(circle, rgba(0,194,255,0.45) 0%, transparent 70%)' }}
           />
-
-          <div className="space-y-10 sm:space-y-12">
-            {COMPANY_TIMELINE.map((item, idx) => (
-              <motion.div
-                key={item.year}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-80px' }}
-                transition={{
-                  duration: 0.6,
-                  delay: idx * 0.05,
-                  ease: easingCurve.industrial,
-                }}
-                className={`relative flex flex-col sm:flex-row gap-6 sm:gap-10 ${
-                  idx % 2 === 0 ? 'sm:flex-row' : 'sm:flex-row-reverse'
-                }`}
-              >
-                <div className="absolute left-4 sm:left-1/2 -translate-x-1/2 top-2 z-10">
-                  <div className="w-3 h-3 rounded-full bg-brand-blue ring-4 ring-white shadow-[0_0_0_2px_rgba(4,92,179,0.2)]" />
-                </div>
-
-                <div className="ml-12 sm:ml-0 sm:flex-1 sm:max-w-md">
-                  <div className="group relative p-6 sm:p-7 rounded-2xl border border-slate-200 bg-white hover:border-brand-blue/30 hover:shadow-[0_20px_50px_-15px_rgba(4,92,179,0.18)] transition-all">
-                    <div
-                      aria-hidden
-                      className="absolute inset-0 rounded-2xl bg-gradient-to-br from-brand-blue/[0.03] to-brand-cyan/[0.04] opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
-                    />
-                    <div className="relative">
-                      <span className="inline-block text-[11px] font-bold uppercase tracking-[0.2em] text-brand-blue mb-2">
-                        {item.year}
-                      </span>
-                      <h3 className="text-xl sm:text-2xl font-bold text-brand-navy mb-3 leading-tight">
-                        {item.title}
-                      </h3>
-                      <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-                        {item.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="hidden sm:block sm:flex-1" />
-              </motion.div>
-            ))}
-          </div>
-        </div>
+          <Quote className="relative w-8 h-8 text-brand-cyan mb-4" />
+          <p className="relative text-xs font-bold uppercase tracking-[0.22em] text-brand-cyan/80 mb-3">
+            The conviction we were built on
+          </p>
+          <p className="relative text-xl sm:text-2xl font-medium leading-snug italic mb-5">
+            &ldquo;The best engineering should not be limited to companies that can afford local hiring rates.&rdquo;
+          </p>
+          <p className="relative text-sm text-white/65 leading-relaxed">
+            That conviction has shaped every decision we have made since 2016 — from where we built our engineering hub, to why we pursued ISO certification, to how we structure every client engagement.
+          </p>
+        </motion.div>
       </div>
     </section>
   );
 }
 
 // =============================================================================
-//  FOUNDERS SPOTLIGHT
+//  COMPANY STRUCTURE — video bg
 // =============================================================================
 
-function FoundersSection() {
-  return (
-    <section className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white">
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-60 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(40% 30% at 80% 10%, rgba(0,194,255,0.06) 0%, transparent 70%), radial-gradient(40% 30% at 0% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)',
-        }}
-      />
+const FACTS: { label: string; value: string; icon: LucideIcon }[] = [
+  { label: 'Global Headquarters', value: 'Toronto, Ontario, Canada', icon: Building2 },
+  { label: 'Engineering Hub', value: 'Kathmandu, Nepal — Est. 2016', icon: MapPin },
+  { label: 'Representative Offices', value: 'USA (Louisville, KY) · Australia (Brisbane, QLD)', icon: Globe2 },
+  { label: 'Target Markets', value: 'Canada and United States', icon: Briefcase },
+  { label: 'Engineering Team', value: '50+ across engineering, product, and operations', icon: Users2 },
+  { label: 'ISO Certifications', value: 'ISO 9001:2015 — Quality Management · ISO 27001:2022 — Information Security', icon: ShieldCheck },
+  { label: 'Incorporation', value: 'Aayulogic Inc. — Canada · Aayulogic Pvt. Ltd. — Nepal', icon: Award },
+];
 
+function CompanyStructure() {
+  return (
+    <section
+      data-theme="dark"
+      className="relative py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 overflow-hidden bg-cobalt-premium"
+    >
+      <div aria-hidden className="cobalt-grain" />
       <div className="relative max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={motionConfig.default}
-          className="text-center max-w-3xl mx-auto mb-12 lg:mb-16"
-        >
-          <span className="inline-block text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-4">
-            Founders
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-brand-navy leading-[1.1] tracking-tight">
-            The engineers who{' '}
-            <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-              built this from zero
-            </span>
-            .
-          </h2>
-          <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed">
-            Two co-founders, still operating the company day-to-day — anchoring engineering in Lalitpur and strategy in Toronto.
-          </p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-          {FOUNDERS.map((f, idx) => (
-            <motion.article
-              key={f.name}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-80px' }}
-              transition={{
-                duration: 0.6,
-                delay: idx * 0.1,
-                ease: easingCurve.industrial,
-              }}
-              whileHover={{ y: -4 }}
-              className="group relative rounded-3xl border border-slate-200 bg-gradient-to-br from-white to-slate-50/60 overflow-hidden hover:border-brand-blue/30 hover:shadow-[0_30px_60px_-20px_rgba(4,92,179,0.22)] transition-all"
-            >
-              <div className="grid grid-cols-1 sm:grid-cols-5 gap-0">
-                {/* Image */}
-                <div className="relative sm:col-span-2 aspect-[4/5] sm:aspect-auto sm:min-h-[420px] bg-brand-navy overflow-hidden">
-                  <Image
-                    src={f.image}
-                    alt={f.name}
-                    fill
-                    sizes="(max-width: 640px) 100vw, 40vw"
-                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-                  />
-                  <div
-                    aria-hidden
-                    className="absolute inset-0"
-                    style={{
-                      background:
-                        'linear-gradient(180deg, rgba(10,25,47,0.1) 0%, rgba(10,25,47,0) 40%, rgba(10,25,47,0.85) 100%)',
-                    }}
-                  />
-                  <div className="absolute bottom-0 left-0 right-0 p-5">
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-white/15 backdrop-blur-md border border-white/20">
-                      <MapPin className="w-3 h-3 text-brand-cyan" />
-                      <span className="text-[10px] font-bold uppercase tracking-[0.15em] text-white">
-                        {f.location}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="sm:col-span-3 p-6 sm:p-8 lg:p-10 flex flex-col">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-brand-blue mb-2">
-                    {f.role}
-                  </p>
-                  <h3 className="text-2xl sm:text-3xl font-bold text-brand-navy mb-5 leading-tight">
-                    {f.name}
-                  </h3>
-
-                  <Quote className="w-6 h-6 text-brand-cyan opacity-80 mb-3" />
-                  <p className="text-sm sm:text-base italic text-slate-700 leading-relaxed mb-5">
-                    &ldquo;{f.quote}&rdquo;
-                  </p>
-
-                  <ul className="space-y-2 pt-4 border-t border-slate-100">
-                    {f.contributions.map((c) => (
-                      <li
-                        key={c}
-                        className="flex items-start gap-2 text-xs sm:text-sm text-slate-600 leading-snug"
-                      >
-                        <BadgeCheck className="w-4 h-4 text-brand-blue flex-shrink-0 mt-0.5" />
-                        <span>{c}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </motion.article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// =============================================================================
-//  VALUES
-// =============================================================================
-
-function ValuesSection() {
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.08, delayChildren: 0.1 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 24 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: motionConfig.default,
-    },
-  };
-
-  return (
-    <section className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-60 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(40% 30% at 80% 10%, rgba(0,194,255,0.06) 0%, transparent 70%), radial-gradient(40% 30% at 0% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)',
-        }}
-      />
-
-      <div className="relative max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={motionConfig.default}
-          className="text-center max-w-3xl mx-auto mb-12 lg:mb-16"
-        >
-          <span className="inline-block text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-4">
-            Philosophy
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-brand-navy leading-[1.1] tracking-tight">
-            What we{' '}
-            <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-              actually believe
-            </span>
-            .
-          </h2>
-          <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed">
-            Four principles that shape every engagement, every release, and every hire we make.
-          </p>
-        </motion.div>
-
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
           viewport={{ once: true, margin: '-80px' }}
-          className="grid grid-cols-1 sm:grid-cols-2 gap-5 lg:gap-6"
-        >
-          {COMPANY_VALUES.map((value) => {
-            const Icon = VALUE_ICON_MAP[value.iconKey] ?? Sparkles;
-            return (
-              <motion.div
-                key={value.title}
-                variants={itemVariants}
-                whileHover={{ y: -4 }}
-                transition={{ duration: 0.3, ease: easingCurve.industrial }}
-                className="group relative p-7 sm:p-8 rounded-2xl border border-slate-200 bg-white/80 backdrop-blur hover:border-brand-blue/30 hover:bg-white hover:shadow-[0_25px_50px_-15px_rgba(4,92,179,0.2)] transition-all overflow-hidden"
-              >
-                <div
-                  aria-hidden
-                  className="absolute -top-12 -right-12 w-40 h-40 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-                  style={{
-                    background:
-                      'radial-gradient(circle, rgba(0,194,255,0.25) 0%, transparent 70%)',
-                  }}
-                />
-
-                <div className="relative">
-                  <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-brand-blue to-brand-cyan flex items-center justify-center mb-5 shadow-lg shadow-brand-blue/20">
-                    <Icon className="w-7 h-7 text-white" />
-                  </div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-brand-navy mb-3 leading-tight">
-                    {value.title}
-                  </h3>
-                  <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-                    {value.description}
-                  </p>
-                </div>
-              </motion.div>
-            );
-          })}
-        </motion.div>
-      </div>
-    </section>
-  );
-}
-
-// =============================================================================
-//  DEPARTMENTS / TEAM BREAKDOWN
-// =============================================================================
-
-function DepartmentsSection() {
-  return (
-    <section className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white">
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-60 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(40% 30% at 10% 10%, rgba(0,194,255,0.05) 0%, transparent 70%), radial-gradient(40% 30% at 95% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)',
-        }}
-      />
-
-      <div className="relative max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
           transition={motionConfig.default}
-          className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-12 lg:mb-16"
+          className="max-w-3xl mb-10"
         >
-          <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-4">
-              <Users2 className="w-4 h-4" />
-              The Team
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-brand-navy leading-[1.1] tracking-tight">
-              300+ engineers,{' '}
-              <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-                six core practices
-              </span>
-              .
-            </h2>
-          </div>
-          <Link
-            href="/leadership"
-            className="group inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-brand-blue/30 bg-white text-sm font-bold text-brand-navy hover:border-brand-blue hover:text-brand-blue transition-colors self-start"
-          >
-            Meet the leaders
-            <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </Link>
-        </motion.div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
-          {COMPANY_DEPARTMENTS.map((d, idx) => {
-            const Icon = DEPT_ICON_MAP[d.iconKey] ?? Sparkles;
-            return (
-              <motion.div
-                key={d.name}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{
-                  duration: 0.5,
-                  delay: idx * 0.05,
-                  ease: easingCurve.industrial,
-                }}
-                whileHover={{ y: -3 }}
-                className="group relative p-6 sm:p-7 rounded-2xl border border-slate-200 bg-gradient-to-br from-white to-slate-50/60 hover:border-brand-blue/30 hover:shadow-[0_18px_40px_-15px_rgba(4,92,179,0.16)] transition-all"
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-blue to-brand-cyan flex items-center justify-center shadow-md shadow-brand-blue/15">
-                    <Icon className="w-5 h-5 text-white" />
-                  </div>
-                  <span className="text-2xl sm:text-3xl font-black text-brand-blue/80 tracking-tight">
-                    {d.size}
-                  </span>
-                </div>
-                <h3 className="text-lg sm:text-xl font-bold text-brand-navy mb-2 leading-tight">
-                  {d.name}
-                </h3>
-                <p className="text-sm text-slate-600 leading-relaxed">
-                  {d.description}
-                </p>
-              </motion.div>
-            );
-          })}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// =============================================================================
-//  ENGINEERING PRINCIPLES
-// =============================================================================
-
-function PrinciplesSection() {
-  return (
-    <section className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
-      <div className="relative max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={motionConfig.default}
-          className="text-center max-w-3xl mx-auto mb-12 lg:mb-16"
-        >
-          <span className="inline-block text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-4">
-            Engineering Principles
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-brand-navy leading-[1.1] tracking-tight">
-            How we{' '}
-            <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-              ship software
-            </span>
-            .
-          </h2>
-          <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed">
-            Six rules that govern our codebases — written for engineers, enforced in review, audited in production.
+          <p className="text-brand-cyan text-sm font-semibold uppercase tracking-[0.18em] mb-3">
+            Company Structure
           </p>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
+            The facts, plainly stated.
+          </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
-          {ENGINEERING_PRINCIPLES.map((principle, idx) => (
-            <motion.div
-              key={principle.index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-80px' }}
-              transition={{
-                duration: 0.5,
-                delay: idx * 0.05,
-                ease: easingCurve.industrial,
-              }}
-              whileHover={{ y: -3 }}
-              className="group relative p-6 sm:p-7 rounded-xl border border-slate-200 bg-gradient-to-br from-white to-slate-50/60 hover:border-brand-blue/30 hover:shadow-[0_16px_32px_-12px_rgba(4,92,179,0.16)] transition-all"
-            >
-              <div className="flex items-start gap-4 mb-3">
-                <span className="inline-flex h-10 w-10 items-center justify-center rounded-lg bg-brand-blue/10 text-sm font-black tracking-tight text-brand-blue">
-                  {principle.index}
-                </span>
-                <h3 className="flex-1 text-lg sm:text-xl font-bold text-brand-navy leading-tight pt-1">
-                  {principle.title}
-                </h3>
-              </div>
-              <p className="text-sm text-slate-600 leading-relaxed">
-                {principle.description}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// =============================================================================
-//  REGIONAL HEADQUARTERS
-// =============================================================================
-
-function RegionalHeadquartersSection() {
-  return (
-    <section className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white">
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-60 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(40% 30% at 10% 10%, rgba(0,194,255,0.05) 0%, transparent 70%), radial-gradient(40% 30% at 95% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)',
-        }}
-      />
-
-      <div className="relative max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={motionConfig.default}
-          className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-12 lg:mb-16"
-        >
-          <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-4">
-              <Building2 className="w-4 h-4" />
-              Regional Headquarters
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-brand-navy leading-[1.1] tracking-tight">
-              One company,{' '}
-              <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-                five anchors
-              </span>
-              .
-            </h2>
-            <p className="mt-5 text-base sm:text-lg text-slate-600 leading-relaxed">
-              A Canadian global HQ, a 300-engineer hub in Lalitpur, and regional offices across the Americas, APAC, and MENA.
-            </p>
-          </div>
-          <Link
-            href="/locations"
-            className="group inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-brand-blue/30 bg-white text-sm font-bold text-brand-navy hover:border-brand-blue hover:text-brand-blue transition-colors self-start"
-          >
-            See full locations
-            <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </Link>
-        </motion.div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
-          {REGIONAL_HEADQUARTERS.map((office, idx) => {
-            const Flag = FLAG_MAP[office.countryCode];
-            const isHQ = office.role === 'Global HQ';
+        <div className="rounded-2xl border border-white/10 overflow-hidden bg-slate-900/40 backdrop-blur-sm">
+          {FACTS.map((f, i) => {
+            const Icon = f.icon;
             return (
               <motion.div
-                key={office.city}
-                initial={{ opacity: 0, y: 24 }}
+                key={f.label}
+                initial={{ opacity: 0, y: 10 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: '-60px' }}
-                transition={{
-                  duration: 0.5,
-                  delay: idx * 0.06,
-                  ease: easingCurve.industrial,
-                }}
-                whileHover={{ y: -4 }}
-                className={`group relative p-6 sm:p-7 rounded-2xl border overflow-hidden transition-all ${
-                  isHQ
-                    ? 'border-brand-blue/40 bg-gradient-to-br from-brand-blue/5 to-brand-cyan/5 hover:shadow-[0_25px_50px_-15px_rgba(4,92,179,0.28)]'
-                    : 'border-slate-200 bg-white hover:border-brand-blue/30 hover:shadow-[0_18px_40px_-15px_rgba(4,92,179,0.16)]'
-                }`}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.35, delay: i * 0.04, ease: easingCurve.industrial }}
+                className="grid grid-cols-1 sm:grid-cols-[280px_1fr] border-b border-white/10 last:border-b-0"
               >
-                {isHQ && (
-                  <span className="absolute top-4 right-4 inline-flex items-center gap-1 px-2 py-1 rounded-full bg-brand-blue text-white text-[9px] font-bold uppercase tracking-[0.15em]">
-                    Global HQ
-                  </span>
-                )}
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-12 h-9 rounded-md overflow-hidden ring-1 ring-slate-200 shadow-sm">
-                    {Flag && <Flag className="w-full h-full object-cover" />}
-                  </div>
-                  <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-brand-blue">
-                    {office.region}
+                <div className="flex items-center gap-3 px-5 py-4 bg-slate-900/40 border-b sm:border-b-0 sm:border-r border-white/10">
+                  <Icon className="w-4 h-4 text-brand-cyan flex-shrink-0" />
+                  <span className="text-xs font-bold uppercase tracking-wider text-white/70">
+                    {f.label}
                   </span>
                 </div>
-                <h3 className="text-xl sm:text-2xl font-bold text-brand-navy mb-1 leading-tight">
-                  {office.city}
-                </h3>
-                <p className="text-sm font-semibold text-slate-700 mb-4">
-                  {office.role}
-                </p>
-                <p className="text-sm text-slate-600 leading-relaxed mb-5">
-                  {office.focus}
-                </p>
-                <div className="flex items-center justify-between pt-4 border-t border-slate-100/80 text-xs">
-                  <span className="text-slate-500">
-                    Est. <span className="font-bold text-brand-navy">{office.established}</span>
-                  </span>
-                  <span className="text-slate-500">
-                    Team: <span className="font-bold text-brand-navy">{office.headcount}</span>
-                  </span>
-                </div>
+                <div className="px-5 py-4 text-sm sm:text-base text-white/90">{f.value}</div>
               </motion.div>
             );
           })}
@@ -822,397 +237,438 @@ function RegionalHeadquartersSection() {
 }
 
 // =============================================================================
-//  BY THE NUMBERS (dark band)
+//  THE MODEL — white
 // =============================================================================
 
-function NumbersSection() {
-  const STATS = [
-    { value: '300+', label: 'Engineers' },
-    { value: '15M+', label: 'Daily Transactions' },
-    { value: '99.4%', label: 'SLA Stability' },
-    { value: '500+', label: 'Enterprises Served' },
-    { value: '10+', label: 'Years Building' },
-    { value: '4', label: 'Continents' },
-  ];
+function TheModel() {
+  return (
+    <section className="relative bg-white py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12">
+      <div className="relative max-w-7xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={motionConfig.default}
+          className="max-w-3xl mb-10"
+        >
+          <p className="text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-3">
+            The Model
+          </p>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-navy leading-tight">
+            Two countries. One engineering standard.<br />Built over nine years.
+          </h2>
+        </motion.div>
+
+        <div className="grid lg:grid-cols-2 gap-5">
+          <div className="rounded-2xl bg-gradient-to-br from-brand-navy to-slate-900 text-white p-7 sm:p-9 border border-slate-800 relative overflow-hidden">
+            <div
+              aria-hidden
+              className="absolute -top-16 -right-16 w-60 h-60 rounded-full blur-3xl opacity-40"
+              style={{ background: 'radial-gradient(circle, rgba(0,194,255,0.35) 0%, transparent 70%)' }}
+            />
+            <p className="relative text-[11px] font-bold uppercase tracking-[0.22em] text-brand-cyan mb-3">
+              Canada — Toronto
+            </p>
+            <h3 className="relative text-xl sm:text-2xl font-semibold mb-4">
+              Global Headquarters &amp; Commercial Oversight
+            </h3>
+            <ul className="relative space-y-2.5 text-sm text-white/75 leading-relaxed">
+              <li className="flex gap-2"><span className="text-brand-cyan">·</span> Canadian incorporation</li>
+              <li className="flex gap-2"><span className="text-brand-cyan">·</span> Toronto-based point of contact for every engagement</li>
+              <li className="flex gap-2"><span className="text-brand-cyan">·</span> IP ownership for all international markets</li>
+              <li className="flex gap-2"><span className="text-brand-cyan">·</span> Western-standard governance and accountability</li>
+            </ul>
+          </div>
+          <div className="rounded-2xl bg-gradient-to-br from-brand-navy to-slate-900 text-white p-7 sm:p-9 border border-slate-800 relative overflow-hidden">
+            <div
+              aria-hidden
+              className="absolute -top-16 -right-16 w-60 h-60 rounded-full blur-3xl opacity-40"
+              style={{ background: 'radial-gradient(circle, rgba(0,194,255,0.35) 0%, transparent 70%)' }}
+            />
+            <p className="relative text-[11px] font-bold uppercase tracking-[0.22em] text-brand-cyan mb-3">
+              Nepal — Kathmandu
+            </p>
+            <h3 className="relative text-xl sm:text-2xl font-semibold mb-4">
+              Engineering Hub — Est. 2016
+            </h3>
+            <ul className="relative space-y-2.5 text-sm text-white/75 leading-relaxed">
+              <li className="flex gap-2"><span className="text-brand-cyan">·</span> 50+ engineers, operating continuously since 2016</li>
+              <li className="flex gap-2"><span className="text-brand-cyan">·</span> ISO 9001:2015 &amp; ISO 27001:2022 certified</li>
+              <li className="flex gap-2"><span className="text-brand-cyan">·</span> The same standards built for commercial banks</li>
+              <li className="flex gap-2"><span className="text-brand-cyan">·</span> Applied to every engagement, every industry</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-8 rounded-2xl bg-brand-light/50 border border-brand-blue/10 p-6 sm:p-8 text-center leading-relaxed text-slate-700">
+          <p className="mb-3">
+            Our engineering hub in Kathmandu was established in 2016. Nepal now has a stable majority government — the first in almost seven decades — and has formally declared IT a strategic economic sector.
+          </p>
+          <p>
+            For Canadian clients: you get a Canadian company with Canadian accountability, and an engineering team operating under the same security and quality standards we built for regulated financial institutions.{' '}
+            <strong className="text-brand-navy font-semibold">That is not outsourcing. That is structured, certified engineering capability.</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// =============================================================================
+//  TIMELINE — video bg
+// =============================================================================
+
+type Milestone = {
+  year: string;
+  title: string;
+  description: string;
+};
+
+const TIMELINE: Milestone[] = [
+  {
+    year: '2016',
+    title: 'Engineering hub established in Kathmandu, Nepal.',
+    description:
+      'Operations begin. Aayulogic delivers Merojob.com and Rojgari Services — Nepal\'s largest job portals.',
+  },
+  {
+    year: '2017–2019',
+    title: 'First enterprise clients. RealHRsoft launched.',
+    description:
+      'Nepal\'s first enterprise HR Management solution launches. First regulated-sector deployments in financial services.',
+  },
+  {
+    year: '2020–2021',
+    title: 'ISO 9001:2015 certified. First banking client onboarded.',
+    description:
+      'Quality Management Systems certification achieved. First commercial bank deploys on platform. Mobile applications launched.',
+  },
+  {
+    year: '2023',
+    title: 'ISO 27001:2022 certified. RealChat launched.',
+    description:
+      'Information Security Management certification achieved. Portfolio expanded with Real Chat and Cloud & DevOps services.',
+  },
+  {
+    year: '2024',
+    title: 'Client base reaches 100+ organisations.',
+    description:
+      'IT solutions delivered to Canadian & US clients, proving global capabilities. Two major commercial banks live on platform.',
+  },
+  {
+    year: '2025',
+    title: 'Aayulogic Inc. incorporated in Toronto, Canada.',
+    description:
+      'Global Head Office established. Representative offices in USA and Australia. International commercialisation begins in earnest.',
+  },
+  {
+    year: '2026 — Now',
+    title: 'Canadian market expansion. Engineering services pipeline building.',
+    description: 'Toronto headquarters active. Canadian client engagements underway.',
+  },
+];
+
+function TimelineSection() {
+  const [active, setActive] = useState(TIMELINE.length - 1);
+  const m = TIMELINE[active];
 
   return (
     <section
       data-theme="dark"
-      className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-brand-navy text-white"
+      className="relative py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 overflow-hidden bg-cobalt-premium"
     >
-      <div
-        aria-hidden
-        className="absolute -top-20 -left-20 w-96 h-96 rounded-full blur-3xl opacity-40"
-        style={{
-          background: 'radial-gradient(circle, rgba(0,194,255,0.3) 0%, transparent 70%)',
-        }}
-      />
-      <div
-        aria-hidden
-        className="absolute -bottom-32 -right-20 w-[28rem] h-[28rem] rounded-full blur-3xl opacity-30"
-        style={{
-          background: 'radial-gradient(circle, rgba(4,92,179,0.5) 0%, transparent 70%)',
-        }}
-      />
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-[0.06]"
-        style={{
-          backgroundImage:
-            'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
-          backgroundSize: '40px 40px',
-        }}
-      />
-
+      <div aria-hidden className="cobalt-grain" />
       <div className="relative max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
+          viewport={{ once: true, margin: '-80px' }}
           transition={motionConfig.default}
-          className="text-center max-w-3xl mx-auto mb-12 lg:mb-16"
+          className="max-w-3xl mb-10"
         >
-          <span className="inline-block text-brand-cyan text-sm font-semibold uppercase tracking-[0.18em] mb-4">
-            By the Numbers
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-[1.1] tracking-tight">
-            Built quietly,{' '}
-            <span className="bg-gradient-to-r from-brand-cyan to-white bg-clip-text text-transparent">
-              measured precisely
-            </span>
-            .
-          </h2>
-        </motion.div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-6 lg:gap-8">
-          {STATS.map((s, idx) => (
-            <motion.div
-              key={s.label}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{
-                duration: 0.5,
-                delay: idx * 0.05,
-                ease: easingCurve.industrial,
-              }}
-              className="text-center"
-            >
-              <div
-                className="text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight mb-2"
-                style={{
-                  backgroundImage:
-                    'linear-gradient(135deg, #00C2FF 0%, #FFFFFF 100%)',
-                  WebkitBackgroundClip: 'text',
-                  backgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
-              >
-                {s.value}
-              </div>
-              <div className="text-[11px] sm:text-xs font-bold uppercase tracking-[0.18em] text-slate-300">
-                {s.label}
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// =============================================================================
-//  AWARDS & RECOGNITION
-// =============================================================================
-
-function AwardsSection() {
-  return (
-    <section className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white">
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-60 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(40% 30% at 80% 10%, rgba(0,194,255,0.06) 0%, transparent 70%), radial-gradient(40% 30% at 0% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)',
-        }}
-      />
-
-      <div className="relative max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={motionConfig.default}
-          className="text-center max-w-3xl mx-auto mb-12 lg:mb-16"
-        >
-          <span className="inline-flex items-center gap-2 text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-4">
-            <Trophy className="w-4 h-4" />
-            Awards & Recognition
-          </span>
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-brand-navy leading-[1.1] tracking-tight">
-            Quietly verified,{' '}
-            <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-              publicly recognized
-            </span>
-            .
-          </h2>
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
-          {AWARDS_RECOGNITION.map((a, idx) => (
-            <motion.div
-              key={a.title}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{
-                duration: 0.5,
-                delay: idx * 0.06,
-                ease: easingCurve.industrial,
-              }}
-              whileHover={{ y: -3 }}
-              className="group relative flex gap-5 p-6 sm:p-7 rounded-2xl border border-slate-200 bg-gradient-to-br from-white to-slate-50/60 hover:border-brand-blue/30 hover:shadow-[0_18px_40px_-15px_rgba(4,92,179,0.16)] transition-all"
-            >
-              <div className="flex-shrink-0">
-                <div className="w-16 h-16 rounded-xl bg-gradient-to-br from-brand-blue/10 to-brand-cyan/10 border border-brand-blue/15 flex flex-col items-center justify-center">
-                  <span className="text-[9px] font-bold uppercase tracking-[0.15em] text-brand-blue">
-                    Year
-                  </span>
-                  <span className="text-lg font-black text-brand-navy">
-                    {a.year}
-                  </span>
-                </div>
-              </div>
-              <div className="flex-1 min-w-0">
-                <h3 className="text-base sm:text-lg font-bold text-brand-navy mb-1.5 leading-tight">
-                  {a.title}
-                </h3>
-                <p className="text-sm text-slate-600 leading-relaxed mb-3">
-                  {a.body}
-                </p>
-                <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-slate-400">
-                  {a.issuer}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// =============================================================================
-//  CERTIFICATIONS
-// =============================================================================
-
-function CertificationsSection() {
-  const CERTS = [
-    {
-      logo: '/ISO-9001.png',
-      name: 'ISO 9001:2015',
-      role: 'Quality Management System',
-      description:
-        'Independently certified delivery discipline — every release verified against documented quality controls.',
-    },
-    {
-      logo: '/ISO-27001.png',
-      name: 'ISO 27001:2022',
-      role: 'Information Security Management',
-      description:
-        'Enterprise-grade data, access, and infrastructure controls — independently certified to global standards.',
-    },
-  ];
-
-  return (
-    <section className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-60 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(40% 30% at 10% 10%, rgba(0,194,255,0.05) 0%, transparent 70%), radial-gradient(40% 30% at 95% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)',
-        }}
-      />
-
-      <div className="relative max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
-          transition={motionConfig.default}
-          className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-10 lg:mb-12"
-        >
-          <div>
-            <span className="inline-flex items-center gap-2 text-brand-blue text-xs sm:text-sm font-semibold uppercase tracking-[0.18em]">
-              <BadgeCheck className="w-3.5 h-3.5" />
-              Globally Certified
-            </span>
-            <h2 className="mt-2 text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-navy leading-[1.1] tracking-tight">
-              Independently audited to{' '}
-              <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-                global standards
-              </span>
-            </h2>
-          </div>
-          <p className="text-sm text-slate-500 sm:max-w-xs sm:text-right">
-            Quality and security aren&apos;t claims — they&apos;re audited, certified, and documented.
+          <p className="text-brand-cyan text-sm font-semibold uppercase tracking-[0.18em] mb-3">
+            Company Timeline
           </p>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
+            Nine years of building.{' '}
+            <span className="bg-gradient-to-r from-brand-cyan to-white bg-clip-text text-transparent">
+              Here is how it happened.
+            </span>
+          </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
-          {CERTS.map((c) => (
+        <div className="relative mb-10">
+          <div
+            aria-hidden
+            className="hidden lg:block absolute left-0 right-0 top-1/2 h-px bg-gradient-to-r from-brand-cyan/15 via-brand-cyan/50 to-brand-cyan/15 -translate-y-1/2"
+          />
+          <div className="relative grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-2 lg:gap-3">
+            {TIMELINE.map((t, i) => {
+              const isActive = i === active;
+              const isLast = i === TIMELINE.length - 1;
+              return (
+                <button
+                  key={t.year}
+                  onClick={() => setActive(i)}
+                  className="group relative flex flex-col items-center gap-2"
+                >
+                  <span
+                    className={`flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full border-2 transition-all ${
+                      isActive
+                        ? 'bg-gradient-to-br from-brand-blue to-brand-cyan border-white shadow-[0_0_0_4px_rgba(0,194,255,0.25)] scale-110'
+                        : isLast
+                          ? 'bg-slate-900/60 border-brand-cyan text-brand-cyan'
+                          : 'bg-slate-900/40 border-white/30 text-white/60 group-hover:border-brand-cyan group-hover:text-brand-cyan'
+                    }`}
+                  >
+                    {isActive ? (
+                      <Calendar className="w-4 h-4 text-white" />
+                    ) : (
+                      <span className="text-[10px] font-bold">{i + 1}</span>
+                    )}
+                  </span>
+                  <span
+                    className={`text-[11px] lg:text-xs font-bold tracking-wider transition-colors ${
+                      isActive ? 'text-brand-cyan' : 'text-white/70 group-hover:text-white'
+                    }`}
+                  >
+                    {t.year}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div className="relative">
+          <AnimatePresence mode="wait">
             <motion.div
-              key={c.name}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              whileHover={{ y: -4 }}
+              key={active}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
               transition={{ duration: 0.4, ease: easingCurve.industrial }}
-              className="group relative rounded-2xl border border-slate-200 bg-gradient-to-br from-white via-white to-slate-50/60 overflow-hidden hover:border-brand-blue/30 hover:shadow-[0_30px_60px_-20px_rgba(4,92,179,0.22)] transition-all"
+              className="relative rounded-2xl bg-slate-900/50 backdrop-blur-sm border border-white/10 p-7 sm:p-10 overflow-hidden"
             >
               <div
                 aria-hidden
-                className="absolute top-0 right-0 w-64 h-64 rounded-full bg-gradient-to-br from-brand-blue/10 to-brand-cyan/15 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                style={{ transform: 'translate(40%, -40%)' }}
+                className="absolute -top-16 -right-16 w-60 h-60 rounded-full blur-3xl opacity-50"
+                style={{
+                  background: 'radial-gradient(circle, rgba(0,194,255,0.25) 0%, transparent 70%)',
+                }}
               />
-
-              <div className="relative p-6 sm:p-8 lg:p-10 flex flex-col sm:flex-row items-start sm:items-center gap-6 lg:gap-8">
-                <div className="relative w-28 h-28 sm:w-32 sm:h-32 lg:w-36 lg:h-36 flex-shrink-0">
-                  <Image
-                    src={c.logo}
-                    alt={c.name}
-                    fill
-                    sizes="144px"
-                    className="object-contain drop-shadow-[0_8px_16px_rgba(4,92,179,0.25)]"
-                  />
+              <div className="relative grid lg:grid-cols-[200px_1fr] gap-6 lg:gap-10 items-start">
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-brand-cyan mb-2">
+                    Milestone {active + 1} of {TIMELINE.length}
+                  </p>
+                  <p className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white">
+                    {m.year}
+                  </p>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-brand-blue mb-2">
-                    Certified
-                  </p>
-                  <h3 className="text-xl sm:text-2xl lg:text-[26px] font-bold text-brand-navy leading-tight mb-1.5 tracking-tight">
-                    {c.name}
+                <div>
+                  <h3 className="text-xl sm:text-2xl font-bold text-white leading-tight mb-3">
+                    {m.title}
                   </h3>
-                  <p className="text-sm sm:text-base font-semibold text-slate-700 leading-snug mb-3">
-                    {c.role}
-                  </p>
-                  <p className="text-sm text-slate-600 leading-relaxed">{c.description}</p>
+                  <p className="text-base text-white/75 leading-relaxed">{m.description}</p>
                 </div>
               </div>
             </motion.div>
-          ))}
-        </div>
+          </AnimatePresence>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={motionConfig.default}
-          className="mt-10 lg:mt-14 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-6 sm:p-8 rounded-2xl border border-brand-blue/15 bg-gradient-to-br from-brand-blue/5 to-brand-cyan/5"
-        >
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-blue to-brand-cyan flex items-center justify-center flex-shrink-0">
-              <MapPin className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-brand-blue mb-1">
-                Global HQ
-              </p>
-              <p className="text-base sm:text-lg font-bold text-brand-navy leading-tight">
-                Aayulogic Inc. — Toronto, Ontario, Canada
-              </p>
-            </div>
+          <div className="mt-5 flex items-center justify-between text-sm">
+            <button
+              onClick={() => setActive((i) => Math.max(0, i - 1))}
+              disabled={active === 0}
+              className="inline-flex items-center gap-1.5 font-semibold text-white/70 hover:text-brand-cyan disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              ← Previous
+            </button>
+            <span className="text-xs text-white/50">Click any year above to jump</span>
+            <button
+              onClick={() => setActive((i) => Math.min(TIMELINE.length - 1, i + 1))}
+              disabled={active === TIMELINE.length - 1}
+              className="inline-flex items-center gap-1.5 font-semibold text-white/70 hover:text-brand-cyan disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              Next →
+            </button>
           </div>
-          <Link
-            href="/locations"
-            className="group inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-brand-blue/30 bg-white text-sm font-bold text-brand-navy hover:border-brand-blue hover:text-brand-blue transition-colors"
-          >
-            See all offices
-            <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </Link>
-        </motion.div>
+        </div>
       </div>
     </section>
   );
 }
 
 // =============================================================================
-//  FAQ TEASER — short list with link to full FAQ page
+//  VALUES — white
 // =============================================================================
 
-function FaqTeaserSection() {
-  const TEASER_FAQS = FAQ_CATEGORIES.flatMap((c) =>
-    c.items.slice(0, 1).map((q) => ({ ...q, cat: c.label }))
-  ).slice(0, 4);
+const VALUES = [
+  {
+    number: '01',
+    title: 'Build it right, not just fast.',
+    body: 'We have rebuilt modules from scratch after 18 months because we got the architecture wrong. We absorbed the cost. Speed matters — but a system that breaks at scale costs more than the time it takes to design it properly.',
+  },
+  {
+    number: '02',
+    title: 'Canadian accountability, Nepal capability.',
+    body: 'Every engagement has a Canadian point of contact. Every line of code is written by a Kathmandu team operating under ISO 9001 and ISO 27001 — not because it looks good on a document, but because our bank clients required it.',
+  },
+  {
+    number: '03',
+    title: 'Stay involved, not just delivered.',
+    body: 'We do not hand over and disappear. We have seen what happens when a team does that — we have cleaned it up. We stay through deployment and beyond because that is when the real problems surface.',
+  },
+];
 
+function Values() {
   return (
-    <section className="relative py-20 sm:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white">
-      <div
-        aria-hidden
-        className="absolute inset-0 opacity-60 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(40% 30% at 10% 10%, rgba(0,194,255,0.05) 0%, transparent 70%), radial-gradient(40% 30% at 95% 90%, rgba(4,92,179,0.06) 0%, transparent 70%)',
-        }}
-      />
+    <section className="relative bg-white py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12">
+      <div className="max-w-7xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={motionConfig.default}
+          className="max-w-3xl mb-12"
+        >
+          <p className="text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-3">
+            Our Values
+          </p>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-brand-navy leading-tight">
+            Three values. Specific, honest,<br />earned through experience.
+          </h2>
+        </motion.div>
 
+        <div className="grid md:grid-cols-3 gap-4 lg:gap-5">
+          {VALUES.map((v, i) => (
+            <motion.div
+              key={v.number}
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.45, delay: i * 0.06, ease: easingCurve.industrial }}
+              className="group relative p-7 rounded-2xl border border-slate-200 bg-white hover:border-brand-blue/30 hover:shadow-[0_24px_50px_-20px_rgba(4,92,179,0.2)] transition-all"
+            >
+              <p className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-br from-slate-200 to-slate-300 group-hover:from-brand-blue/30 group-hover:to-brand-cyan/40 transition-colors leading-none mb-4">
+                {v.number}
+              </p>
+              <h3 className="text-base font-bold text-brand-navy mb-3 leading-tight">
+                {v.title}
+              </h3>
+              <p className="text-sm text-slate-600 leading-relaxed">{v.body}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// =============================================================================
+//  CERTIFICATIONS — video bg
+// =============================================================================
+
+function Certifications() {
+  return (
+    <section
+      data-theme="dark"
+      className="relative py-20 sm:py-24 lg:py-28 px-6 sm:px-8 lg:px-12 overflow-hidden bg-cobalt-premium"
+    >
+      <div aria-hidden className="cobalt-grain" />
       <div className="relative max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-100px' }}
+          viewport={{ once: true, margin: '-80px' }}
           transition={motionConfig.default}
-          className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4 mb-12 lg:mb-14"
+          className="max-w-3xl mb-10"
         >
-          <div className="max-w-2xl">
-            <span className="inline-flex items-center gap-2 text-brand-blue text-sm font-semibold uppercase tracking-[0.18em] mb-4">
-              <HelpCircle className="w-4 h-4" />
-              Common Questions
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-brand-navy leading-[1.1] tracking-tight">
-              The things people{' '}
-              <span className="bg-gradient-to-r from-brand-blue to-brand-cyan bg-clip-text text-transparent">
-                actually ask
-              </span>
-              .
-            </h2>
-          </div>
-          <Link
-            href="/faq"
-            className="group inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-brand-navy text-white text-sm font-bold hover:bg-brand-blue transition-colors self-start"
-          >
-            See full FAQ
-            <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-          </Link>
+          <p className="text-brand-cyan text-sm font-semibold uppercase tracking-[0.18em] mb-3">
+            Certifications
+          </p>
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight">
+            Not marketing badges.<br />Operating standards.
+          </h2>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-6">
-          {TEASER_FAQS.map((f, idx) => (
-            <motion.div
-              key={f.q}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{
-                duration: 0.5,
-                delay: idx * 0.06,
-                ease: easingCurve.industrial,
-              }}
-              whileHover={{ y: -3 }}
-              className="group relative p-6 sm:p-7 rounded-2xl border border-slate-200 bg-gradient-to-br from-white to-slate-50/60 hover:border-brand-blue/30 hover:shadow-[0_16px_36px_-12px_rgba(4,92,179,0.16)] transition-all"
+        <div className="grid md:grid-cols-2 gap-5">
+          {[
+            {
+              badge: 'ISO 9001:2015',
+              role: 'Quality Management Systems',
+              title: 'Quality Management Systems',
+              body: 'This certification governs our engineering processes, delivery standards, and quality controls. It means every project follows a documented, auditable process — not informal practices. Built for clients who cannot accept inconsistent delivery.',
+              icon: ShieldCheck,
+            },
+            {
+              badge: 'ISO 27001:2022',
+              role: 'Information Security Management',
+              title: 'Information Security Management',
+              body: 'This certification governs how we handle data, access controls, incident response, and security protocols. It is the standard our commercial bank clients required. It applies to every engagement we take on — not just banking clients.',
+              icon: Lock,
+            },
+          ].map((c) => {
+            const Icon = c.icon;
+            return (
+              <div
+                key={c.badge}
+                className="p-7 sm:p-8 rounded-2xl border border-white/10 bg-slate-900/40 backdrop-blur-sm"
+              >
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-lg bg-brand-cyan/15 mb-5">
+                  <Icon className="w-4 h-4 text-brand-cyan" />
+                  <span className="text-sm font-bold text-brand-cyan">{c.badge}</span>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-3">{c.title}</h3>
+                <p className="text-sm text-white/75 leading-relaxed">{c.body}</p>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="mt-6 p-5 rounded-xl bg-slate-900/50 backdrop-blur-sm border-l-4 border-brand-cyan">
+          <p className="text-sm italic text-white/80 leading-relaxed">
+            These certifications are not marketing badges. They are operating standards we built because our clients demanded them — and we now apply them to every engagement regardless of industry.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// =============================================================================
+//  FINAL CTA — white
+// =============================================================================
+
+function FinalCTA() {
+  return (
+    <section className="relative bg-white py-20 sm:py-28 px-6 overflow-hidden">
+      <div className="max-w-7xl mx-auto px-2 sm:px-4">
+        <div
+          data-theme="dark"
+          className="relative rounded-2xl bg-cobalt-premium text-white overflow-hidden px-8 sm:px-14 py-14 sm:py-20 text-center"
+        >
+          <div aria-hidden className="cobalt-grain" />
+          <div
+            aria-hidden
+            className="absolute -top-32 -left-32 w-[520px] h-[520px] rounded-full blur-3xl opacity-30"
+            style={{ background: 'radial-gradient(circle, rgba(0,194,255,0.35) 0%, transparent 70%)' }}
+          />
+          <div className="relative max-w-3xl mx-auto">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-4">
+              See how we work.
+            </h2>
+            <p className="text-base sm:text-lg text-white/75 leading-relaxed mb-8">
+              Nine years of engineering operations. ISO-certified. Canadian accountability.
+            </p>
+            <Link
+              href="/contact"
+              className="group inline-flex items-center gap-2 px-8 py-4 text-base font-bold rounded-full bg-gradient-to-r from-brand-blue to-brand-cyan text-white shadow-[0_15px_40px_-10px_rgba(0,194,255,0.5)] hover:shadow-[0_20px_50px_-10px_rgba(0,194,255,0.7)] transition-all"
             >
-              <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-brand-blue mb-3 inline-block">
-                {f.cat}
-              </span>
-              <h3 className="text-lg sm:text-xl font-bold text-brand-navy mb-3 leading-tight">
-                {f.q}
-              </h3>
-              <p className="text-sm text-slate-600 leading-relaxed line-clamp-3">
-                {f.a}
-              </p>
-            </motion.div>
-          ))}
+              Start a conversation
+              <ArrowUpRight className="w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+            </Link>
+          </div>
         </div>
       </div>
     </section>
