@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { easingCurve } from '@/lib/utils';
 import { ArrowUpRight } from 'lucide-react';
+import { HeroClockBackground } from '@/components/HeroClockBackground';
 
 const MotionLink = motion.create(Link);
 
@@ -31,6 +32,7 @@ export function HeroSection() {
   return (
     <section className="hero-section bg-cobalt-premium relative w-full flex flex-col items-center justify-center overflow-hidden">
       <div aria-hidden className="cobalt-grain" />
+      <HeroClockBackground />
       {/* Half-height on mobile + tablet, full viewport on desktop.
           Padding-top reserves the navbar so the title never sits behind it. */}
       <style>{`
